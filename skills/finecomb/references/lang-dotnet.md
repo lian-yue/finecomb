@@ -14,3 +14,4 @@
 | Nullable reference types | They are only compile-time warnings and are not checked at run time |
 | Regular expressions | No timeout by default, so backtracking can be exploited; set a timeout, or use `NonBacktracking` (available from .NET 7) |
 | Lock objects | `lock(this)`, or locking on a type object or a string: outside code may lock the same object |
+| Random numbers | `System.Random` is not a cryptographic random source; use `RandomNumberGenerator` |

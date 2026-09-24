@@ -34,3 +34,4 @@
 | Workspaces and local overrides | `go.work` and `replace` make builds inside the repository pass, while the module is missing dependencies when used on its own; check with `GOWORK=off` |
 | `//go:linkname` | References to internal standard library symbols may be refused at link time by newer toolchains (tightened from 1.23) |
 | `iota` renumbering | Inserting a constant renumbers `iota`, and values that are persisted or passed between processes change with it |
+| Random numbers | `math/rand` and `math/rand/v2` are not cryptographic random sources; use `crypto/rand` |

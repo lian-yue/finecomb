@@ -9,3 +9,4 @@
 | Mass assignment | Request parameters are assigned directly to a model (see "automatic field binding" in [28](dimensions.md#28-authorization-and-access-control)) |
 | Monkey patching | Reopening core classes changes behavior for the whole process |
 | Global VM lock | Like Python's global interpreter lock, it does not make compound operations atomic |
+| Random numbers | `rand` and `Random` are not cryptographic random sources; use `SecureRandom` |

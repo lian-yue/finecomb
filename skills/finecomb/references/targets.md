@@ -326,6 +326,7 @@ Applies to: Kubernetes clusters viewed with a read-only identity, whether self-h
 | **Overly broad RBAC** | Subjects bound to `cluster-admin`; wildcard verbs and resources; `escalate`, `bind` and `impersonate`; subjects that can create Pods, read Secrets or run `exec` effectively hold the node or its credentials |
 | **Unauthenticated entry points** | The API server allows anonymous access; the kubelet is unauthenticated or its read-only port is open; the dashboard or etcd is reachable from outside or does not use certificate authentication |
 | Workload isolation | The Pod security level of each namespace (privileged, baseline, restricted); privileged containers, host directory mounts, host network or process namespaces, extra capabilities, running as root |
+| **Workloads submitted by tenants** | When the platform runs Pods, jobs or containers for tenants, are spec fields let through only by an allowlist (run-as UID, shared process namespace, volumes, capabilities, host network); is an allowed UID the same as that of a platform component such as a service mesh sidecar, which lets the workload bypass that component's traffic rules; can the workload share a process namespace with a sidecar the platform injects, and read that sidecar's token and configuration |
 | Service account tokens | Tokens are auto-mounted by default; long-lived token Secrets; workloads use the default service account |
 | **Network isolation** | No default-deny network policy; the network plugin in use does not enforce network policies, so written policies have no effect; Pods can reach the cloud metadata service |
 | Secret protection | Encryption at rest is not enabled for Secrets; secrets placed in ConfigMaps or environment variables; who can list Secrets |
@@ -393,7 +394,7 @@ Applies to: when you only have an agent's system prompt, rule files (such as `AG
 | **Permissions and auto-approval** | The list of tools that need no confirmation, allowed command wildcards (for example, allowing any shell), the range of readable and writable directories; whether high-risk tools such as running commands, writing files, sending messages and making payments still require human confirmation |
 | **Dangerous combinations** | When the same session can read private data, touch untrusted content and also send data out, external content can carry the data out; judge by combinations of tools, not by single tools only |
 | Remote server authentication | Does the remote server require authentication; does the server pass the client's token through unchanged to downstream services; are OAuth scopes minimal |
-| Local server exposure | Does a local HTTP server bind only to the loopback address, check `Origin` and require authentication; otherwise a web page can call it through DNS rebinding |
+| Local server exposure | Does a local HTTP server bind only to the loopback address, check `Host` and `Origin` and require authentication; otherwise a web page can call it through DNS rebinding (same-origin requests may carry no `Origin`, so the defense against rebinding relies mainly on checking `Host`) |
 | Security carried by prompts | Security rules written only in the prompt and not enforced at the tool execution layer; keys and internal addresses in the prompt (see [4.26](specialties.md#426-llms-and-tool-calling)) |
 | Writable context | Who can write long-term memory, retrieval stores, rule files and skill directories; can rule files submitted by others change the agent's behavior |
 | Call records | Are tool calls and approvals recorded; can you trace who approved what |
@@ -508,7 +509,7 @@ Applies to: targets where you only have a `.wasm` module, whether it is used in 
 
 | Checkpoint | What counts as a problem |
 | --- | --- |
-| File format and loading | Does the model file use a format that runs code at load time (such as pickle-based formats); is a safer format available |
+| File format and loading | Does the model file use a format that runs code at load time (such as pickle-based formats); a different format is not automatically safe: does the loader import and run code based on configuration, class names, function names, templates or a remote-code switch in the file (see [4.22](specialties.md#422-subprocesses-dynamic-execution-and-decoder-side-effects)); are a safer format and safer loading options available |
 | Source and integrity | Can the source, digest and license be verified |
 | Data issues | Personal information in the data; sources that may be poisoned |
 | Claims versus measurement | Are the capabilities and limits claimed in the model description backed by evaluations |

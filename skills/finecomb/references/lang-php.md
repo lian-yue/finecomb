@@ -9,3 +9,4 @@
 | Variable overwriting | `extract()` and variable variables `$$` overwrite existing variables |
 | Integers | Overflow turns the value into a float automatically and loses precision |
 | Uploads | Uploaded files land in an executable directory; the file is judged only by its extension or the type the client declares |
+| Random numbers | `rand`, `mt_rand` and `uniqid` are not cryptographic random sources; use `random_bytes` or `random_int` |

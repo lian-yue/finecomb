@@ -4,7 +4,7 @@ TON contracts interact only through asynchronous messages, and each message runs
 
 | Checkpoint | What counts as a problem |
 | --- | --- |
-| **Origin of transfer notifications** | When a Jetton transfer notification arrives, whether the sender is checked to be this contract's own Jetton wallet address; otherwise anyone can fake "tokens received" |
+| **Origin of transfer notifications** | When a Jetton transfer notification arrives, whether the sender is checked to be this contract's own Jetton wallet address; for contracts or off-chain services that must accept any Jetton (bridges, deposit endpoints), whether the sender wallet's code hash and the master contract it belongs to are checked; otherwise anyone can fake "tokens received" |
 | **Non-atomicity across messages** | Once an operation is split into several messages, a failure in one of them partway through does not undo the state that earlier messages already committed; whether the state is still consistent after any step fails, and whether the assets can be recovered |
 | Bounced messages | A message sent with the bounce flag comes back when it fails; whether the contract handles bounced messages and restores the balance or state it deducted earlier |
 | Concurrent message flows | Several message flows arrive interleaved, and another flow changes the state between two messages; this is similar to reentrancy |

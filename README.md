@@ -1,5 +1,7 @@
 # finecomb
 
+<a href="https://skills.sh/lian-yue/finecomb"><img alt="skills.sh" src="https://skills.sh/b/lian-yue/finecomb?style=for-the-badge" height="28"></a>
+
 [中文说明](README.zh-CN.md)
 
 finecomb is an exhaustive code review and security audit checklist, packaged as an [Agent Skill](https://agentskills.io). It works for code in any language, and for repositories that mix several languages. You point your agent at one or more targets (directories, packages, repositories, files, changes); the skill tells it what to check, how to check it, what counts as a problem and how to report it.
@@ -16,7 +18,7 @@ The name comes from "going over something with a fine-tooth comb": checking ever
 - **Targets that are not source code**: when the target is a binary, an installer, a browser extension, firmware, a container image, a published package, a live URL, domain and mail configuration, a host, a Kubernetes cluster, a cloud account, a SaaS tenant, a database, logs and packet captures, an on-chain contract address, a design document, an agent configuration or a dependency manifest, what evidence is available, what to check first, what cannot be seen and what needs authorization.
 - **Five per-object question lists** (public entry points, shared state, invariants, external side effects, background flows), a threat model, evidence levels, severities, a report format and tool options for each ecosystem.
 
-By default the review is read-only. The skill looks for the target project's own rules first (for example `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `SECURITY.md`) and follows them; when there are none, it uses conservative defaults: no writes to the source tree and no installs; the network is used only for read-only lookups that check dependency versions for known security issues (only dependency names and versions are sent, never source code or secrets). When the target is a live service, an account, a tenant or an on-chain contract, access is passive and read-only by default; active scanning, login attempts and exploit verification need written authorization from the asset owner, test artifacts are cleaned up and obtained data is disposed of at the end, and no transactions are sent or signed on chain.
+By default the review is read-only. The skill looks for the target project's own rules first (for example `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `SECURITY.md`) and follows them; when there are none, it uses conservative defaults: no writes to the source tree and no installs; the network is used only for read-only lookups that check dependency versions for known security issues (only dependency names and versions are sent, never source code or secrets). When the target is a live service, an account, a tenant or an on-chain contract, access is passive and read-only by default; active scanning, login attempts and exploit verification need written authorization from the asset owner, test artifacts are cleaned up and obtained data is disposed of at the end, and no transactions are sent or signed on chain. When one check cannot be done because of authorization, the environment, tools or the reviewer's own rules, only that check is skipped, with the reason and what is missing stated at the top of the report; everything else is still done, and the review never quits or silently downgrades.
 
 ## How coverage is validated
 
@@ -26,15 +28,23 @@ The root-cause facets and checkpoints were built by hit-testing against real vul
 2. Using only the skill's "question to ask" and "what counts as a problem" columns, never the example columns, decide whether a reviewer following the questions would reach that root cause.
 3. When it would not, generalize the miss into a question that does not depend on the domain or language, add it, and retest on new samples that were not used to write the skill.
 
-The latest held-out round (31 vulnerabilities not used to write the skill):
+Two held-out rounds (111 vulnerabilities not used to write the skill; each sample records only the root cause at the patch or advisory level):
 
 | Samples | Hit | Partial | Missed |
 | --- | --- | --- | --- |
 | Linux kernel, 2024–2026 (15) | 14 | 1 | 0 |
 | nginx, 2009–2021 (8) | 8 | 0 | 0 |
 | Apache httpd, HAProxy, Envoy, OpenSSL, 2024–2025 (8) | 8 | 0 | 0 |
+| Web frameworks and business applications (10) | 9 | 1 | 0 |
+| Libraries in memory-safe languages: Go, Rust, Java, npm, Python, .NET (10) | 8 | 2 | 0 |
+| Browsers, script engines and desktop clients (10) | 8 | 2 | 0 |
+| Open-source cloud-native components and build tools (10) | 6 | 4 | 0 |
+| Cryptographic libraries, authentication protocols and identity systems (10) | 6 | 4 | 0 |
+| Smart contracts, DeFi, bridges and zero-knowledge proofs (10) | 7 | 3 | 0 |
+| AI agents and LLM applications (10) | 9 | 1 | 0 |
+| Open-source databases, storage and messaging (10) | 6 | 4 | 0 |
 
-The one partial result has since become new questions (implicit checks lost when a call is replaced, and where an external offset lands). A hit means the questions lead a reviewer to the root cause; it does not guarantee that following the checklist finds the bug in the code.
+No sample needed a new root-cause facet. Every partial result was a specific checkpoint missing under an existing facet, or a general question that only lived in one domain's specialty. All of them have been added. A hit means the questions lead a reviewer to the root cause; it does not guarantee that following the checklist finds the bug in the code.
 
 ## Skills in this repository
 
@@ -47,15 +57,95 @@ The two skills have the same content. Install only one: both respond to the same
 
 ## Install
 
-With the [skills CLI](https://skills.sh):
+### Install with an agent
+
+Tell your coding agent (Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot and others):
+
+```text
+Install https://github.com/lian-yue/finecomb for me
+```
+
+An agent reading this should install it as follows:
+
+1. **Pick the version.** Install `finecomb-zh` if the user writes in Chinese, otherwise `finecomb`; if the user names one, use that. Install only one; both versions respond to the same kind of request.
+2. **Pick the scope.** If the user does not say, install for the current user so every project can use it; if the user asks for the current project only, install into the project.
+3. **With Node.js available, use the skills CLI.** Set `-a` to your own agent ID (such as `claude-code`, `codex`, `cursor`, `gemini-cli`, `github-copilot` or `opencode`); drop `-g` to install into the project:
+
+   ```sh
+   npx skills add https://github.com/lian-yue/finecomb --skill finecomb -a claude-code -g -y
+   ```
+
+4. **Without Node.js, install by hand.** Shallow-clone the repository into a temporary directory, copy the whole `skills/finecomb` (or `skills/finecomb-zh`) directory into your skills directory, for example `~/.claude/skills/finecomb` for Claude Code (see the table below for other agents), then delete the temporary directory.
+5. **Check and report.** Confirm the target directory contains `SKILL.md`, and tell the user where it was installed, whether the agent needs a restart, and how to use it, for example "review `./src` with finecomb" or "audit `https://github.com/<owner>/<repo>` for me".
+
+The skill contains only Markdown files and no scripts; installing it runs none of its content.
+
+### skills CLI
+
+Install the English version with the [skills CLI](https://github.com/vercel-labs/skills) ([skills.sh](https://skills.sh)):
 
 ```sh
 npx skills add lian-yue/finecomb --skill finecomb
 ```
 
-For the Chinese version, use `--skill finecomb-zh`. Add `-g` to install for your user instead of the current project, or `-a <agent>` to target a specific agent. To install from a local copy, pass its path instead of `lian-yue/finecomb`.
+For the Chinese version, use `--skill finecomb-zh`. Common options:
 
-You can also copy `skills/finecomb` by hand into your agent's skills directory (for example `.claude/skills/` for Claude Code).
+| Option | Effect |
+| --- | --- |
+| `-l`, `--list` | List the skills in the repository without installing |
+| `-g`, `--global` | Install for your user instead of the current project |
+| `-a`, `--agent <agent>` | Target a specific agent, for example `claude-code`, `codex`, `cursor`, `gemini-cli`, `github-copilot` or `opencode` |
+| `--copy` | Copy the files instead of symlinking them into the agent directory |
+| `-y`, `--yes` | Skip the prompts |
+
+The source can also be the full URL `https://github.com/lian-yue/finecomb`; to install one skill you can point at its directory, `https://github.com/lian-yue/finecomb/tree/main/skills/finecomb`; to install from a local copy, pass its path.
+
+After installing:
+
+```sh
+npx skills list
+```
+
+```sh
+npx skills update finecomb
+```
+
+```sh
+npx skills remove finecomb
+```
+
+To use it once without installing (the skill is turned into a prompt for the agent):
+
+```sh
+npx skills use lian-yue/finecomb --skill finecomb --agent claude-code
+```
+
+The CLI puts the skill into each agent's skills directory, for example:
+
+| Agent | Project | User |
+| --- | --- | --- |
+| Claude Code | `.claude/skills/` | `~/.claude/skills/` |
+| Codex | `.agents/skills/` | `~/.codex/skills/` |
+| Cursor | `.agents/skills/` | `~/.cursor/skills/` |
+| Gemini CLI | `.agents/skills/` | `~/.gemini/skills/` |
+| GitHub Copilot | `.agents/skills/` | `~/.copilot/skills/` |
+
+See the skills CLI documentation for the full list of agents.
+
+### Claude Code plugin marketplace
+
+The repository includes `.claude-plugin/marketplace.json`, so Claude Code can add it as a plugin marketplace:
+
+```text
+/plugin marketplace add lian-yue/finecomb
+/plugin install finecomb@finecomb
+```
+
+For the Chinese version, install `finecomb-zh@finecomb`.
+
+### Manual install
+
+Copy the whole `skills/finecomb` directory into your agent's skills directory (for example `.claude/skills/` for Claude Code).
 
 ## Usage
 
@@ -67,6 +157,7 @@ Ask your agent in plain language, for example:
 - "Review this change with finecomb."
 - "Use finecomb to check concurrency in `pkg/cache`."
 - "Audit the contract at `0x…` on Ethereum mainnet with finecomb."
+- "Audit `https://github.com/<owner>/<repo>` for me." (Any GitHub, GitLab or other Git repository URL works, including one that points at a branch, tag, subdirectory or merge request; the agent clones it read-only into a temporary directory, reviews it there, and states the commit it reviewed in the report.)
 
 The agent resolves the target and exclusions, builds a factual baseline (languages, entry points, shared state, threat model), runs the question lists, root-cause facets, dimensions, specialties and language tables that apply, and writes a report where every finding has a location, trigger conditions, evidence, impact, a recommendation and an evidence level. Excluded code is still read when a call chain passes through it; it is only exempt from findings.
 
@@ -74,6 +165,8 @@ The agent resolves the target and exclusions, builds a factual baseline (languag
 
 ```text
 finecomb/
+├── .claude-plugin/
+│   └── marketplace.json     Claude Code plugin marketplace manifest
 ├── LICENSE
 ├── README.md
 ├── README.zh-CN.md
@@ -103,6 +196,7 @@ finecomb/
 - The Chinese skill (`skills/finecomb-zh`) is the source. The English skill is its translation. Change both in the same commit and keep headings, tables and row counts in step.
 - Keep `SKILL.md` under 500 lines and move detail into `references/`.
 - Relative links and anchors must resolve inside each skill directory, because each skill can be installed on its own.
+- Skills live at `skills/<name>/SKILL.md`, following the skills CLI discovery rules, and `name` matches the directory name. When a skill is added or renamed, update `.claude-plugin/marketplace.json` too.
 
 ## License
 

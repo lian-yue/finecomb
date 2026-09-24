@@ -20,3 +20,4 @@
 | 构建加固 | 警告是否开全并视为错误；是否启用栈保护、`_FORTIFY_SOURCE`、PIE、RELRO 等（见[34](dimensions.md#34-运行环境与部署契约)、[36](dimensions.md#36-供应链与制品完整性)） |
 | ABI | 结构体布局、对齐、打包、字节序；不同编译器或标准库版本之间的 C++ ABI |
 | 异常跨界 | C++ 异常穿过 C 接口或回调 |
+| 随机数 | `rand`、`std::mt19937` 等不是密码学随机源，按时间播种更容易被猜出；密钥、令牌、助记词用操作系统随机源（`getrandom`、`arc4random`、`BCryptGenRandom`）或密码学库 |

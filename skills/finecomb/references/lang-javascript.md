@@ -23,3 +23,4 @@
 | Browser | `innerHTML`, `eval`, `new Function`, `setTimeout` with a string; `postMessage` without checking the origin (see [4.18](specialties.md#418-user-interfaces-and-accessibility)) |
 | Installing dependencies | Install scripts (`preinstall`, `postinstall`) run arbitrary code; the lock file is not committed; private scopes are not bound to the private registry (dependency confusion) |
 | Timers | `setInterval` callbacks overlap when they contain async work |
+| Random numbers | `Math.random` is not a cryptographic random source; use `crypto.getRandomValues`, or Node's `crypto.randomBytes` and `crypto.randomUUID` |

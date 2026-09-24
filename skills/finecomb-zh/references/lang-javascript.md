@@ -23,3 +23,4 @@
 | 浏览器 | `innerHTML`、`eval`、`new Function`、字符串形式的 `setTimeout`；`postMessage` 没校验来源（见[4.18](specialties.md#418-用户界面与可访问性)） |
 | 依赖安装 | 安装脚本（`preinstall`、`postinstall`）执行任意代码；锁文件没提交；私有作用域没有绑定到私有源（依赖混淆） |
 | 定时器 | `setInterval` 回调里有异步工作时会重叠执行 |
+| 随机数 | `Math.random` 不是密码学随机源，用 `crypto.getRandomValues` 或 Node 的 `crypto.randomBytes`、`crypto.randomUUID` |

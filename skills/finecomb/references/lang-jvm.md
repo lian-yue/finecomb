@@ -13,5 +13,6 @@
 | Log lookups | The logging framework interprets lookup expressions in messages (such as the JNDI lookup of Log4j 2, see [4.13](specialties.md#413-logs-metrics-and-tracing), [4.22](specialties.md#422-subprocesses-dynamic-execution-and-decoder-side-effects)) |
 | Reflection | `setAccessible` bypasses encapsulation; loading classes by names from external input |
 | Container limits | Older JVMs are not aware of container limits; the heap size must be set according to the quota |
+| Random numbers | `java.util.Random`, `Math.random` and `ThreadLocalRandom` are not cryptographic random sources; use `SecureRandom` |
 | Kotlin null safety | Platform types coming from Java bypass null-safety checks; `!!`; `lateinit` that is never initialized |
 | Kotlin coroutines | Cancellation is cooperative; `catch (e: Exception)` swallows `CancellationException`; coroutines launched in `GlobalScope` leak; calling `runBlocking` inside a coroutine |

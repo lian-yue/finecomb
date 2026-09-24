@@ -20,3 +20,4 @@
 | Build hardening | Whether warnings are fully enabled and treated as errors; whether stack protection, `_FORTIFY_SOURCE`, PIE, RELRO and similar are enabled (see [34](dimensions.md#34-runtime-environment-and-deployment-contract), [36](dimensions.md#36-supply-chain-and-artifact-integrity)) |
 | ABI | Struct layout, alignment, packing, byte order; C++ ABI across different compilers or standard library versions |
 | Exceptions crossing boundaries | C++ exceptions passing through C interfaces or callbacks |
+| Random numbers | `rand`, `std::mt19937` and similar are not cryptographic random sources, and seeding them from the time makes them even easier to guess; for keys, tokens and seed phrases, use the operating system's random source (`getrandom`, `arc4random`, `BCryptGenRandom`) or a cryptography library |

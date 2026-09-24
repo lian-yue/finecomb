@@ -13,5 +13,6 @@
 | 日志查找 | 日志框架解释消息里的查找表达式（如 Log4j 2 的 JNDI 查找，见[4.13](specialties.md#413-日志指标与追踪)、[4.22](specialties.md#422-子进程动态执行与解码器副作用)） |
 | 反射 | `setAccessible` 绕过封装；按外部输入加载类 |
 | 容器限额 | 较老的 JVM 不感知容器限额；堆大小要按配额设置 |
+| 随机数 | `java.util.Random`、`Math.random`、`ThreadLocalRandom` 不是密码学随机源，用 `SecureRandom` |
 | Kotlin 空安全 | 来自 Java 的平台类型绕过空安全检查；`!!`；未初始化的 `lateinit` |
 | Kotlin 协程 | 取消是协作式的；`catch (e: Exception)` 吞掉 `CancellationException`；`GlobalScope` 启动的协程泄漏；在协程里调用 `runBlocking` |

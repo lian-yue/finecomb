@@ -14,3 +14,4 @@
 | 可空引用类型 | 只是编译期警告，运行时不校验 |
 | 正则 | 默认没有超时，回溯可被利用；设置超时，或用 .NET 7 起的 `NonBacktracking` |
 | 锁对象 | `lock(this)`、锁类型对象或字符串，外部代码可能锁同一个对象 |
+| 随机数 | `System.Random` 不是密码学随机源，用 `RandomNumberGenerator` |
