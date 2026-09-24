@@ -4,7 +4,14 @@
 
 [中文说明](README.zh-CN.md)
 
-finecomb is an exhaustive code review and security audit checklist, packaged as an [Agent Skill](https://agentskills.io). It works for code in any language, and for repositories that mix several languages. You point your agent at one or more targets (directories, packages, repositories, files, changes); the skill tells it what to check, how to check it, what counts as a problem and how to report it.
+finecomb is an exhaustive code review and security audit checklist. It is written in the open [Agent Skills](https://agentskills.io) format and is not tied to one agent or one way of installing:
+
+- install it with one command through the skills CLI of [skills.sh](https://skills.sh);
+- add it as a plugin marketplace in Claude Code;
+- tell your agent "Install https://github.com/lian-yue/finecomb for me" and let it install itself;
+- or copy the skill directory by hand.
+
+It works with any agent that supports skills, such as Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot and OpenCode; see [Install](#install). It works for code in any language, and for repositories that mix several languages. You point your agent at one or more targets (directories, packages, repositories, files, changes); the skill tells it what to check, how to check it, what counts as a problem and how to report it.
 
 The name comes from "going over something with a fine-tooth comb": checking every strand so nothing is missed.
 

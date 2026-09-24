@@ -4,7 +4,14 @@
 
 [English](README.md)
 
-finecomb 是一份穷尽式的代码审查与安全审计清单，打包成 [Agent Skill](https://agentskills.io)。它适用于任意语言的代码，也适用于多种语言混合的仓库。你把一个或多个目标（目录、包、仓库、文件、改动）交给智能体，技能告诉它：查什么、怎么查、什么算问题、怎么报告。
+finecomb 是一份穷尽式的代码审查与安全审计清单，按开放的 [Agent Skills](https://agentskills.io) 格式编写，不绑定某一种智能体或某一种安装方式：
+
+- 用 [skills.sh](https://skills.sh) 的 skills 命令行一条命令安装；
+- 在 Claude Code 里当插件市场添加；
+- 对智能体说一句「帮我安装 https://github.com/lian-yue/finecomb」，让它自己装；
+- 或者手工复制技能目录。
+
+Claude Code、Codex、Cursor、Gemini CLI、GitHub Copilot、OpenCode 等支持技能的智能体都能用，安装方法见[安装](#安装)。它适用于任意语言的代码，也适用于多种语言混合的仓库。你把一个或多个目标（目录、包、仓库、文件、改动）交给智能体，技能告诉它：查什么、怎么查、什么算问题、怎么报告。
 
 名字来自英语 "go over with a fine-tooth comb"（用细齿梳梳一遍）：一根一根地过，不漏掉任何一处。
 
