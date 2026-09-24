@@ -208,3 +208,7 @@ finecomb/
 ## 许可证
 
 [Apache-2.0](LICENSE)
+
+## 致谢
+
+感谢 Anthropic 的 [Claude for Open Source](https://claude.com/contact-sales/claude-for-oss) 计划为开源维护者免费提供 Claude Max。finecomb 的编写、命中测试和中英文翻译都是用它完成的。
