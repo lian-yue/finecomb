@@ -1,0 +1,61 @@
+{
+  "name": "finecomb",
+  "version": "1.0.0",
+  "description": "Exhaustive code review and security audit checklist for any language: root-cause facets from real vulnerabilities, 46 general dimensions, 78 specialties by target type, language pitfall tables, threat model and report format. Markdown only, read-only by default, for code and systems you own or are authorized to assess.",
+  "author": {
+    "name": "lian-yue",
+    "url": "https://github.com/lian-yue"
+  },
+  "homepage": "https://github.com/lian-yue/finecomb",
+  "repository": "https://github.com/lian-yue/finecomb",
+  "license": "Apache-2.0",
+  "keywords": [
+    "code-review",
+    "security-audit",
+    "security",
+    "appsec",
+    "secure-code-review",
+    "vulnerability",
+    "threat-modeling",
+    "checklist",
+    "agent-skill",
+    "owasp",
+    "cwe",
+    "supply-chain",
+    "cloud-security",
+    "kubernetes",
+    "mobile-security",
+    "api-security",
+    "authorization",
+    "cryptography",
+    "memory-safety",
+    "concurrency",
+    "smart-contract-audit",
+    "solidity",
+    "defi",
+    "zero-knowledge",
+    "llm-security",
+    "multi-language",
+    "代码审查",
+    "安全审计"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "finecomb",
+    "shortDescription": "Exhaustive code review and security audit checklist for any language",
+    "longDescription": "Use finecomb to review and security-audit code you own or are authorized to assess, in any language or mix of languages: local directories, packages, changes, pull requests or GitHub and GitLab repository URLs, and targets that are not source code such as binaries, packages, live URLs, clusters, cloud accounts and contract addresses. It asks root-cause questions distilled from real vulnerabilities of every object, then works through 46 general dimensions, 78 specialties by target type and pitfall tables for programming and contract languages, and writes a report with evidence levels. Reviews are read-only by default; fixes are made only when you authorize them.",
+    "developerName": "lian-yue",
+    "category": "Security",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://github.com/lian-yue/finecomb",
+    "privacyPolicyURL": "https://github.com/lian-yue/finecomb/blob/main/SECURITY.md#privacy",
+    "termsOfServiceURL": "https://github.com/lian-yue/finecomb/blob/main/LICENSE",
+    "defaultPrompt": [
+      "Review this repository with finecomb.",
+      "Audit the changes in this branch with finecomb for security issues.",
+      "Review ./src with finecomb, excluding vendor/ and generated code."
+    ],
+    "brandColor": "#1F2937",
+    "screenshots": []
+  }
+}

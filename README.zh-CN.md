@@ -7,7 +7,7 @@
 finecomb 是一份穷尽式的代码审查与安全审计清单，按开放的 [Agent Skills](https://agentskills.io) 格式编写，不绑定某一种智能体或某一种安装方式：
 
 - 用 [skills.sh](https://skills.sh) 的 skills 命令行一条命令安装；
-- 在 Claude Code 里当插件市场添加；
+- 在 Claude Code 或 Codex 里当插件市场添加；
 - 对智能体说一句「帮我安装 https://github.com/lian-yue/finecomb」，让它自己装；
 - 或者手工复制技能目录。
 
@@ -163,6 +163,16 @@ npx skills use lian-yue/finecomb --skill finecomb --agent claude-code
 /plugin install finecomb@finecomb
 ```
 
+### Codex 插件市场
+
+仓库还带有 `.agents/plugins/marketplace.json` 和 `.codex-plugin/plugin.json`，可以在 Codex 里当插件市场添加：
+
+```sh
+codex plugin marketplace add lian-yue/finecomb
+```
+
+然后在 Codex 里输入 `/plugins`，打开 finecomb 市场，安装 finecomb，再开一个新会话。
+
 ### 不会自动加载技能的智能体
 
 技能只是 Markdown 文件，任何能读文件的智能体都能用。智能体不会自动加载技能时，把 `skills/finecomb` 放到它能读到的位置，然后说：
@@ -193,9 +203,13 @@ npx skills use lian-yue/finecomb --skill finecomb --agent claude-code
 
 ```text
 finecomb/
+├── .agents/plugins/
+│   └── marketplace.json     Codex 插件市场清单
 ├── .claude-plugin/
 │   ├── marketplace.json     Claude Code 插件市场清单
 │   └── plugin.json          插件清单：名称、描述、搜索关键词
+├── .codex-plugin/
+│   └── plugin.json          Codex 与 ChatGPT 插件清单
 ├── AGENTS.md                维护规则（CLAUDE.md 是指向它的软链接）
 ├── CLAUDE.md -> AGENTS.md
 ├── LICENSE

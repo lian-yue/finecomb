@@ -7,7 +7,7 @@
 finecomb is an exhaustive code review and security audit checklist. It is written in the open [Agent Skills](https://agentskills.io) format and is not tied to one agent or one way of installing:
 
 - install it with one command through the skills CLI of [skills.sh](https://skills.sh);
-- add it as a plugin marketplace in Claude Code;
+- add it as a plugin marketplace in Claude Code or Codex;
 - tell your agent "Install https://github.com/lian-yue/finecomb for me" and let it install itself;
 - or copy the skill directory by hand.
 
@@ -163,6 +163,16 @@ The repository includes `.claude-plugin/marketplace.json`, so Claude Code can ad
 /plugin install finecomb@finecomb
 ```
 
+### Codex plugin marketplace
+
+The repository also includes `.agents/plugins/marketplace.json` and `.codex-plugin/plugin.json`, so Codex can add it as a plugin marketplace:
+
+```sh
+codex plugin marketplace add lian-yue/finecomb
+```
+
+Then enter `/plugins` in Codex, open the finecomb marketplace, install finecomb and start a new session.
+
 ### Agents that do not load skills automatically
 
 The skill is only Markdown files, so any agent that can read files can use it. If your agent does not load skills automatically, put `skills/finecomb` where it can read it and say:
@@ -193,9 +203,13 @@ The agent resolves the target and exclusions, builds a factual baseline (languag
 
 ```text
 finecomb/
+├── .agents/plugins/
+│   └── marketplace.json     Codex plugin marketplace manifest
 ├── .claude-plugin/
 │   ├── marketplace.json     Claude Code plugin marketplace manifest
 │   └── plugin.json          plugin manifest: name, description, search keywords
+├── .codex-plugin/
+│   └── plugin.json          Codex and ChatGPT plugin manifest
 ├── AGENTS.md                maintenance rules (CLAUDE.md is a symbolic link to it)
 ├── CLAUDE.md -> AGENTS.md
 ├── LICENSE

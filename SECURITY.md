@@ -23,6 +23,10 @@ The skill follows these limits itself; see [Execution boundaries during review](
 - You are responsible for obtaining the authorization each target needs and for following the laws, contracts and platform rules that apply to you, including the testing policies of cloud and SaaS providers.
 - The authors and contributors are not responsible for any use of finecomb outside the authorization scope above, or for any damage caused by such use.
 
+## Privacy
+
+finecomb collects, stores and sends no data. It is a set of Markdown instructions that your own agent reads and follows in your own environment; it has no server, no telemetry and no account. What leaves your machine during a review depends on the agent and platform you use. The skill tells the agent to send out only dependency names and versions for known-vulnerability lookups, and to fetch a remote repository only when you give its URL; see [Execution boundaries during review](skills/finecomb/references/scope.md#execution-boundaries-during-review).
+
 ## Supported versions
 
 Only the latest commit on the `main` branch is maintained.
