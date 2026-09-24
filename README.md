@@ -75,9 +75,9 @@ Keep one file per agent, model and date; do not edit past runs.
 ## When something was missed: how to trace it
 
 1. In a checkout of this branch, search by ID, component or product name, for example `rg -F 'CVE-2025-1094' .`, to see whether it was tested and how it was judged.
-2. If it was not tested, judge it yourself with the rules above: write the patch-level root cause in one sentence, find the facet in `skills/finecomb/references/facets.md` on the `main` branch that would lead to it, then look for the specific checkpoint in the rows its "Detailed criteria" column points to.
+2. If it was not tested, judge it yourself with the rules above: write the patch-level root cause in one sentence, find the facet in `skills/finecomb/references/facets/` on the `main` branch that would lead to it, then look for the specific checkpoint in the rows its "Detailed criteria" column points to.
 3. Decide which layer is missing:
-   - **Facet**: no root-cause facet leads to this root cause; add a domain-independent question to `facets.md`.
+   - **Facet**: no root-cause facet leads to this root cause; add a domain-independent question to the matching file in `facets/`.
    - **Checkpoint**: the facet exists, but the rows it points to lack this specific checkpoint; add it to the matching dimension or specialty.
    - **Domain or language table**: it only holds for one kind of target or one language; add it to a specialty or a `lang-*.md` table.
    - **Wording or routing**: a row already says it, but too narrowly, in the wrong file, or the facet does not link to it.
