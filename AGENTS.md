@@ -8,8 +8,14 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 - `skills/finecomb/`: the skill. `SKILL.md` (English) and `SKILL.<language code>.md` (other languages, such as `SKILL.zh-CN.md`) hold the workflow, the index and the closing self-check; `references/` holds the details, in English only.
 - `README.md` and `README.<language code>.md`: the overview in each language.
 - `.claude-plugin/marketplace.json`: the Claude Code plugin marketplace manifest, also read by the skills CLI. Its plugin entry carries `category`, `tags` and `keywords` for search.
-- `.claude-plugin/plugin.json`: the plugin manifest (name, display name, description, author, links, license, search `keywords`). It declares no components, because the marketplace entry is `strict: false` and lists the skill itself, and it sets no `version`, so installs follow the latest commit.
-- `.codex-plugin/plugin.json`: the Codex and ChatGPT plugin manifest, with the listing fields in `interface` (category `Security`). Codex requires `version`; raise it when the skill changes. `.agents/plugins/marketplace.json`: the Codex marketplace manifest, pointing at this repository.
+- `.claude-plugin/plugin.json`: the plugin manifest (name, display name, version, description, author, links, license, search `keywords`). It declares no components, because the marketplace entry is `strict: false` and lists the skill itself.
+- `.codex-plugin/plugin.json`: the Codex and ChatGPT plugin manifest, with the listing fields in `interface` (category `Security`). `.agents/plugins/marketplace.json`: the Codex marketplace manifest, pointing at this repository.
+
+## Versions and releases
+
+- One version number, following semantic versioning, is kept the same in four places: `.claude-plugin/plugin.json`, `metadata.version` in `.claude-plugin/marketplace.json`, `.codex-plugin/plugin.json`, and `metadata.version` in the frontmatter of `SKILL.md`.
+- Installed plugins update only when the version changes. After changes to the skill are pushed to `main`, raise the version in all four places in one commit, tag that commit `v<version>` on `main` of the published repository, push the tag, and publish a GitHub release for the tag with notes that list what changed.
+- Tags and releases belong to the published repository only; the validation branch is not tagged.
 - `LICENSE`: Apache-2.0.
 - `SECURITY.md`: what finecomb is, the authorization scope and the disclaimer. It lists no contact address.
 - Hit-test records and samples do **not** live on `main`. They live on the separate `validation` branch (see [Validation](#validation)), so installing the skill never downloads them.
