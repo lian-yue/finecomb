@@ -8,7 +8,8 @@
 | Memory ownership | Who frees the memory is not written down; when `p = realloc(p, n)` fails, the original pointer is lost; error paths miss frees |
 | Format strings | Passing an external string directly as the format argument of `printf` |
 | errno | Meaningful only when the call failed, and overwritten by later calls; calls interrupted by signals return `EINTR` |
-| Signals | Calling functions that are not async-signal-safe (such as `malloc`, `printf`) in signal handlers |
+| Signals | Calling functions that are not async-signal-safe (such as `malloc`, `printf`) in signal handlers; doing cleanup or writing logs in timeout or signal callbacks is just as dangerous |
+| Process entry assumptions | Assuming `argc` is at least 1 and that `argv[0]` exists and can be trusted; environment variables may be duplicated, malformed or carefully crafted by the caller (PwnKit came from out-of-bounds reads and writes when `argc` was 0) |
 | Threads | Functions that are not thread-safe (`strtok`, `localtime`, `rand`, `getenv` running concurrently with `setenv`); `volatile` provides no synchronization |
 | Wiping secrets | Clearing a key with `memset` may be optimized away; use `explicit_bzero`, `memset_s` or the platform equivalent |
 | Check then use | The file is replaced after the `access()` check and before `open()` |

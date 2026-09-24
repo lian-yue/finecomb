@@ -5,7 +5,7 @@ This appendix maps the categories of [16](dimensions.md#16-language-and-runtime-
 - Pick the tables for the languages the target uses; for a mixed-language target pick every one, and check cross-language boundaries separately in [4.32](specialties.md#432-cross-language-boundaries-and-native-extensions).
 - The tables list only frequent, easy-to-miss items and **do not replace the category checks of 16**: for every category in 16 you still have to find that language's matching mechanism, item by item.
 - Semantics change between versions. First confirm the language, runtime and compiler versions the target declares and actually uses, then decide whether an item applies.
-- For a language not in this appendix, build your own table with the method in [A.13 Other languages](#a13-other-languages).
+- For a language not in this appendix, build your own table with the method in [A.20 Other languages](#a20-other-languages).
 
 ## Language index
 
@@ -21,8 +21,15 @@ This appendix maps the categories of [16](dimensions.md#16-language-and-runtime-
 - [A.10 Shell](lang-shell.md)
 - [A.11 Swift and Objective-C](lang-swift-objc.md)
 - [A.12 SQL and query dialects](lang-sql.md)
+- [A.13 Solidity and Vyper (EVM)](lang-solidity.md)
+- [A.14 Solana programs (Rust and Anchor)](lang-solana.md)
+- [A.15 Move (Aptos, Sui)](lang-move.md)
+- [A.16 Zero-knowledge circuits (Circom, halo2, Noir and others)](lang-zk.md)
+- [A.17 CosmWasm and Cosmos SDK modules](lang-cosmwasm.md)
+- [A.18 Cairo (Starknet)](lang-cairo.md)
+- [A.19 TON (FunC, Tact, Tolk)](lang-ton.md)
 
-## A.13 Other languages
+## A.20 Other languages
 
 For a language not in this appendix, build your own table with the steps below, and write down the sources in the coverage record:
 
@@ -30,3 +37,4 @@ For a language not in this appendix, build your own table with the steps below, 
 2. Read the security guides, memory model and concurrency notes in the language's official documentation, and the rule lists of mainstream static analysis tools. A rule list is usually a checklist of that language's frequent pitfalls.
 3. Cross-check the entries related to that language in general weakness catalogs (such as CWE).
 4. Confirm the version the target actually uses, and keep only the entries that hold for that version.
+5. For smart contract languages, also cross-check the chain's official security guide and public collections of vulnerable examples (such as Trail of Bits' not-so-smart-contracts). Focus on how the execution model differs from the EVM: whether messages are synchronous or asynchronous, how much is rolled back on failure, how accounts and storage are owned, and who pays.

@@ -11,7 +11,7 @@ The wording of an invocation is not fixed. Examples: "review `<target>` with fin
 
 | Item | How to decide |
 | --- | --- |
-| Target | One or more directories, packages, modules, repositories, files, changes or merge requests, in any mix. Any language, and languages can be mixed. With several targets, resolve and list each one; calls, shared state and data flow between the targets are also in scope. In the report, mark which target each issue belongs to, and merge one root cause that spans targets into a single entry. If a target does not exist or matches several candidates, handle the ambiguity per the project rules |
+| Target | One or more directories, packages, modules, repositories, files, changes or merge requests, in any mix. Any language, and languages can be mixed. With several targets, resolve and list each one; calls, shared state and data flow between the targets are also in scope. In the report, mark which target each issue belongs to, and merge one root cause that spans targets into a single entry. When a target is not source code (compiled artifacts, installers, browser extensions, container images, published packages, live addresses, domain and mail configuration, hosts, clusters, the state of cloud accounts or SaaS tenants, configuration, data, logs and packet captures, incident material, contract addresses, design documents, agent configurations), collect evidence per [targets that are not source code](targets.md). If a target does not exist or matches several candidates, handle the ambiguity per the project rules |
 | Explicit exclusions | Paths, globs or modules the caller names. Normalize paths before matching. Do not widen or narrow the match because names look alike |
 | Category exclusions | When the caller names categories such as "generated", "third-party", "vendored", "build artifacts" or "test data", identify them with the table below and **list the files or directories that actually match** so the caller can check them |
 | Scale | Decide per [scaling to the request](#scaling-to-the-request) |
@@ -72,7 +72,7 @@ Rules for authorization, version control operations, how to write, network acces
 - Do not install, upgrade, download or run new tools or dependencies (including download-and-run commands such as `npx` and `pipx run`); get authorization first when needed.
 - Execution writes only to the system temporary directory and the tools' default caches. Do reproductions in an isolated copy.
 - Run only the smallest entry point needed to prove a candidate issue. Do not run the full suite or stress tests.
-- Do not touch production environments, real accounts or third-party systems.
+- Do not touch production environments, real accounts or third-party systems. When the target itself is a live service or an on-chain contract, make only passive, read-only access per [execution boundaries during review](#execution-boundaries-during-review). When the caller provides a read-only identity for reviewing a cloud account, cluster or SaaS tenant, you may use that identity for read-only queries.
 
 ## Execution boundaries during review
 
@@ -81,6 +81,18 @@ Rules for authorization, version control operations, how to write, network acces
 - Do not probe unauthorized targets with real business credentials, and do not read unrelated users' data to prove unauthorized access. When impact must be proven, use authorized test accounts and resources. For paths that might cause damage or cannot be isolated, keep the static evidence and state the unverified boundary.
 - Do not switch off guards in a shared workspace just to test a security control, and do not overwrite other people's changes. For before/after comparisons of a fix, use verified input snapshots or isolated copies. When no comparable baseline is available, do not guess when the issue was introduced.
 - Check authorization separately for installing tools, uploading reports externally and public disclosure; read-only network lookups of dependency versions and vulnerability data follow the defaults above. If a tool is missing or the environment is restricted, record the reason. Do not write a failed check as a pass, and do not widen the scope automatically because of it.
+- When only a live address is given, by default do only passive, low-rate observation: public pages, response headers, transport layer configuration, DNS and Certificate Transparency logs. Active scanning, login attempts, fuzzing and vulnerability verification need written authorization that states the scope, the time window and the allowed operations.
+- For on-chain targets, do only read-only queries and simulations on a local fork. Do not send transactions, do not sign, and do not touch private keys or seed phrases.
+- Before reverse engineering binaries, unpacking firmware or decompiling contract bytecode, confirm that the license and local law allow it.
+- Before any active operation against a live service, cloud account or SaaS tenant, confirm that the authorization comes from the owner of the asset, not just from the caller. The cloud provider's and the SaaS platform's own testing policies must also be followed.
+- Before active testing, agree on an emergency contact and stop conditions: stop at once and report when the service slows down, errors appear, or real user data is touched.
+- Of any real data you come across, take only the smallest sample needed to prove the issue, and do not keep extra copies. Redact it in the report. When the review ends, delete the data and exported files obtained in this review, and record the deletion.
+- When the review ends, clean up, item by item, the test accounts, files, cloud resources, tokens and app registrations created during it. Write anything that cannot be cleaned up into the report.
+- Before running a tool, check its side effects: some scanners start the servers listed in a configuration, some cluster checks create privileged containers, and some SaaS audit tools need to register an app or request extra permissions.
+- Do not upload samples, artifacts or data to online scanning or analysis services unless authorized; uploading discloses them to a third party.
+- For secrets you find, record only the location, the type and the basis for judging whether they are valid, and redact them in the report. Do not try to crack password hashes, and do not log in with credentials you find.
+- When radio transmission, hardware teardown or connecting to a device's debug port is involved, follow local regulations and the device owner's authorization.
+- Do not do social engineering or phishing tests unless the authorization explicitly includes them.
 
 ## Scaling to the request
 
@@ -91,6 +103,7 @@ Rules for authorization, version control operations, how to write, network acces
 | "see whether xxx has problems" | First establish the [factual baseline](baseline.md), then pick dimensions by the directions it exposes. State which parts were not checked |
 | "review this change" | Review only the entry points, state, invariants, side effects and background flows that the change touches, but go through the question lists for these five in full |
 | Names one dimension (such as "look at concurrency") | Establish the relevant baseline and check that dimension. Other confirmed issues found along the real call chains are still reported |
+| Time or budget is limited | First build the baseline, then check in order of risk: entry points facing untrusted input → code that handles money, permissions, identity and secrets → recently or frequently changed code → the rest. Write what was not covered as "Not checked" |
 
 ## Sharding large targets and multi-round review
 

@@ -1,6 +1,6 @@
 ---
 name: finecomb-zh
-description: 穷尽式代码审查与安全审计清单（中文版）。不限语言，也适用于多种语言混合的仓库。用户要求审查、审计、代码评审、全面检查、安全审计、挑刺、找问题时使用；目标可以是一个或多个目录、包、模块、仓库、文件、改动或合并请求，可以带排除项（例如「排除 vendor 和生成的代码」）。覆盖 45 个通用维度、38 类按目标类型追加的专项、13 张语言陷阱表、五张逐对象追问清单、威胁模型、证据等级与报告格式。Keywords: code review, security audit, exhaustive checklist, any language.
+description: 穷尽式代码审查与安全审计清单（中文版）。不限语言，也适用于多种语言混合的仓库。用户要求审查、审计、代码评审、全面检查、安全审计、挑刺、找问题时使用；目标可以是一个或多个目录、包、模块、仓库、文件、改动或合并请求，可以带排除项（例如「排除 vendor 和生成的代码」）；也可以不是源码：二进制、安装包、扩展、固件、容器镜像、已发布的包、线上地址、主机、集群、云账号与 SaaS 租户、数据与日志、智能合约地址或设计文档。核心是从真实漏洞根因归纳的跨领域「根因面」，每个对象都要逐面追问；另有 45 个通用维度、50 类按目标类型追加的专项（含单点登录、本机提权、驱动与虚拟化、移动应用、支付、智能合约、DeFi、跨链、钱包、账户抽象、零知识证明、区块链节点与共识）、历史高危漏洞模式、各语言与合约语言（Solidity、Vyper、Solana、Move、CosmWasm、Cairo、TON、零知识电路）的陷阱表、五张逐对象追问清单、威胁模型、证据等级与报告格式。Keywords: code review, security audit, smart contract audit, exhaustive checklist, any language.
 license: Apache-2.0
 metadata:
   author: lian-yue
@@ -9,7 +9,7 @@ metadata:
 
 # finecomb：穷尽式代码审查清单
 
-这份技能用于检查代码的正确性、安全性和可维护性。调用示例：「用 finecomb 审 `<目标>`」「用 finecomb 审 `<目录1>`、`<目录2>` 和这次改动」「用 finecomb 审计 `<目录>`，排除 `<a>`、`<b>` 和生成的代码」。目标可以是一个，也可以是多个：包、目录、模块、仓库、文件、改动或合并请求，可以混着给；代码可以是任意语言，也可以是多种语言混合。调用怎么解析成范围见[调用与范围解析](references/scope.md#调用与范围解析)。
+这份技能用于检查代码的正确性、安全性和可维护性。调用示例：「用 finecomb 审 `<目标>`」「用 finecomb 审 `<目录1>`、`<目录2>` 和这次改动」「用 finecomb 审计 `<目录>`，排除 `<a>`、`<b>` 和生成的代码」。目标可以是一个，也可以是多个：包、目录、模块、仓库、文件、改动或合并请求，可以混着给；代码可以是任意语言，也可以是多种语言混合。目标也可以不是源码：编译产物、安装包、浏览器扩展、镜像、已发布的包、线上地址、主机、集群、云账号或 SaaS 租户的状态、配置、数据、日志、合约地址、设计文档或智能体配置，见[非源码目标](references/targets.md)。调用怎么解析成范围见[调用与范围解析](references/scope.md#调用与范围解析)。
 
 **它不绑定具体项目，也不绑定具体语言。** 审查范围由调用时指定，清单用于追踪检查对象和证据，不能保证发现所有缺陷。检查项是追问方向；是否构成问题，要结合真实契约、可达路径和影响判断，不能因没有采用某项技术就直接报缺陷。
 
@@ -25,10 +25,10 @@ metadata:
 
 按顺序做。每一步只读当步需要的参考文件，用不到的不读。
 
-1. **解析调用，确定边界。** 读 [references/scope.md](references/scope.md)：把调用解析成目标、排除项和规模；找到目标项目的规范和硬边界，项目没有规定时用其中的保守默认；确认执行边界。目标太大时按其中的分片规则做。
-2. **建立事实基线。** 读 [references/baseline.md](references/baseline.md)：语言与构建清单、对象清单、上下游、威胁模型；用「历史机制对号」表选出要追加的专项。
+1. **解析调用，确定边界。** 读 [references/scope.md](references/scope.md)：把调用解析成目标、排除项和规模；找到目标项目的规范和硬边界，项目没有规定时用其中的保守默认；确认执行边界。目标太大时按其中的分片规则做；时间有限时按其中的风险顺序做。目标不是源码时，再读 [references/targets.md](references/targets.md)，确定取证方式和看不到的部分。
+2. **建立事实基线。** 读 [references/baseline.md](references/baseline.md)：语言与构建清单（或非源码目标的制品清单）、对象清单、上下游、威胁模型；用「历史机制对号」表选出要追加的专项，再读 [references/history.md](references/history.md) 里相关的历史漏洞模式分组。
 3. **选语言表。** 读 [references/languages.md](references/languages.md)，再读目标用到的每种语言的 `lang-*.md`。
-4. **逐对象追问。** 读 [references/questions.md](references/questions.md)，对每个公开入口、共享状态、不变量、外部副作用、后台执行流过对应的追问清单。
+4. **逐对象追问，过一遍根因面。** 读 [references/questions.md](references/questions.md)，对每个公开入口、共享状态、不变量、外部副作用、后台执行流过对应的追问清单；再读 [references/facets.md](references/facets.md)，对每个对象逐个根因面追问。根因面是从真实漏洞的根因归纳出来的跨领域追问，不依赖目标属于哪个专项。
 5. **逐项判定通用维度。** 读 [references/dimensions.md](references/dimensions.md)，按规模判定 45 个维度的适用性并检查。
 6. **追加专项。** 读 [references/specialties.md](references/specialties.md) 里第 2 步选中的专项。
 7. **按需执行验证。** 需要复现或机器检查时，从 [references/tools.md](references/tools.md) 选工具，遵守执行边界。
@@ -41,6 +41,7 @@ metadata:
 - [零、开工前](references/scope.md)（含[调用与范围解析](references/scope.md#调用与范围解析)、[大目标分片与多轮审查](references/scope.md#大目标分片与多轮审查)）
 - [一、建立事实基线](references/baseline.md)（含[威胁模型与攻击链](references/baseline.md#威胁模型与攻击链)、[历史机制对号](references/baseline.md#历史机制对号)）
 - [二、五张追问清单（找真问题的主力）](references/questions.md)
+- [根因面](references/facets.md)：从真实漏洞根因归纳的跨领域追问，每个对象都要过一遍
 - [三、通用维度检查表](references/dimensions.md)
   - 代码形态：[1 死代码与可达性](references/dimensions.md#1-死代码与可达性)｜[2 遗留标记与被抑制项](references/dimensions.md#2-遗留标记与被抑制项)｜[3 重复](references/dimensions.md#3-重复)｜[4 抽象与分层](references/dimensions.md#4-抽象与分层)｜[5 关联与影响面](references/dimensions.md#5-关联与影响面)｜[6 命名、注释与可读性](references/dimensions.md#6-命名注释与可读性)｜[7 复杂度与可维护性](references/dimensions.md#7-复杂度与可维护性)
   - 功能与契约：[8 功能正确性与需求符合度](references/dimensions.md#8-功能正确性与需求符合度)｜[9 业务逻辑与流程完整性](references/dimensions.md#9-业务逻辑与流程完整性)｜[10 API 与契约](references/dimensions.md#10-api-与契约)｜[11 易用性与误用防护](references/dimensions.md#11-易用性与误用防护)｜[12 状态机与状态转移](references/dimensions.md#12-状态机与状态转移)
@@ -56,7 +57,7 @@ metadata:
   - 长期运行：[45 常驻与长时运行](references/dimensions.md#45-常驻与长时运行)
 - [四、按目标类型追加的专项](references/specialties.md)
   - 通信：[4.1 网络与连接](references/specialties.md#41-网络与连接)｜[4.2 协议与帧解析](references/specialties.md#42-协议与帧解析)｜[4.3 解码不受信任的外部数据](references/specialties.md#43-解码不受信任的外部数据)｜[4.21 出站请求与服务端请求伪造](references/specialties.md#421-出站请求与服务端请求伪造)｜[4.28 隧道、代理与网络数据面](references/specialties.md#428-隧道代理与网络数据面)
-  - 身份：[4.4 加密与凭据](references/specialties.md#44-加密与凭据)｜[4.5 认证、会话与令牌](references/specialties.md#45-认证会话与令牌)
+  - 身份：[4.4 加密与凭据](references/specialties.md#44-加密与凭据)｜[4.5 认证、会话与令牌](references/specialties.md#45-认证会话与令牌)｜[4.46 联合身份与单点登录](references/specialties.md#446-联合身份与单点登录)
   - 数据：[4.6 缓存与存储](references/specialties.md#46-缓存与存储)｜[4.7 数据库与查询](references/specialties.md#47-数据库与查询)｜[4.8 文件系统与路径](references/specialties.md#48-文件系统与路径)｜[4.37 数据处理、批处理与机器学习](references/specialties.md#437-数据处理批处理与机器学习)
   - 异步：[4.9 事件、发布订阅与观察者](references/specialties.md#49-事件发布订阅与观察者)｜[4.10 消息队列与异步任务](references/specialties.md#410-消息队列与异步任务)｜[4.11 定时与调度](references/specialties.md#411-定时与调度)｜[4.24 Webhook 与外部事件](references/specialties.md#424-webhook-与外部事件)
   - 进程：[4.12 依赖装配与服务生命周期](references/specialties.md#412-依赖装配与服务生命周期)｜[4.13 日志、指标与追踪](references/specialties.md#413-日志指标与追踪)｜[4.14 服务端请求处理与中间件](references/specialties.md#414-服务端请求处理与中间件)｜[4.15 命令行与进程入口](references/specialties.md#415-命令行与进程入口)｜[4.22 子进程、动态执行与解码器副作用](references/specialties.md#422-子进程动态执行与解码器副作用)
@@ -66,13 +67,17 @@ metadata:
   - 模型应用：[4.26 大模型与工具调用](references/specialties.md#426-大模型与工具调用)
   - 语言与规则：[4.27 解释器、编译器与虚拟机](references/specialties.md#427-解释器编译器与虚拟机)｜[4.29 规则与策略匹配](references/specialties.md#429-规则与策略匹配)｜[4.31 代码生成器与编译期工具](references/specialties.md#431-代码生成器与编译期工具)
   - 系统与平台：[4.30 操作系统接口、系统调用与描述符](references/specialties.md#430-操作系统接口系统调用与描述符)｜[4.32 跨语言边界与本地扩展](references/specialties.md#432-跨语言边界与本地扩展)｜[4.35 客户端应用、扩展与自动更新](references/specialties.md#435-客户端应用扩展与自动更新)｜[4.36 嵌入式、固件与实时约束](references/specialties.md#436-嵌入式固件与实时约束)
+  - 特权与移动端：[4.47 本机特权组件与本地提权](references/specialties.md#447-本机特权组件与本地提权)｜[4.48 内核驱动、设备仿真与虚拟化](references/specialties.md#448-内核驱动设备仿真与虚拟化)｜[4.49 移动应用组件与进程间通信](references/specialties.md#449-移动应用组件与进程间通信)
   - 交付：[4.33 构建脚本、持续集成与基础设施即代码](references/specialties.md#433-构建脚本持续集成与基础设施即代码)｜[4.34 可发布的库、SDK 与包](references/specialties.md#434-可发布的库sdk-与包)
-  - 链上：[4.38 智能合约与链上交互](references/specialties.md#438-智能合约与链上交互)
+  - 业务与外发：[4.39 支付、账务与计费](references/specialties.md#439-支付账务与计费)｜[4.40 通知与外发消息](references/specialties.md#440-通知与外发消息)
+  - 链上：[4.38 智能合约与链上交互](references/specialties.md#438-智能合约与链上交互)｜[4.41 DeFi 经济机制与预言机](references/specialties.md#441-defi-经济机制与预言机)｜[4.42 跨链桥与跨链消息](references/specialties.md#442-跨链桥与跨链消息)｜[4.43 钱包、签名与链下组件](references/specialties.md#443-钱包签名与链下组件)｜[4.44 零知识证明与电路](references/specialties.md#444-零知识证明与电路)｜[4.45 区块链节点、共识与协议实现](references/specialties.md#445-区块链节点共识与协议实现)｜[4.50 账户抽象与合约钱包](references/specialties.md#450-账户抽象与合约钱包)
+- [历史漏洞模式](references/history.md)
+- [非源码目标](references/targets.md)
 - [五、证据等级与报告格式](references/report.md#五证据等级与报告格式)
 - [六、修复纪律](references/report.md#六修复纪律)
 - [七、机器可验证检查命令](references/tools.md)
 - [八、收尾自检](#八收尾自检)
-- [附录 A：各语言运行时陷阱](references/languages.md)：[Go](references/lang-go.md)｜[Python](references/lang-python.md)｜[JavaScript 与 TypeScript](references/lang-javascript.md)｜[C 与 C++](references/lang-c-cpp.md)｜[Rust](references/lang-rust.md)｜[Java 与 Kotlin](references/lang-jvm.md)｜[C# 与 .NET](references/lang-dotnet.md)｜[PHP](references/lang-php.md)｜[Ruby](references/lang-ruby.md)｜[Shell](references/lang-shell.md)｜[Swift 与 Objective-C](references/lang-swift-objc.md)｜[SQL](references/lang-sql.md)｜[其它语言](references/languages.md#a13-其它语言)
+- [附录 A：各语言运行时陷阱](references/languages.md)：[Go](references/lang-go.md)｜[Python](references/lang-python.md)｜[JavaScript 与 TypeScript](references/lang-javascript.md)｜[C 与 C++](references/lang-c-cpp.md)｜[Rust](references/lang-rust.md)｜[Java 与 Kotlin](references/lang-jvm.md)｜[C# 与 .NET](references/lang-dotnet.md)｜[PHP](references/lang-php.md)｜[Ruby](references/lang-ruby.md)｜[Shell](references/lang-shell.md)｜[Swift 与 Objective-C](references/lang-swift-objc.md)｜[SQL](references/lang-sql.md)｜[Solidity 与 Vyper](references/lang-solidity.md)｜[Solana](references/lang-solana.md)｜[Move](references/lang-move.md)｜[零知识电路](references/lang-zk.md)｜[CosmWasm 与 Cosmos SDK](references/lang-cosmwasm.md)｜[Cairo](references/lang-cairo.md)｜[TON](references/lang-ton.md)｜[其它语言](references/languages.md#a20-其它语言)
 
 ## 八、收尾自检
 
@@ -81,6 +86,10 @@ metadata:
 - [ ] [事实基线](references/baseline.md)与选定范围完整，安全相关目标已有威胁模型和明确假设。
 - [ ] 目标、排除项、类别识别结果和疑似项已按[调用与范围解析](references/scope.md#调用与范围解析)列出；被排除代码只用于追踪，没有漏掉经过它的调用链。
 - [ ] 目标用到的每种语言都已选用[附录 A](references/languages.md) 的对应表（或写明按 16 自行映射的依据）；跨语言边界已按[4.32](references/specialties.md#432-跨语言边界与本地扩展)检查。
+- [ ] 非源码目标已按[非源码目标](references/targets.md)固定身份（摘要、地址与时间、链标识与块高、账号或租户与读取身份），看不到的部分记为「部分检查」或「未检查」，没有写成「未发现」。
+- [ ] 审查中创建的账号、资源和令牌已清理，取得的数据已按[审查执行边界](references/scope.md#审查执行边界)处置；清理不了的已写进报告。
+- [ ] 每个对象都按[根因面](references/facets.md)逐个追问过；不适用的面写明了依据，没问过的面记为「未检查」。
+- [ ] 已对照[历史漏洞模式](references/history.md)中与目标机制相关的分组。
 - [ ] 分片审查已做接缝核对；沿用上一轮结论的单元已核对指纹未变。
 - [ ] [逐对象追问](references/questions.md)、通用维度与所选专项已按[报告状态](references/report.md#五证据等级与报告格式)记录，未完成部分没有冒充已查。
 - [ ] 问题已去重，触发条件、阻断点、影响与建议有证据；推断、待验证项和一般建议与已确认问题分开。

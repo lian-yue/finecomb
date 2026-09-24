@@ -10,6 +10,8 @@ Each issue record states its evidence level and its severity separately. The evi
 | **Statically confirmed** | The required input, preconditions and reachable path have all been verified, and the code and contracts are enough to determine the result. It does not mean a production exploit was carried out or the scale of impact was measured |
 | **Unverified** | Evidence of a key precondition, reachability, environment or result is missing; state what is still missing. List these separately; they do not count toward the number of confirmed issues |
 
+A judgement of "not exploitable" or "limited impact" also needs evidence, and it must survive the same search for counter-evidence as a confirmed issue: state which guard blocks exploitation, where it is, and that it holds on every path. Judging something not exploitable only from the shape of the input (a restricted character set, a short length, digits only) is not evidence. When you cannot show this, write "Unverified", not "not exploitable".
+
 Assess severity by actual impact, exploitability conditions, scope of impact and recovery cost. Do not assign it automatically from a vulnerability name or a tool label. A missing protection is not necessarily high risk by itself. If the project has a confirmed severity scale, use it; otherwise use:
 
 | Severity | Criteria |
@@ -35,12 +37,14 @@ Write each issue in this shape:
 
 The overall report contains:
 
-- **Conclusion and scope**: the review target, the baseline, the verified configuration, the exclusions, and the confirmed issues sorted by severity. If no issues were found, it can only be stated as "no confirmed issues found within the reviewed scope and conditions".
+- **Conclusion and scope**: the review target, the baseline, the verified configuration, the exclusions, and the confirmed issues sorted by severity. For targets that are not source code, also state the artifact digest and version, the address and access time of a live target, the chain ID, address and block height at read time of an on-chain target, or the identifier of a cloud account, cluster or SaaS tenant together with the identity used to read it and that identity's permissions. If no issues were found, it can only be stated as "no confirmed issues found within the reviewed scope and conditions".
 - **Coverage record**: for the chosen scale, list the general dimensions, objects and specialties, each with a status of "Checked, issues found", "Checked, none found", "Partially checked", "Not checked" or "Not applicable". For unfinished items, give the reason and the missing evidence; for not-applicable items, give the actual basis. Items with the same status can be listed together; hits in the mechanism table only need to be filed under the matching item.
-- **Verification record**: the exact entry points run or reused, the input identity and the results. Clearly distinguish passed this time, reused from cache, failed, zero matches, skipped, timed out, environment error and not run. For scans, attach the tool version, the date of the rules or vulnerability database, the configuration and the exclusions; for network lookups, attach the sources queried and the time.
+- **Verification record**: the exact entry points run or reused, the input identity and the results. Clearly distinguish passed this time, reused from cache, failed, zero matches, skipped, timed out, environment error and not run. For scans, attach the tool version, the date of the rules or vulnerability database, the configuration and the exclusions; for network lookups, attach the sources queried and the time. For targets that are not source code, attach an evidence list: the digest, time obtained and storage location of each piece of raw evidence (artifacts, exports, responses, screenshots, packet captures, command output), and what was done with the obtained data at the end of the review.
 - **Changes and remaining items**: which issues were fixed, which passed verification, and which were not changed and why. Distinguish "pre-existing", "introduced this time" and "origin unconfirmed". Without a comparable baseline, use the last one; do not temporarily restore the workspace to guess.
 
 **Deduplication and disclosure**: merge issues with the same root cause and the same fix point into one entry, and list all affected entry points and consequences. Record different root causes separately, and link combined attacks through references. Known issues or false positives need current evidence; they cannot be closed based only on an old label. Redact accounts, credentials, user data and reachable addresses in the report as needed. Sending the report outside follows the confirmed authorization and the project's disclosure process.
+
+**Machine-readable output**: when the report must feed CI or a code scanning platform, also produce it in a format such as SARIF, with locations, rules, severities and evidence levels that match the written report.
 
 ## Part VI: Fix discipline
 
