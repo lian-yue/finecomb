@@ -41,7 +41,7 @@
 1. **解析调用，确定边界。** 读 [references/scope.md](references/scope.md)：把调用解析成目标、排除项和规模；目标是代码仓库网址时，先按其中的「远程仓库地址」（Remote repository URLs）只读地取到本地并记下提交哈希；找到目标项目的规范和硬边界，项目没有规定时用其中的保守默认；确认执行边界。目标太大时按其中的分片规则做；时间有限时按其中的风险顺序做。目标不是源码时，再读 [references/targets/index.md](references/targets/index.md)，确定取证方式和看不到的部分。
 2. **建立事实基线。** 读 [references/baseline.md](references/baseline.md)：语言与构建清单（或非源码目标的制品清单）、对象清单、上下游、威胁模型；用「历史机制对号」（Mapping known attack mechanisms）表选出要追加的专项，再读 [references/history/index.md](references/history/index.md) 里相关的历史漏洞模式分组。
 3. **选语言表。** 读 [references/languages.md](references/languages.md)，再读目标用到的每种语言的 `lang-*.md`。
-4. **逐对象追问，过一遍根因面。** 读 [references/questions.md](references/questions.md)，对每个公开入口、共享状态、不变量、外部副作用、后台执行流过对应的追问清单；再读 [references/facets.md](references/facets.md)，对每个对象逐个根因面追问。根因面是从真实漏洞的根因归纳出来的跨领域追问，不依赖目标属于哪个专项。
+4. **逐对象追问，过一遍根因面。** 读 [references/questions.md](references/questions.md)，对每个公开入口、共享状态、不变量、外部副作用、后台执行流过对应的追问清单；再读 [references/facets/index.md](references/facets/index.md)，对每个对象逐个根因面追问。根因面是从真实漏洞的根因归纳出来的跨领域追问，不依赖目标属于哪个专项。
 5. **逐项判定通用维度。** 读 [references/dimensions/index.md](references/dimensions/index.md)，按规模判定 46 个维度的适用性，再逐个读适用维度的文件并检查。
 6. **追加专项。** 读第 2 步选中的每个专项的文件，它们列在 [references/specialties/index.md](references/specialties/index.md) 里。
 7. **按需执行验证。** 需要复现或机器检查时，从 [references/tools.md](references/tools.md) 选工具，遵守执行边界。
@@ -54,7 +54,7 @@
 - [零、开工前](references/scope.md)（含[调用与范围解析](references/scope.md#invocation-and-scope-resolution)、[大目标分片与多轮审查](references/scope.md#sharding-large-targets-and-multi-round-review)）
 - [一、建立事实基线](references/baseline.md)（含[威胁模型与攻击链](references/baseline.md#threat-model-and-attack-chains)、[历史机制对号](references/baseline.md#mapping-known-attack-mechanisms)）
 - [二、五张追问清单（找真问题的主力）](references/questions.md)
-- [根因面](references/facets.md)：从真实漏洞根因归纳的跨领域追问，每个对象都要过一遍
+- [根因面](references/facets/index.md)：从真实漏洞根因归纳的跨领域追问，每个对象都要过一遍
 - [三、通用维度检查表](references/dimensions/index.md)
   - 代码形态：[1 死代码与可达性](references/dimensions/1-dead-code-and-reachability.md)｜[2 遗留标记与被抑制项](references/dimensions/2-leftover-markers-and-suppressions.md)｜[3 重复](references/dimensions/3-duplication.md)｜[4 抽象与分层](references/dimensions/4-abstraction-and-layering.md)｜[5 关联与影响面](references/dimensions/5-coupling-and-blast-radius.md)｜[6 命名、注释与可读性](references/dimensions/6-naming-comments-and-readability.md)｜[7 复杂度与可维护性](references/dimensions/7-complexity-and-maintainability.md)
   - 功能与契约：[8 功能正确性与需求符合度](references/dimensions/8-functional-correctness-and-fitness-for-requirements.md)｜[9 业务逻辑与流程完整性](references/dimensions/9-business-logic-and-flow-integrity.md)｜[10 API 与契约](references/dimensions/10-apis-and-contracts.md)｜[11 易用性与误用防护](references/dimensions/11-usability-and-misuse-resistance.md)｜[12 状态机与状态转移](references/dimensions/12-state-machines-and-transitions.md)
@@ -102,7 +102,7 @@
 - [ ] 目标用到的每种语言都已选用[附录 A](references/languages.md) 的对应表（或写明按 16 自行映射的依据）；跨语言边界已按[4.32](references/specialties/4.32-cross-language-boundaries-and-native-extensions.md)检查。
 - [ ] 远程仓库目标已记下地址、分支或标签和提交哈希，临时克隆已按约定处理；非源码目标已按[非源码目标](references/targets/index.md)固定身份（摘要、地址与时间、链标识与块高、账号或租户与读取身份），看不到的部分记为「部分检查」（Partially checked）或「未检查」（Not checked），没有写成「未发现」。
 - [ ] 审查中创建的账号、资源和令牌已清理，取得的数据已按[审查执行边界](references/scope.md#execution-boundaries-during-review)处置；清理不了的已写进报告。
-- [ ] 每个对象都按[根因面](references/facets.md)逐个追问过；不适用的面写明了依据，没问过的面记为「未检查」。
+- [ ] 每个对象都按[根因面](references/facets/index.md)逐个追问过；不适用的面写明了依据，没问过的面记为「未检查」。
 - [ ] 已对照[历史漏洞模式](references/history/index.md)中与目标机制相关的分组。
 - [ ] 分片审查已做接缝核对；沿用上一轮结论的单元已核对指纹未变。
 - [ ] [逐对象追问](references/questions.md)、通用维度与所选专项已按[报告状态](references/report.md#part-v-evidence-levels-and-report-format)记录，未完成部分没有冒充已查。

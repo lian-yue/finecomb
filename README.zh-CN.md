@@ -209,7 +209,7 @@ finecomb/
             ├── scope.md         调用解析、范围、硬边界、分片
             ├── baseline.md      事实基线、威胁模型、历史机制对号
             ├── questions.md     五张逐对象追问清单
-            ├── facets.md        根因面
+            ├── facets/          根因面：index.md 加每组一个文件
             ├── dimensions/      46 个通用维度：index.md 加每个维度一个文件
             ├── specialties/     78 类专项：index.md 加每个专项一个文件
             ├── history/         历史漏洞模式：index.md 加每组一个文件

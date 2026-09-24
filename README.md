@@ -209,7 +209,7 @@ finecomb/
             ├── scope.md         invocation, scope, hard boundaries, sharding
             ├── baseline.md      factual baseline, threat model, mechanism map
             ├── questions.md     five per-object question lists
-            ├── facets.md        root-cause facets
+            ├── facets/          root-cause facets: index.md plus one file per group
             ├── dimensions/      46 general dimensions: index.md plus one file per dimension
             ├── specialties/     78 specialties: index.md plus one file per specialty
             ├── history/         historical vulnerability patterns: index.md plus one file per group

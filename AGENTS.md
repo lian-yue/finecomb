@@ -16,7 +16,7 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 
 - The skill is a generalized checklist, not a collection of samples. It grows by adding general facets and checkpoints, never by adding one entry per vulnerability, so it should stay at hundreds of Markdown files, around a thousand at most. Samples may grow without limit, but they never go into `skills/`.
 - The skill must work offline. During an audit it uses the network only for read-only lookups of dependency versions and known vulnerabilities, plus fetching the target itself when the caller explicitly gives a repository URL. It never fetches its own content, samples or validation data.
-- Keep every reference file small enough for any agent to read in one go: when a file grows past about 50 KB, split it into a directory with an `index.md` and one file per section, and link straight to the section files. `references/dimensions/`, `references/specialties/`, `references/history/` and `references/targets/` are split this way.
+- Keep every reference file small enough for any agent to read in one go: when a file grows past about 50 KB, split it into a directory with an `index.md` and one file per section, and link straight to the section files. `references/dimensions/`, `references/specialties/`, `references/history/`, `references/targets/` and `references/facets/` are split this way.
 
 ## Languages
 
@@ -36,7 +36,7 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 
 ## Content
 
-- The root-cause facets (`references/facets.md`) are the core. Coverage grows as general, domain-independent facets and checkpoints derived from real vulnerabilities, not as entries for a single CVE, product or algorithm.
+- The root-cause facets (`references/facets/`) are the core. Coverage grows as general, domain-independent facets and checkpoints derived from real vulnerabilities, not as entries for a single CVE, product or algorithm.
 - **Rely on the agent's own knowledge first.** A row names an area to check and the general question to ask there, briefly; the agent applies what it already knows about the specific platform, framework, protocol and its known issues. Add a new area in this brief form first. Write detailed checkpoints only for classes of root cause that agents are shown to miss, for example a class of public vulnerabilities that no general question reaches.
 - The "what counts as a problem" and "question to ask" columns state general criteria. Real incidents go into `references/history/` or the facets' "real cases" column.
 - Keep the rule "when one check is restricted, skip only that check; never quit or silently downgrade the whole review" at the top of `SKILL.md`.
