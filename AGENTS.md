@@ -9,7 +9,7 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 - `README.md` and `README.<language code>.md`: the overview in each language.
 - `.claude-plugin/marketplace.json`: the Claude Code plugin marketplace manifest, also read by the skills CLI.
 - `LICENSE`: Apache-2.0.
-- `SECURITY.md`: the security policy, the intended use, and the contact (finecomb@lianyue.com) for reporting problems in finecomb or its misuse.
+- `SECURITY.md`: what finecomb is, the authorization scope and the disclaimer. It lists no contact address.
 - Hit-test records and samples do **not** live on `main`. They live on the separate `validation` branch (see [Validation](#validation)), so installing the skill never downloads them.
 
 ## Size and network
@@ -40,7 +40,23 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 - The "what counts as a problem" and "question to ask" columns state general criteria. Real incidents go into `references/history/` or the facets' "real cases" column.
 - Keep the rule "when one check is restricted, skip only that check; never quit or silently downgrade the whole review" at the top of `SKILL.md`.
 - Write short sentences with common words. Use the real names of things, and the same word for the same thing everywhere.
-- The repository holds no exploit code, payloads, attack tools or exploitation steps. Keep the "Security and authorized use" section of every README and `SECURITY.md` consistent with the skill's execution boundaries (`references/scope.md`).
+- The repository holds no exploit code, payloads, attack tools or exploitation steps. Keep the authorization scope at the top of every `SKILL*.md`, the "Disclaimer and authorized use" section of every README and `SECURITY.md` consistent with the skill's execution boundaries (`references/scope.md`).
+
+## Contributions
+
+Anyone may help maintain finecomb. A contribution is accepted only if it is one of these two kinds:
+
+1. **Generalized coverage.** A new or sharper root-cause facet, checkpoint, target type, domain table or language table, or better wording or links, stated as a general question that holds across products, versions and languages. It may use a public weakness classification (for example CWE, CAPEC or the OWASP lists) as its basis.
+2. **A missed sample that is fully public.** A real vulnerability whose root cause the current skill does not reach (partial or missed under the rules in [Validation](#validation)), with the general fix it points to when possible.
+
+A sample must be public and fixed:
+
+- **Public:** it has an identifier or advisory from a public source, for example a CVE, CNVD or CNNVD ID, a GitHub or GitLab security advisory, a vendor advisory or a credible public post-mortem.
+- **Fixed:** a fix has been released, as a published patch, a fixed release or a merged fix in a public repository.
+- **Not accepted:** issues or advisories that are still open, vulnerabilities with no released fix, undisclosed or embargoed reports, and anything learned under a non-disclosure agreement.
+- **Written as a root cause only:** one sentence at the patch or advisory level, with its sources. No exploitation steps, payloads or proof-of-concept code.
+
+Skill changes go to `main` and follow the rest of this file. A sample's record and reproduction data go to the `validation` branch, in the format its README describes. Neither kind may add a row that names only one CVE, product or algorithm.
 
 ## Validation
 

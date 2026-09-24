@@ -27,15 +27,13 @@ The name comes from "going over something with a fine-tooth comb": checking ever
 
 By default the review is read-only. The skill looks for the target project's own rules first (for example `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `SECURITY.md`) and follows them; when there are none, it uses conservative defaults: no writes to the source tree and no installs; the network is used only for read-only lookups that check dependency versions for known security issues (only dependency names and versions are sent, never source code or secrets). When the target is a live service, an account, a tenant or an on-chain contract, access is passive and read-only by default; active scanning, login attempts and exploit verification need written authorization from the asset owner, test artifacts are cleaned up and obtained data is disposed of at the end, and no transactions are sent or signed on chain. When one check cannot be done because of authorization, the environment, tools or the reviewer's own rules, only that check is skipped, with the reason and what is missing stated at the top of the report; everything else is still done, and the review never quits or silently downgrades.
 
-## Security and authorized use
+## Disclaimer and authorized use
 
-finecomb is for defensive work: reviewing code and assets you own or are authorized to assess, security research, teaching, and security testing that the asset owner has authorized.
+finecomb is for security audits and code review of targets you own, maintain or are authorized to assess.
 
-- It contains only Markdown: no scripts, exploits, payloads or attack tools.
-- Real vulnerabilities, including the well-known incidents named above, appear only as short root causes at the patch or advisory level, taken from public fixes and advisories, so that reviewers can recognize and prevent the same class of flaw. There are no exploitation steps.
-- Do not use finecomb to scan, access, exploit, disrupt or change any system you are not authorized to test. The limits the skill itself follows are in [execution boundaries during review](skills/finecomb/references/scope.md#execution-boundaries-during-review).
-
-To report a security problem in finecomb, or misuse of it, see [SECURITY.md](SECURITY.md).
+- **Authorization scope.** Static, read-only review of source code you own, maintain or may read, including public open-source repositories, needs no further authorization. Any active operation against live services, hosts, devices, cloud accounts, SaaS tenants or on-chain systems needs written authorization from the owner of the asset; without it, only public information is observed, passively. The skill states this scope at the top of `SKILL.md` and follows it; the details are in [Execution boundaries during review](skills/finecomb/references/scope.md#execution-boundaries-during-review).
+- **Content.** Markdown only: no scripts, exploits, payloads or attack tools. Real vulnerabilities, including the well-known incidents named above, appear only as short root causes of vulnerabilities that are already public and fixed. There are no exploitation steps.
+- **Disclaimer.** finecomb is provided as is, without warranty, under the Apache License 2.0. You are responsible for having authorization for every target and for following the laws and platform rules that apply to you; the authors are not responsible for use outside this scope. See [SECURITY.md](SECURITY.md).
 
 ## How coverage is validated
 
@@ -202,7 +200,7 @@ finecomb/
 ├── LICENSE
 ├── README.md
 ├── README.zh-CN.md
-├── SECURITY.md              security policy, reporting and misuse contact
+├── SECURITY.md              authorization scope and disclaimer
 └── skills/
     └── finecomb/            the skill (English)
         ├── SKILL.md         workflow, index, closing self-check
@@ -226,7 +224,9 @@ finecomb/
 
 ## Maintenance
 
-All maintenance rules are in [AGENTS.md](AGENTS.md) (`CLAUDE.md` is a symbolic link to it): which content is kept in several languages (only the READMEs and the skills under `skills/`; everything else is English only), how the languages are kept in step, how to add a language, the skill format, how hit tests are run and recorded, and the checks before committing. The hit-test records and samples live on the separate [`validation` branch](https://github.com/lian-yue/finecomb/tree/validation), so installing the skill never downloads them; the skill itself needs no samples and works offline.
+Contributions are welcome. Two kinds are accepted: generalized coverage (a new or sharper root-cause facet, checkpoint, target type or language table, stated as a general question), and a missed vulnerability sample that is already public and already fixed (for example with a CVE, CNVD or CNNVD ID, or a closed GitHub or GitLab security advisory with a released fix). Open, unfixed or undisclosed vulnerabilities are not accepted.
+
+All maintenance rules are in [AGENTS.md](AGENTS.md) (`CLAUDE.md` is a symbolic link to it): what contributions are accepted, which content is kept in several languages (only the READMEs and the skill's `SKILL.md` entry files; everything else is English only), how the languages are kept in step, how to add a language, the skill format, how hit tests are run and recorded, and the checks before committing. The hit-test records and samples live on the separate [`validation` branch](https://github.com/lian-yue/finecomb/tree/validation), so installing the skill never downloads them; the skill itself needs no samples and works offline.
 
 ## License
 
