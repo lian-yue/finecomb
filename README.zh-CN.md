@@ -194,7 +194,8 @@ npx skills use lian-yue/finecomb --skill finecomb --agent claude-code
 ```text
 finecomb/
 ├── .claude-plugin/
-│   └── marketplace.json     Claude Code 插件市场清单
+│   ├── marketplace.json     Claude Code 插件市场清单
+│   └── plugin.json          插件清单：名称、描述、搜索关键词
 ├── AGENTS.md                维护规则（CLAUDE.md 是指向它的软链接）
 ├── CLAUDE.md -> AGENTS.md
 ├── LICENSE

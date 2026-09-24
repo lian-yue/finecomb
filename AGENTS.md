@@ -7,7 +7,8 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 - finecomb is an exhaustive code review and security audit checklist written in the open Agent Skills format. It is Markdown only: no scripts, binaries or executable content.
 - `skills/finecomb/`: the skill. `SKILL.md` (English) and `SKILL.<language code>.md` (other languages, such as `SKILL.zh-CN.md`) hold the workflow, the index and the closing self-check; `references/` holds the details, in English only.
 - `README.md` and `README.<language code>.md`: the overview in each language.
-- `.claude-plugin/marketplace.json`: the Claude Code plugin marketplace manifest, also read by the skills CLI.
+- `.claude-plugin/marketplace.json`: the Claude Code plugin marketplace manifest, also read by the skills CLI. Its plugin entry carries `category`, `tags` and `keywords` for search.
+- `.claude-plugin/plugin.json`: the plugin manifest (name, display name, description, author, links, license, search `keywords`). It declares no components, because the marketplace entry is `strict: false` and lists the skill itself, and it sets no `version`, so installs follow the latest commit.
 - `LICENSE`: Apache-2.0.
 - `SECURITY.md`: what finecomb is, the authorization scope and the disclaimer. It lists no contact address.
 - Hit-test records and samples do **not** live on `main`. They live on the separate `validation` branch (see [Validation](#validation)), so installing the skill never downloads them.
@@ -23,7 +24,7 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 - **Only two kinds of files are kept in several languages, each language in its own file:** the README (English in `README.md`, other languages in `README.<language code>.md`, such as `README.zh-CN.md`) and the skill's entry file (English in `skills/finecomb/SKILL.md`, other languages in `skills/finecomb/SKILL.<language code>.md`, such as `SKILL.zh-CN.md`). Today that is English and Chinese; more languages may come later. Do not merge languages into one file.
 - **Everything else is English only,** with no copies in other languages. That includes everything under `skills/finecomb/references/`, this file, the validation records, `.claude-plugin/` and any file or directory added later. `SKILL.<language code>.md` links to the English references, and gives English names in brackets where it names a section or row.
 - `SKILL.md` is the source; the other `SKILL.<language code>.md` files are its translations. Change every language in the same commit, and keep steps, index entries, self-check items and links in step. Keep the READMEs in every language in step in the same commit. The skill tells the agent to write the report in the user's language.
-- Only `SKILL.md` carries the frontmatter; its `description` is in English and may add a short line in other languages so requests in those languages trigger the skill.
+- Only `SKILL.md` carries the frontmatter; its `description` is in English and may add a short line in other languages so requests in those languages trigger the skill. For the same reason, the search `keywords` in `.claude-plugin/` may include a few terms in other languages; everything else there stays English.
 - Rows cited from other places use the exact first-column name of the target row, written as `[27](dimensions/27-security-and-trust-boundaries.md) ("Row name")`.
 - **To add a language:** add a `README.<language code>.md` and a `skills/finecomb/SKILL.<language code>.md`, and add the new language to the language links at the top of every README and every `SKILL*.md`.
 
@@ -32,7 +33,7 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 - Skills live at `skills/<name>/SKILL.md`, following the skills CLI discovery rules. The frontmatter has `name` (matching the directory name), `description`, `license` and `metadata`.
 - `description` stays within 1024 characters. `SKILL.md` stays under 500 lines; details go into `references/`.
 - The skill is installed on its own, so every relative link and anchor must resolve inside `skills/finecomb/`. The skill does not link to the READMEs or the validation records.
-- If the skill is renamed, update `.claude-plugin/marketplace.json`.
+- If the skill is renamed, update `.claude-plugin/marketplace.json` and `.claude-plugin/plugin.json`. When the coverage changes (new specialties, languages or domains), update the descriptions, `tags` and `keywords` in both so search stays accurate.
 
 ## Content
 
@@ -74,5 +75,5 @@ Skill changes go to `main` and follow the rest of this file. A sample's record a
 - Every relative link and anchor resolves; every cited row name exists in its target section.
 - No Chinese characters are left in files that must be English.
 - The `description` is within 1024 characters; `SKILL.md` is under 500 lines.
-- `.claude-plugin/marketplace.json` is valid JSON and lists `skills/finecomb`.
+- `.claude-plugin/marketplace.json` and `.claude-plugin/plugin.json` are valid JSON; the marketplace entry lists `skills/finecomb`; when the `claude` CLI is available, `claude plugin validate .` passes.
 - The READMEs in every language have the same sections and install commands; every `SKILL*.md` has the same steps, index entries, self-check items and link targets.

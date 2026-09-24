@@ -1,7 +1,8 @@
 {
   "name": "finecomb",
   "owner": {
-    "name": "lian-yue"
+    "name": "lian-yue",
+    "url": "https://github.com/lian-yue"
   },
   "metadata": {
     "description": "Exhaustive code review and security audit skill for any language",
@@ -10,11 +11,50 @@
   "plugins": [
     {
       "name": "finecomb",
-      "description": "Exhaustive code review and security audit checklist for any language",
+      "displayName": "finecomb: exhaustive code review and security audit",
+      "description": "Exhaustive code review and security audit checklist for any language: root-cause facets from real vulnerabilities, 46 general dimensions, 78 specialties by target type, language pitfall tables, threat model and report format. Markdown only, read-only by default.",
       "source": "./",
       "strict": false,
       "skills": [
         "./skills/finecomb"
+      ],
+      "author": {
+        "name": "lian-yue",
+        "url": "https://github.com/lian-yue"
+      },
+      "homepage": "https://github.com/lian-yue/finecomb",
+      "repository": "https://github.com/lian-yue/finecomb",
+      "license": "Apache-2.0",
+      "category": "security",
+      "tags": [
+        "security",
+        "code-review",
+        "security-audit",
+        "appsec",
+        "vulnerability",
+        "threat-modeling",
+        "smart-contract-audit",
+        "checklist"
+      ],
+      "keywords": [
+        "code-review",
+        "security-audit",
+        "secure-code-review",
+        "owasp",
+        "cwe",
+        "supply-chain",
+        "cloud-security",
+        "mobile-security",
+        "api-security",
+        "cryptography",
+        "memory-safety",
+        "solidity",
+        "defi",
+        "zero-knowledge",
+        "llm-security",
+        "multi-language",
+        "代码审查",
+        "安全审计"
       ]
     }
   ]

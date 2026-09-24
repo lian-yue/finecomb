@@ -194,7 +194,8 @@ The agent resolves the target and exclusions, builds a factual baseline (languag
 ```text
 finecomb/
 ├── .claude-plugin/
-│   └── marketplace.json     Claude Code plugin marketplace manifest
+│   ├── marketplace.json     Claude Code plugin marketplace manifest
+│   └── plugin.json          plugin manifest: name, description, search keywords
 ├── AGENTS.md                maintenance rules (CLAUDE.md is a symbolic link to it)
 ├── CLAUDE.md -> AGENTS.md
 ├── LICENSE
