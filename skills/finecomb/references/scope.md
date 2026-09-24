@@ -54,7 +54,7 @@ The caller can add options in plain words, in any language and in any combinatio
 | **Network** | "offline", "no network" | No dependency or vulnerability lookups: record them as "Not checked (offline)". A remote repository URL cannot be fetched, so ask for a local copy |
 | **Report form** | "report in English", "issues only", "short report" | The report language (by default the language the user writes in) and how much of the [Part V](report.md#part-v-evidence-levels-and-report-format) structure to include. The coverage record and the list of skipped checks are always kept |
 
-**Look first, then load.** Whatever the options, choose what to read from the baseline: read only the language tables of languages the target uses, only the specialties for kinds of target it contains, and only the dimension files that apply. For example, a Go service does not need the JavaScript table or the smart contract specialties. Record what was not read and why.
+**Look first, then load.** Whatever the options, every part of the skill, whether a file, a section or a single row, applies only when the target actually has what that part is about: a language, runtime, framework, platform, protocol, kind of component, kind of data, deployment form or mechanism. Check the [factual baseline](baseline.md) before reading anything, read only the parts whose subject the target has, and inside what you read, skip the rows whose subject is absent. Material about something the target does not have is not read at all. Record what was left out and why. This narrows what is read; it never narrows the target itself, and a subject found later in the review brings its parts back in.
 
 ## Remote repository URLs
 

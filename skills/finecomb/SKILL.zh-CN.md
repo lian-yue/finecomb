@@ -33,7 +33,7 @@
 - [四、按目标类型追加的专项](references/specialties/index.md)按目标**是什么类型的东西**来选，不看它叫什么名字、用什么语言、放在哪个目录。
 - 凡是提到「项目规范」「说明文档」「流程文档」「测试矩阵」的地方，一律读作**目标项目里承担该职责的那份文件**，不假定它叫什么名字。常见位置和项目没有规定时的默认做法见[目标项目的硬边界](references/scope.md#the-target-projects-hard-boundaries)。
 - 适用性按实际行为判断：没有持久化行为可以排除落盘恢复；内部工具仍可能处理个人信息。报告状态统一见[五](references/report.md#part-v-evidence-levels-and-report-format)。
-- **先看目标，再按需加载。** 按事实基线决定读什么：只读目标用到的语言的表，只读目标里确实有的那类东西对应的专项，只读适用的维度。Go 服务不需要 JavaScript 表，也不需要智能合约专项。没读的写明原因。
+- **先看目标，再按需加载。** 这份技能的每一部分，不论是一个文件、一节还是一行，都只在目标确实有它所讲的东西时才适用：某种语言、运行时、框架、平台、协议、组件类型、数据类型、部署形态或机制。读任何内容之前先对照事实基线，只读目标有其对象的部分；读到的内容里，对象不存在的行也跳过。目标没有的东西，相关内容一律不读。没读的内容写明原因。
 
 ## 选项
 
@@ -56,7 +56,7 @@
 
 1. **解析调用、选项和边界。** 读 [references/scope.md](references/scope.md)：把调用解析成目标、排除项、[审查选项](references/scope.md#review-options)和规模；目标是代码仓库网址时，先按其中的「远程仓库地址」（Remote repository URLs）只读地取到本地并记下提交哈希；找到目标项目的规范和硬边界，项目没有规定时用其中的保守默认；确认执行边界。目标太大时按其中的分片规则做；时间有限时按其中的风险顺序做。目标不是源码时，再读 [references/targets/index.md](references/targets/index.md)，确定取证方式和看不到的部分。
 2. **建立事实基线。** 读 [references/baseline.md](references/baseline.md)：语言与构建清单（或非源码目标的制品清单）、对象清单、上下游、威胁模型。
-3. **选出适用的部分。** 按基线和选项选定：目标用到的语言的表（列在 [references/languages.md](references/languages.md)）；专项，用基线里的「历史机制对号」（Mapping known attack mechanisms）表和 [references/specialties/index.md](references/specialties/index.md) 里的分组来选；适用的维度，从 [references/dimensions/index.md](references/dimensions/index.md) 的分组里选；以及对应的[历史漏洞模式](references/history/index.md)分组。把选了什么、没选什么和原因写进覆盖记录。后面的步骤只读选中的部分。
+3. **选出适用的部分。** 按基线和选项，把技能的每一部分过一遍，只留下目标有其对象的部分。这些部分列在[语言表](references/languages.md)、[专项](references/specialties/index.md)（配合基线里的「历史机制对号」（Mapping known attack mechanisms）表）、[维度](references/dimensions/index.md)、[历史漏洞模式](references/history/index.md)、[非源码目标](references/targets/index.md)和[工具](references/tools.md)里。把选了什么、没选什么和原因写进覆盖记录。后面的步骤只读选中的部分。
 4. **逐对象追问，过一遍根因面。** 读 [references/questions.md](references/questions.md)，对每个公开入口、共享状态、不变量、外部副作用、后台执行流过对应的追问清单；再读 [references/facets/index.md](references/facets/index.md)，对每个对象逐个根因面追问。根因面是从真实漏洞的根因归纳出来的跨领域追问，不依赖目标属于哪个专项。
 5. **检查选中的维度。** 按选定的规模，读并检查第 3 步选中的每个维度的文件。
 6. **检查选中的专项、语言表和历史模式。** 读第 3 步选中的文件，逐项对照目标检查。
@@ -87,7 +87,7 @@
 
 - [ ] [事实基线](references/baseline.md)与选定范围完整，安全相关目标已有威胁模型和明确假设。
 - [ ] 目标、排除项、类别识别结果和疑似项已按[调用与范围解析](references/scope.md#invocation-and-scope-resolution)列出；被排除代码只用于追踪，没有漏掉经过它的调用链。
-- [ ] [审查选项](references/scope.md#review-options)已按解析结果执行；被选项排除的内容记为「未检查（调用方排除）」并在报告开头列出；第 3 步没选中的语言表、专项和维度都写明了原因。
+- [ ] [审查选项](references/scope.md#review-options)已按解析结果执行；被选项排除的内容记为「未检查（调用方排除）」并在报告开头列出；第 3 步没选中的每一部分都写明了原因。
 - [ ] 目标用到的每种语言都已选用[附录 A](references/languages.md) 的对应表（或写明按 16 自行映射的依据）；跨语言边界已按[4.32](references/specialties/4.32-cross-language-boundaries-and-native-extensions.md)检查。
 - [ ] 远程仓库目标已记下地址、分支或标签和提交哈希，临时克隆已按约定处理；非源码目标已按[非源码目标](references/targets/index.md)固定身份（摘要、地址与时间、链标识与块高、账号或租户与读取身份），看不到的部分记为「部分检查」（Partially checked）或「未检查」（Not checked），没有写成「未发现」。
 - [ ] 审查中创建的账号、资源和令牌已清理，取得的数据已按[审查执行边界](references/scope.md#execution-boundaries-during-review)处置；清理不了的已写进报告。

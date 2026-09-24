@@ -207,7 +207,7 @@ Options can be added in the same sentence, in any combination:
 
 Whatever an option leaves out is listed at the top of the report as not checked. The full list of options is in [Review options](skills/finecomb/references/scope.md#review-options).
 
-The agent resolves the target, exclusions and options, builds a factual baseline (languages, entry points, shared state, threat model), then selects and reads only what applies: the language tables for the languages the target uses, the specialties for the kinds of target it contains and the dimensions that apply. It runs the question lists, root-cause facets and the selected parts, and writes a report where every finding has a location, trigger conditions, evidence, impact, a recommendation and an evidence level. Excluded code is still read when a call chain passes through it; it is only exempt from findings.
+The agent resolves the target, exclusions and options, builds a factual baseline (languages, entry points, shared state, threat model), then selects and reads only what applies: every part of the skill, down to a single row, is read only when the target actually has what that part is about. It runs the question lists, root-cause facets and the selected parts, and writes a report where every finding has a location, trigger conditions, evidence, impact, a recommendation and an evidence level. Excluded code is still read when a call chain passes through it; it is only exempt from findings.
 
 ## Layout
 
