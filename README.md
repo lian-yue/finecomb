@@ -174,9 +174,12 @@ The agent resolves the target and exclusions, builds a factual baseline (languag
 finecomb/
 ├── .claude-plugin/
 │   └── marketplace.json     Claude Code plugin marketplace manifest
+├── AGENTS.md                maintenance rules (CLAUDE.md is a symbolic link to it)
+├── CLAUDE.md -> AGENTS.md
 ├── LICENSE
 ├── README.md
 ├── README.zh-CN.md
+├── validation/              hit-test records: ID, root cause, result and sources for every sample
 └── skills/
     ├── finecomb/            English skill
     │   ├── SKILL.md         workflow, index, closing self-check
@@ -200,10 +203,7 @@ finecomb/
 
 ## Maintenance
 
-- The Chinese skill (`skills/finecomb-zh`) is the source. The English skill is its translation. Change both in the same commit and keep headings, tables and row counts in step.
-- Keep `SKILL.md` under 500 lines and move detail into `references/`.
-- Relative links and anchors must resolve inside each skill directory, because each skill can be installed on its own.
-- Skills live at `skills/<name>/SKILL.md`, following the skills CLI discovery rules, and `name` matches the directory name. When a skill is added or renamed, update `.claude-plugin/marketplace.json` too.
+All maintenance rules are in [AGENTS.md](AGENTS.md) (`CLAUDE.md` is a symbolic link to it): which content is kept in several languages (only the READMEs and the skills under `skills/`; everything else is English only), how the languages are kept in step, how to add a language, the skill format, how hit tests are run and recorded in [validation](validation/README.md), and the checks before committing.
 
 ## License
 

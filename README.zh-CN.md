@@ -174,9 +174,12 @@ npx skills use lian-yue/finecomb --skill finecomb-zh --agent claude-code
 finecomb/
 ├── .claude-plugin/
 │   └── marketplace.json     Claude Code 插件市场清单
+├── AGENTS.md                维护规则（CLAUDE.md 是指向它的软链接）
+├── CLAUDE.md -> AGENTS.md
 ├── LICENSE
 ├── README.md
 ├── README.zh-CN.md
+├── validation/              命中测试明细（英文）：每个样本的编号、根因、判定和来源
 └── skills/
     ├── finecomb/            英文技能
     └── finecomb-zh/         中文技能
@@ -200,10 +203,7 @@ finecomb/
 
 ## 维护
 
-- 中文技能（`skills/finecomb-zh`）是源，英文技能是它的翻译。两边在同一次提交里一起改，标题、表格和行数保持一致。
-- `SKILL.md` 控制在 500 行以内，细节放进 `references/`。
-- 每个技能都可能被单独安装，所以相对链接和锚点必须在各自的技能目录内就能解析。
-- 技能目录按 skills 命令行的发现规则放在 `skills/<名字>/SKILL.md`，`name` 与目录名一致；新增或改名技能时同步改 `.claude-plugin/marketplace.json`。
+维护规则都在 [AGENTS.md](AGENTS.md)（`CLAUDE.md` 是指向它的软链接）：哪些内容维护多语言版本（只有 README 和 `skills/` 下的技能，其余只写英文）、各语言怎么同步、怎么加新语言、技能格式、命中测试怎么做和怎么记到 [validation](validation/README.md)，以及提交前的检查。
 
 ## 许可证
 
