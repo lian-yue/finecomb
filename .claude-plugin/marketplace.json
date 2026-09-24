@@ -4,26 +4,17 @@
     "name": "lian-yue"
   },
   "metadata": {
-    "description": "Exhaustive code review and security audit skill for any language, in English and Chinese",
+    "description": "Exhaustive code review and security audit skill for any language",
     "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "finecomb",
-      "description": "Exhaustive code review and security audit checklist for any language (English)",
+      "description": "Exhaustive code review and security audit checklist for any language",
       "source": "./",
       "strict": false,
       "skills": [
         "./skills/finecomb"
-      ]
-    },
-    {
-      "name": "finecomb-zh",
-      "description": "穷尽式代码审查与安全审计清单，不限语言（中文）",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/finecomb-zh"
       ]
     }
   ]

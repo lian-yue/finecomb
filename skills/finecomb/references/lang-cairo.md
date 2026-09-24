@@ -1,6 +1,6 @@
 # A.18 Cairo (Starknet)
 
-For messages between layer 1 and layer 2, see also [4.42](specialties.md#442-cross-chain-bridges-and-messaging).
+For messages between layer 1 and layer 2, see also [4.42](specialties/4.42-cross-chain-bridges-and-messaging.md).
 
 | Checkpoint | What counts as a problem |
 | --- | --- |

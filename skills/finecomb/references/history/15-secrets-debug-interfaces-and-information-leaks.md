@@ -1,0 +1,8 @@
+# 15 Secrets, debug interfaces and information leaks
+
+| Pattern | Historical cases | What to look for | Where it lands |
+| --- | --- | --- | --- |
+| **Crash dumps carry keys out** | Storm-0558 (2023, Microsoft first inferred that the signing key reached the debugging environment in a crash dump and was stolen there; in March 2024 it corrected this, saying no dump containing the key had been found, so this row serves only as an example of a risk path) | Whether dumps, snapshots and debug outputs contain secrets; where they are moved | [4.4](../specialties/4.4-cryptography-and-credentials.md) ("Secrets in memory", "Credential exposure") |
+| Debug interfaces and admin endpoints exposed externally | Spring Boot Actuator `heapdump` and `env`; the Werkzeug debug console | Whether debug, monitoring and admin endpoints are turned off or protected in production | [27](../dimensions/27-security-and-trust-boundaries.md) ("Information leaks"), [34](../dimensions/34-runtime-environment-and-deployment-contract.md) |
+| Version control and environment files exposed externally | Publicly reachable `.git`, `.env`, source maps and backup files | Whether the deployment directory contains these files | [Targets that are not source code: live services](../targets/live-services.md), [2](../dimensions/2-leftover-markers-and-suppressions.md) ("Leftover backups and build outputs") |
+| Hardcoded shared keys | Private keys and certificates in device firmware that all devices share | Whether the same key is identical across all instances or devices | [Targets that are not source code: firmware](../targets/firmware-and-device-images.md), [4.4](../specialties/4.4-cryptography-and-credentials.md) |

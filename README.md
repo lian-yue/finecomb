@@ -27,6 +27,16 @@ The name comes from "going over something with a fine-tooth comb": checking ever
 
 By default the review is read-only. The skill looks for the target project's own rules first (for example `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `SECURITY.md`) and follows them; when there are none, it uses conservative defaults: no writes to the source tree and no installs; the network is used only for read-only lookups that check dependency versions for known security issues (only dependency names and versions are sent, never source code or secrets). When the target is a live service, an account, a tenant or an on-chain contract, access is passive and read-only by default; active scanning, login attempts and exploit verification need written authorization from the asset owner, test artifacts are cleaned up and obtained data is disposed of at the end, and no transactions are sent or signed on chain. When one check cannot be done because of authorization, the environment, tools or the reviewer's own rules, only that check is skipped, with the reason and what is missing stated at the top of the report; everything else is still done, and the review never quits or silently downgrades.
 
+## Security and authorized use
+
+finecomb is for defensive work: reviewing code and assets you own or are authorized to assess, security research, teaching, and security testing that the asset owner has authorized.
+
+- It contains only Markdown: no scripts, exploits, payloads or attack tools.
+- Real vulnerabilities, including the well-known incidents named above, appear only as short root causes at the patch or advisory level, taken from public fixes and advisories, so that reviewers can recognize and prevent the same class of flaw. There are no exploitation steps.
+- Do not use finecomb to scan, access, exploit, disrupt or change any system you are not authorized to test. The limits the skill itself follows are in [execution boundaries during review](skills/finecomb/references/scope.md#execution-boundaries-during-review).
+
+To report a security problem in finecomb, or misuse of it, see [SECURITY.md](SECURITY.md).
+
 ## How coverage is validated
 
 The root-cause facets and checkpoints were built by hit-testing against real vulnerabilities, not written from memory:
@@ -35,7 +45,7 @@ The root-cause facets and checkpoints were built by hit-testing against real vul
 2. Using only the skill's "question to ask" and "what counts as a problem" columns, never the example columns, decide whether a reviewer following the questions would reach that root cause.
 3. When it would not, generalize the miss into a question that does not depend on the domain or language, add it, and retest on new samples that were not used to write the skill.
 
-Two held-out rounds (111 vulnerabilities not used to write the skill; each sample records only the root cause at the patch or advisory level):
+Three held-out rounds (208 vulnerabilities not used to write the skill; each sample records only the root cause at the patch or advisory level). "Hit" includes weak hits:
 
 | Samples | Hit | Partial | Missed |
 | --- | --- | --- | --- |
@@ -50,17 +60,25 @@ Two held-out rounds (111 vulnerabilities not used to write the skill; each sampl
 | Smart contracts, DeFi, bridges and zero-knowledge proofs (10) | 7 | 3 | 0 |
 | AI agents and LLM applications (10) | 9 | 1 | 0 |
 | Open-source databases, storage and messaging (10) | 6 | 4 | 0 |
+| Round 3: retest of six new root-cause facets (12) | 11 | 1 | 0 |
+| Round 3: retest of five new questions in existing facets (10) | 10 | 0 | 0 |
+| Round 3: facets with few samples, part A (14) | 13 | 1 | 0 |
+| Round 3: facets with few samples, part B (12) | 12 | 0 | 0 |
+| Round 3: mobile apps and mobile frameworks (10) | 8 | 2 | 0 |
+| Round 3: OS kernels other than Linux: FreeBSD, OpenBSD, XNU, Windows (10) | 9 | 1 | 0 |
+| Round 3: authorization and business logic in web applications (9) | 7 | 2 | 0 |
+| Round 3: denial of service and resource exhaustion (10) | 8 | 2 | 0 |
+| Round 3: open-source embedded systems, bootloaders and stacks (10) | 8 | 2 | 0 |
 
-No sample needed a new root-cause facet. Every partial result was a specific checkpoint missing under an existing facet, or a general question that only lived in one domain's specialty. All of them have been added. A hit means the questions lead a reviewer to the root cause; it does not guarantee that following the checklist finds the bug in the code.
+No sample needed a new root-cause facet. Every partial result was a specific checkpoint missing under an existing facet, or a general question that only lived in one domain's specialty. All of them have been added; the round 3 fixes still await their retest on unused samples. A hit means the questions lead a reviewer to the root cause; it does not guarantee that following the checklist finds the bug in the code.
 
 ## Skills in this repository
 
-| Skill | Language | Path |
-| --- | --- | --- |
-| `finecomb` | English | [skills/finecomb](skills/finecomb/SKILL.md) |
-| `finecomb-zh` | Chinese | [skills/finecomb-zh](skills/finecomb-zh/SKILL.md) |
+| Skill | Path |
+| --- | --- |
+| `finecomb` | [skills/finecomb](skills/finecomb/SKILL.md) |
 
-The two skills have the same content. Install only one: both respond to the same kind of request.
+The entry file comes in English (`SKILL.md`) and Chinese (`SKILL.zh-CN.md`); the reference files are in English. The skill works with requests in any language: the agent writes the report in the language the user writes in.
 
 ## Install
 
@@ -74,28 +92,27 @@ Install https://github.com/lian-yue/finecomb for me
 
 An agent reading this should install it as follows:
 
-1. **Pick the version.** Install `finecomb-zh` if the user writes in Chinese, otherwise `finecomb`; if the user names one, use that. Install only one; both versions respond to the same kind of request.
-2. **Pick the scope.** If the user does not say, install for the current user so every project can use it; if the user asks for the current project only, install into the project.
-3. **With Node.js available, use the skills CLI.** Set `-a` to your own agent ID (such as `claude-code`, `codex`, `cursor`, `gemini-cli`, `github-copilot` or `opencode`); drop `-g` to install into the project:
+1. **Pick the scope.** If the user does not say, install for the current user so every project can use it; if the user asks for the current project only, install into the project.
+2. **With Node.js available, use the skills CLI.** Set `-a` to your own agent ID (such as `claude-code`, `codex`, `cursor`, `gemini-cli`, `github-copilot` or `opencode`); drop `-g` to install into the project:
 
    ```sh
    npx skills add https://github.com/lian-yue/finecomb --skill finecomb -a claude-code -g -y
    ```
 
-4. **Without Node.js, install by hand.** Shallow-clone the repository into a temporary directory, copy the whole `skills/finecomb` (or `skills/finecomb-zh`) directory into your skills directory, for example `~/.claude/skills/finecomb` for Claude Code (see the table below for other agents), then delete the temporary directory.
-5. **Check and report.** Confirm the target directory contains `SKILL.md`, and tell the user where it was installed, whether the agent needs a restart, and how to use it, for example "review `./src` with finecomb" or "audit `https://github.com/<owner>/<repo>` for me".
+3. **Without Node.js, install by hand.** Shallow-clone the repository into a temporary directory, copy the whole `skills/finecomb` directory into your skills directory, for example `~/.claude/skills/finecomb` for Claude Code (see the table below for other agents), then delete the temporary directory.
+4. **Check and report.** Confirm the target directory contains `SKILL.md`, and tell the user where it was installed, whether the agent needs a restart, and how to use it, for example "review `./src` with finecomb" or "audit `https://github.com/<owner>/<repo>` for me".
 
 The skill contains only Markdown files and no scripts; installing it runs none of its content.
 
 ### skills CLI
 
-Install the English version with the [skills CLI](https://github.com/vercel-labs/skills) ([skills.sh](https://skills.sh)):
+Install it with the [skills CLI](https://github.com/vercel-labs/skills) ([skills.sh](https://skills.sh)):
 
 ```sh
 npx skills add lian-yue/finecomb --skill finecomb
 ```
 
-For the Chinese version, use `--skill finecomb-zh`. Common options:
+Common options:
 
 | Option | Effect |
 | --- | --- |
@@ -105,7 +122,7 @@ For the Chinese version, use `--skill finecomb-zh`. Common options:
 | `--copy` | Copy the files instead of symlinking them into the agent directory |
 | `-y`, `--yes` | Skip the prompts |
 
-The source can also be the full URL `https://github.com/lian-yue/finecomb`; to install one skill you can point at its directory, `https://github.com/lian-yue/finecomb/tree/main/skills/finecomb`; to install from a local copy, pass its path.
+The source can also be the full URL `https://github.com/lian-yue/finecomb`, or the skill's directory, `https://github.com/lian-yue/finecomb/tree/main/skills/finecomb`; to install from a local copy, pass its path.
 
 After installing:
 
@@ -148,7 +165,13 @@ The repository includes `.claude-plugin/marketplace.json`, so Claude Code can ad
 /plugin install finecomb@finecomb
 ```
 
-For the Chinese version, install `finecomb-zh@finecomb`.
+### Agents that do not load skills automatically
+
+The skill is only Markdown files, so any agent that can read files can use it. If your agent does not load skills automatically, put `skills/finecomb` where it can read it and say:
+
+```text
+Read skills/finecomb/SKILL.md and follow its workflow to audit <target>.
+```
 
 ### Manual install
 
@@ -179,31 +202,31 @@ finecomb/
 ├── LICENSE
 ├── README.md
 ├── README.zh-CN.md
-├── validation/              hit-test records: ID, root cause, result and sources for every sample
+├── SECURITY.md              security policy, reporting and misuse contact
 └── skills/
-    ├── finecomb/            English skill
-    │   ├── SKILL.md         workflow, index, closing self-check
-    │   └── references/
-    │       ├── scope.md         invocation, scope, hard boundaries, sharding
-    │       ├── baseline.md      factual baseline, threat model, mechanism map
-    │       ├── questions.md     five per-object question lists
-    │       ├── facets.md        root-cause facets
-    │       ├── dimensions.md    45 general dimensions
-    │       ├── specialties.md   50 specialties
-    │       ├── history.md       historical vulnerability patterns
-    │       ├── targets.md       targets that are not source code
-    │       ├── report.md        evidence levels, report format, fix discipline
-    │       ├── tools.md         tools per ecosystem
-    │       ├── languages.md     how to use the language tables
-    │       └── lang-*.md        one table per language
-    └── finecomb-zh/         Chinese skill, same layout
+    └── finecomb/            the skill (English)
+        ├── SKILL.md         workflow, index, closing self-check
+        ├── SKILL.zh-CN.md   the same in Chinese
+        └── references/
+            ├── scope.md         invocation, scope, hard boundaries, sharding
+            ├── baseline.md      factual baseline, threat model, mechanism map
+            ├── questions.md     five per-object question lists
+            ├── facets.md        root-cause facets
+            ├── dimensions/      45 general dimensions: index.md plus one file per dimension
+            ├── specialties/     50 specialties: index.md plus one file per specialty
+            ├── history/         historical vulnerability patterns: index.md plus one file per group
+            ├── targets/         targets that are not source code: index.md plus one file per target form
+            ├── report.md        evidence levels, report format, fix discipline
+            ├── tools.md         tools per ecosystem
+            ├── languages.md     how to use the language tables
+            └── lang-*.md        one table per language
 ```
 
 `SKILL.md` stays short; the agent reads a reference file only when the current step needs it.
 
 ## Maintenance
 
-All maintenance rules are in [AGENTS.md](AGENTS.md) (`CLAUDE.md` is a symbolic link to it): which content is kept in several languages (only the READMEs and the skills under `skills/`; everything else is English only), how the languages are kept in step, how to add a language, the skill format, how hit tests are run and recorded in [validation](validation/README.md), and the checks before committing.
+All maintenance rules are in [AGENTS.md](AGENTS.md) (`CLAUDE.md` is a symbolic link to it): which content is kept in several languages (only the READMEs and the skills under `skills/`; everything else is English only), how the languages are kept in step, how to add a language, the skill format, how hit tests are run and recorded, and the checks before committing. The hit-test records and samples live on the separate [`validation` branch](https://github.com/lian-yue/finecomb/tree/validation), so installing the skill never downloads them; the skill itself needs no samples and works offline.
 
 ## License
 

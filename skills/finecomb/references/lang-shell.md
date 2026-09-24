@@ -12,4 +12,4 @@
 | Reading input | `read` without `-r`; `IFS` has been changed |
 | Subshells | A `while` in a pipeline runs in a subshell, so variables changed inside it are lost once it ends |
 | Portability | bash features used under `/bin/sh`; old bash shipped with the system; argument differences between BSD and GNU tools (such as `sed -i`) |
-| PATH | Relying on `PATH` to find commands while the caller can control the environment (see [4.22](specialties.md#422-subprocesses-dynamic-execution-and-decoder-side-effects)) |
+| PATH | Relying on `PATH` to find commands while the caller can control the environment (see [4.22](specialties/4.22-subprocesses-dynamic-execution-and-decoder-side-effects.md)) |

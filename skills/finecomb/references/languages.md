@@ -1,8 +1,8 @@
 # Appendix A: Language runtime pitfalls
 
-This appendix maps the categories of [16](dimensions.md#16-language-and-runtime-pitfalls) onto specific languages, and also collects each language's frequent pitfalls in other dimensions. How to use it:
+This appendix maps the categories of [16](dimensions/16-language-and-runtime-pitfalls.md) onto specific languages, and also collects each language's frequent pitfalls in other dimensions. How to use it:
 
-- Pick the tables for the languages the target uses; for a mixed-language target pick every one, and check cross-language boundaries separately in [4.32](specialties.md#432-cross-language-boundaries-and-native-extensions).
+- Pick the tables for the languages the target uses; for a mixed-language target pick every one, and check cross-language boundaries separately in [4.32](specialties/4.32-cross-language-boundaries-and-native-extensions.md).
 - The tables list only frequent, easy-to-miss items and **do not replace the category checks of 16**: for every category in 16 you still have to find that language's matching mechanism, item by item.
 - Semantics change between versions. First confirm the language, runtime and compiler versions the target declares and actually uses, then decide whether an item applies.
 - For a language not in this appendix, build your own table with the method in [A.20 Other languages](#a20-other-languages).
@@ -33,7 +33,7 @@ This appendix maps the categories of [16](dimensions.md#16-language-and-runtime-
 
 For a language not in this appendix, build your own table with the steps below, and write down the sources in the coverage record:
 
-1. For each category in [16](dimensions.md#16-language-and-runtime-pitfalls), find that language's matching mechanism (null values, copying and aliasing, integer semantics, exceptions, concurrency model, module loading...).
+1. For each category in [16](dimensions/16-language-and-runtime-pitfalls.md), find that language's matching mechanism (null values, copying and aliasing, integer semantics, exceptions, concurrency model, module loading...).
 2. Read the security guides, memory model and concurrency notes in the language's official documentation, and the rule lists of mainstream static analysis tools. A rule list is usually a checklist of that language's frequent pitfalls.
 3. Cross-check the entries related to that language in general weakness catalogs (such as CWE).
 4. Confirm the version the target actually uses, and keep only the entries that hold for that version.

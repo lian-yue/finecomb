@@ -14,10 +14,11 @@
 | Wiping secrets | Clearing a key with `memset` may be optimized away; use `explicit_bzero`, `memset_s` or the platform equivalent |
 | Check then use | The file is replaced after the `access()` check and before `open()` |
 | Macros | Arguments evaluated more than once; missing parentheses change precedence |
+| Operator precedence | Precedence mistakes in length, offset and mask expressions, not only in macros: `a - b + c` where `a - (b + c)` was meant; `x & MASK == 0` parses as `x & (MASK == 0)`; `a << n + 1` parses as `a << (n + 1)` |
 | C++ lifetimes | Iterators invalidated after the container changes; returning a reference to a local variable; `string_view` or references pointing to temporary objects; lambdas that capture by reference outlive the captured objects |
 | C++ object model | Base class destructor is not virtual; object slicing; rule of three/five; state of moved-from objects; a destructor throwing an exception causes termination; `shared_ptr` reference cycles leak |
 | Static initialization order | The initialization order of static objects across translation units is unspecified |
-| Build hardening | Whether warnings are fully enabled and treated as errors; whether stack protection, `_FORTIFY_SOURCE`, PIE, RELRO and similar are enabled (see [34](dimensions.md#34-runtime-environment-and-deployment-contract), [36](dimensions.md#36-supply-chain-and-artifact-integrity)) |
+| Build hardening | Whether warnings are fully enabled and treated as errors; whether stack protection, `_FORTIFY_SOURCE`, PIE, RELRO and similar are enabled (see [34](dimensions/34-runtime-environment-and-deployment-contract.md), [36](dimensions/36-supply-chain-and-artifact-integrity.md)) |
 | ABI | Struct layout, alignment, packing, byte order; C++ ABI across different compilers or standard library versions |
 | Exceptions crossing boundaries | C++ exceptions passing through C interfaces or callbacks |
 | Random numbers | `rand`, `std::mt19937` and similar are not cryptographic random sources, and seeding them from the time makes them even easier to guess; for keys, tokens and seed phrases, use the operating system's random source (`getrandom`, `arc4random`, `BCryptGenRandom`) or a cryptography library |

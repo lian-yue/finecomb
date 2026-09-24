@@ -1,6 +1,6 @@
 # A.17 CosmWasm and Cosmos SDK modules
 
-CosmWasm contracts are usually written in Rust, so check them with [A.5 Rust](lang-rust.md) first and then with this table. Cosmos SDK chain modules are written in Go, so check them with [A.1 Go](lang-go.md) first; general checks for nodes and consensus are in [4.45](specialties.md#445-blockchain-nodes-consensus-and-protocol-implementations).
+CosmWasm contracts are usually written in Rust, so check them with [A.5 Rust](lang-rust.md) first and then with this table. Cosmos SDK chain modules are written in Go, so check them with [A.1 Go](lang-go.md) first; general checks for nodes and consensus are in [4.45](specialties/4.45-blockchain-nodes-consensus-and-protocol-implementations.md).
 
 | Checkpoint | What counts as a problem |
 | --- | --- |

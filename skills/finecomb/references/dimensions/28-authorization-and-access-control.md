@@ -1,0 +1,31 @@
+# 28 Authorization and access control
+
+> [27](27-security-and-trust-boundaries.md) asks "can this input be trusted". This dimension asks "**is this requester allowed to do this**". The two are often confused, and then authorization gets missed.
+
+| Checkpoint | What counts as a problem |
+| --- | --- |
+| Separating authentication and authorization | "Who you are" and "what you can do" are decided together |
+| **Where checks happen** | Is the permission check done at every entry point; are there bypass paths (internal methods called directly, a batch entry point that checks only the first item) |
+| Default deny | Do unknown cases, unknown roles and new entry points default to deny or to allow |
+| **Defaults when identity is missing** | When the auth header, user, tenant or caller identity is missing or its lookup fails, what does the program get: a zero value, an empty string, `root`, the first tenant, "all"? Does this default carry privileges |
+| **Whether declared controls take effect** | Is the access control written in annotations, decorators, route tables, policy files or config really attached to every entry point; can inheritance, generics, proxies, interface implementations, route order, request methods or internal calls make the framework silently not apply it; is there a test proving that unauthorized requests are rejected |
+| Data services the client talks to directly | Are the hosted databases or storage that mobile apps and frontends read and write directly (row-level security policies, storage bucket rules, cloud function permissions) restricted by user and tenant; what can the keys carried in the frontend access |
+| **Horizontal privilege escalation** | Can changing a resource identifier give access to other people's objects; a hard-to-guess identifier does not mean there is an authorization check; an object loaded by its own ID under a parent named in the route must belong to that parent; having created an object is not a lasting permission after membership or roles change |
+| **Vertical privilege escalation** | Can low privileges reach high-privilege operations; does a hidden entry point count as protection (it does not) |
+| Field-level authorization | Some fields in the same object should not be seen / changed by some people; is that enforced |
+| **Combining conditional grants** | Several grants each tie an action to a row condition and a set of fields; the conditions and the field sets are merged separately, so a request is allowed by a combination that no single grant allows, instead of being covered by one whole grant |
+| Automatic field binding | When a request binds directly to an internal model or does a bulk update, can it write server-managed fields such as role, tenant, owner or balance; does the response expose attributes the requester may not read |
+| Consistency across entry points | Do lists, search, export, nested objects, batches, GraphQL fields, RPC and async tasks enforce the same object authorization; checking only the detail endpoint is not enough |
+| Privilege escalation paths | Are there paths that combine, step by step, into higher privileges |
+| **Permission ceiling of derived identities** | When subkeys, service accounts, or tokens with session policies or reduced privileges create or modify credentials and policies, is it checked that the new permissions do not exceed their own current effective permissions (including session policies); does an exemption such as "operations on your own account only check explicit denies" also let through derived identities that carry extra restrictions; can a principal rewrite the policies or settings that decide its own permissions |
+| Source of authorization data | Does the permission decision rely on a trusted source, or on fields the request itself carries |
+| Granularity | Is the permission granularity fine enough; is it "all or nothing" |
+| Caching and invalidation | After permissions, tenant relationships or resource ownership change, how long until existing sessions, long-lived connections, background tasks and caches are bound by the new permissions; are the authorization conditions still met right before execution |
+| Multi-tenant boundaries | Are data, resources and quotas isolated between tenants; do cross-tenant queries have a mandatory filter |
+| Delegation and acting on behalf | When acting on behalf of someone else, is the action bound to the original principal, the target resource and the allowed operations; the service's own high privileges cannot stand in for the caller's authorization |
+| **Setup and installation entry points** | Can entry points such as install wizards, initialization, creating the first admin, factory reset and migration still be called after they have finished; can they be triggered again to reset passwords or create admins |
+| **Matching of authentication exemptions** | Are exceptions such as "these paths need no login" or "requests from the local machine are trusted" matched by prefix, suffix or regex on the raw string; can encoding, path parameters, case or proxy rewriting make a protected request match the exception too |
+| **Whether the restricted side can create or claim an exemption** | When authorization, policy, isolation, rate limiting or auditing is skipped entirely based on identity, value or object state (a platform component's own UID or service account, an internal marker, a reserved prefix, a particular source, being deleted, carrying a certain label, dry run), can the checked party set, claim or keep up that condition by itself for a long time; can objects under that condition still be modified, used or stay in effect |
+| **Indirect effects of fields** | For fields the requester is allowed to change (owner references, finalizers, labels, annotations, status, referenced names), what will controllers, garbage collection, schedulers or other automation do with their own privileges; can these indirect actions complete operations the requester is forbidden to do directly (deleting, changing scheduling, granting permissions, reading) |
+
+Security records for sensitive operations are all covered in [4.23 Security audit logs](../specialties/4.23-security-audit-logs.md).

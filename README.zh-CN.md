@@ -27,6 +27,16 @@ Claude Code、Codex、Cursor、Gemini CLI、GitHub Copilot、OpenCode 等支持�
 
 审查默认只读。技能会先找目标项目自己的规范（例如 `AGENTS.md`、`CLAUDE.md`、`CONTRIBUTING.md`、`SECURITY.md`）并遵守；项目没有规定时，使用保守默认：不写源码树、不安装东西；联网只做只读查询，用来核对依赖版本有没有已知安全问题（只外发依赖名称和版本，不外发源码和秘密）。目标是线上服务、账号、租户或链上合约时，默认只做被动、只读的访问；主动扫描、登录尝试和漏洞验证要有资产所有者的书面授权，结束时清理测试产物、处置取得的数据；链上不发交易、不签名。某一项检查因授权、环境、工具或审查者自身的规则做不了时，只跳过这一项并在报告开头写明原因和还缺什么，其余照常做完，不整体退出，也不悄悄降级。
 
+## 安全与授权使用
+
+finecomb 用于防御性工作：审查你自己或获得授权评估的代码和资产、安全研究、教学，以及资产所有者授权的安全测试。
+
+- 仓库里只有 Markdown：没有脚本、漏洞利用代码、攻击载荷或攻击工具。
+- 真实漏洞（包括上面点名的知名事件）只以补丁或公告层面的简短根因出现，来自公开的修复和公告，目的是让审查者认出并预防同类缺陷；不写利用步骤。
+- 不得用 finecomb 对未获授权测试的任何系统进行扫描、访问、漏洞利用、破坏或修改。技能自身遵守的限制见[审查执行边界](skills/finecomb/references/scope.md#execution-boundaries-during-review)。
+
+要报告 finecomb 自身的安全问题或被滥用的情况，见 [SECURITY.md](SECURITY.md)。
+
 ## 如何验证覆盖面
 
 根因面和检查点是用真实漏洞做「命中测试」补出来的，不是凭经验列的：
@@ -35,7 +45,7 @@ Claude Code、Codex、Cursor、Gemini CLI、GitHub Copilot、OpenCode 等支持�
 2. 只看技能里「要问的问题」和「什么算问题」两列，不看案例列，判断审查者照着追问能否问到这个根因。
 3. 问不到的，归纳成与领域、语言无关的追问补进技能，再用没参与编写的新样本复测。
 
-两轮留出集（共 111 个没参与编写技能的漏洞，每个样本只写补丁或公告层面的根因）：
+三轮留出集（共 208 个没参与编写技能的漏洞，每个样本只写补丁或公告层面的根因）。「命中」含弱命中：
 
 | 样本 | 命中 | 部分 | 未命中 |
 | --- | --- | --- | --- |
@@ -50,17 +60,25 @@ Claude Code、Codex、Cursor、Gemini CLI、GitHub Copilot、OpenCode 等支持�
 | 智能合约、DeFi、跨链与零知识证明（10 个） | 7 | 3 | 0 |
 | AI 智能体与大模型应用（10 个） | 9 | 1 | 0 |
 | 开源数据库、存储与消息系统（10 个） | 6 | 4 | 0 |
+| 第三轮：6 个新根因面的复测（12 个） | 11 | 1 | 0 |
+| 第三轮：已有面里 5 个新问题的复测（10 个） | 10 | 0 | 0 |
+| 第三轮：样本少的面，第一组（14 个） | 13 | 1 | 0 |
+| 第三轮：样本少的面，第二组（12 个） | 12 | 0 | 0 |
+| 第三轮：移动应用与移动框架（10 个） | 8 | 2 | 0 |
+| 第三轮：Linux 以外的操作系统内核：FreeBSD、OpenBSD、XNU、Windows（10 个） | 9 | 1 | 0 |
+| 第三轮：Web 应用的越权与业务逻辑（9 个） | 7 | 2 | 0 |
+| 第三轮：拒绝服务与资源耗尽（10 个） | 8 | 2 | 0 |
+| 第三轮：开源嵌入式系统、引导程序与协议栈（10 个） | 8 | 2 | 0 |
 
-没有一个样本需要新增根因面；所有「部分」缺的都是已有面下面的具体检查点，或者某个通用问题只写在了某个领域的专项里。这些都已补进技能。命中测试检验的是「追问能否把人引到根因」，不等于照着清单一定能在代码里找到它。
+没有一个样本需要新增根因面；所有「部分」缺的都是已有面下面的具体检查点，或者某个通用问题只写在了某个领域的专项里。这些都已补进技能；第三轮的修补还要用没用过的样本复测。命中测试检验的是「追问能否把人引到根因」，不等于照着清单一定能在代码里找到它。
 
 ## 仓库里的技能
 
-| 技能 | 语言 | 路径 |
-| --- | --- | --- |
-| `finecomb` | 英文 | [skills/finecomb](skills/finecomb/SKILL.md) |
-| `finecomb-zh` | 中文 | [skills/finecomb-zh](skills/finecomb-zh/SKILL.md) |
+| 技能 | 路径 |
+| --- | --- |
+| `finecomb` | [skills/finecomb](skills/finecomb/SKILL.md) |
 
-两个技能内容相同，只装一个：它们响应的是同一类请求。
+入口文件有英文（`SKILL.md`）和中文（`SKILL.zh-CN.md`）两份，参考文件是英文。技能对任何语言的请求都适用：智能体用用户使用的语言写报告。
 
 ## 安装
 
@@ -74,28 +92,27 @@ Claude Code、Codex、Cursor、Gemini CLI、GitHub Copilot、OpenCode 等支持�
 
 智能体读到这里时，按下面的步骤安装：
 
-1. **选版本。** 用户用中文交流就装 `finecomb-zh`，否则装 `finecomb`；用户点名的以用户为准。只装一个，两个版本响应的是同一类请求。
-2. **选范围。** 用户没说时装到当前用户，所有项目都能用；用户说只装到当前项目时，装到项目里。
-3. **本机有 Node.js 时用 skills 命令行。** `-a` 填你自己对应的智能体标识（如 `claude-code`、`codex`、`cursor`、`gemini-cli`、`github-copilot`、`opencode`）；装到项目里时去掉 `-g`：
+1. **选范围。** 用户没说时装到当前用户，所有项目都能用；用户说只装到当前项目时，装到项目里。
+2. **本机有 Node.js 时用 skills 命令行。** `-a` 填你自己对应的智能体标识（如 `claude-code`、`codex`、`cursor`、`gemini-cli`、`github-copilot`、`opencode`）；装到项目里时去掉 `-g`：
 
    ```sh
-   npx skills add https://github.com/lian-yue/finecomb --skill finecomb-zh -a claude-code -g -y
+   npx skills add https://github.com/lian-yue/finecomb --skill finecomb -a claude-code -g -y
    ```
 
-4. **没有 Node.js 时手工安装。** 把仓库浅克隆到临时目录，把 `skills/finecomb-zh`（或 `skills/finecomb`）整个目录复制到你的技能目录，例如 Claude Code 的 `~/.claude/skills/finecomb-zh`，其它智能体的目录见下方表格；复制完删掉临时目录。
-5. **核对并告知。** 确认目标目录里有 `SKILL.md`，告诉用户装在哪里、要不要重启智能体，以及怎么用，例如「用 finecomb 审 `./src`」「帮我审计 `https://github.com/<所有者>/<仓库>`」。
+3. **没有 Node.js 时手工安装。** 把仓库浅克隆到临时目录，把 `skills/finecomb` 整个目录复制到你的技能目录，例如 Claude Code 的 `~/.claude/skills/finecomb`，其它智能体的目录见下方表格；复制完删掉临时目录。
+4. **核对并告知。** 确认目标目录里有 `SKILL.md`，告诉用户装在哪里、要不要重启智能体，以及怎么用，例如「用 finecomb 审 `./src`」「帮我审计 `https://github.com/<所有者>/<仓库>`」。
 
 技能只有 Markdown 文件，不带脚本，安装时不会执行其中任何代码。
 
 ### skills 命令行
 
-用 [skills 命令行](https://github.com/vercel-labs/skills)（[skills.sh](https://skills.sh)）安装中文版：
+用 [skills 命令行](https://github.com/vercel-labs/skills)（[skills.sh](https://skills.sh)）安装：
 
 ```sh
-npx skills add lian-yue/finecomb --skill finecomb-zh
+npx skills add lian-yue/finecomb --skill finecomb
 ```
 
-英文版把 `--skill` 换成 `finecomb`。常用选项：
+常用选项：
 
 | 选项 | 作用 |
 | --- | --- |
@@ -105,7 +122,7 @@ npx skills add lian-yue/finecomb --skill finecomb-zh
 | `--copy` | 复制文件，而不是软链接到智能体目录 |
 | `-y`、`--yes` | 跳过确认 |
 
-安装源也可以写成完整地址 `https://github.com/lian-yue/finecomb`，只装一个技能时可以直接指向它的目录 `https://github.com/lian-yue/finecomb/tree/main/skills/finecomb-zh`，从本地副本安装时写副本路径。
+安装源也可以写成完整地址 `https://github.com/lian-yue/finecomb`，或技能目录 `https://github.com/lian-yue/finecomb/tree/main/skills/finecomb`，从本地副本安装时写副本路径。
 
 装好之后：
 
@@ -114,17 +131,17 @@ npx skills list
 ```
 
 ```sh
-npx skills update finecomb-zh
+npx skills update finecomb
 ```
 
 ```sh
-npx skills remove finecomb-zh
+npx skills remove finecomb
 ```
 
 不安装、只用一次（把技能生成为提示词交给智能体）：
 
 ```sh
-npx skills use lian-yue/finecomb --skill finecomb-zh --agent claude-code
+npx skills use lian-yue/finecomb --skill finecomb --agent claude-code
 ```
 
 命令行按智能体把技能放到它的技能目录，例如：
@@ -145,14 +162,20 @@ npx skills use lian-yue/finecomb --skill finecomb-zh --agent claude-code
 
 ```text
 /plugin marketplace add lian-yue/finecomb
-/plugin install finecomb-zh@finecomb
+/plugin install finecomb@finecomb
 ```
 
-英文版装 `finecomb@finecomb`。
+### 不会自动加载技能的智能体
+
+技能只是 Markdown 文件，任何能读文件的智能体都能用。智能体不会自动加载技能时，把 `skills/finecomb` 放到它能读到的位置，然后说：
+
+```text
+读 skills/finecomb/SKILL.zh-CN.md，按它的流程审计 <目标>。
+```
 
 ### 手工安装
 
-把 `skills/finecomb-zh` 整个目录复制到智能体的技能目录（例如 Claude Code 的 `.claude/skills/`）。
+把 `skills/finecomb` 整个目录复制到智能体的技能目录（例如 Claude Code 的 `.claude/skills/`）。
 
 ## 用法
 
@@ -179,20 +202,20 @@ finecomb/
 ├── LICENSE
 ├── README.md
 ├── README.zh-CN.md
-├── validation/              命中测试明细（英文）：每个样本的编号、根因、判定和来源
+├── SECURITY.md              安全策略、问题报告与滥用联系方式
 └── skills/
-    ├── finecomb/            英文技能
-    └── finecomb-zh/         中文技能
-        ├── SKILL.md         工作流程、索引、收尾自检
+    └── finecomb/            技能
+        ├── SKILL.md         工作流程、索引、收尾自检（英文）
+        ├── SKILL.zh-CN.md   同上（中文）
         └── references/
             ├── scope.md         调用解析、范围、硬边界、分片
             ├── baseline.md      事实基线、威胁模型、历史机制对号
             ├── questions.md     五张逐对象追问清单
             ├── facets.md        根因面
-            ├── dimensions.md    45 个通用维度
-            ├── specialties.md   50 类专项
-            ├── history.md       历史漏洞模式
-            ├── targets.md       非源码目标
+            ├── dimensions/      45 个通用维度：index.md 加每个维度一个文件
+            ├── specialties/     50 类专项：index.md 加每个专项一个文件
+            ├── history/         历史漏洞模式：index.md 加每组一个文件
+            ├── targets/         非源码目标：index.md 加每种目标一个文件
             ├── report.md        证据等级、报告格式、修复纪律
             ├── tools.md         各生态的工具
             ├── languages.md     语言表的用法
@@ -203,7 +226,7 @@ finecomb/
 
 ## 维护
 
-维护规则都在 [AGENTS.md](AGENTS.md)（`CLAUDE.md` 是指向它的软链接）：哪些内容维护多语言版本（只有 README 和 `skills/` 下的技能，其余只写英文）、各语言怎么同步、怎么加新语言、技能格式、命中测试怎么做和怎么记到 [validation](validation/README.md)，以及提交前的检查。
+维护规则都在 [AGENTS.md](AGENTS.md)（`CLAUDE.md` 是指向它的软链接）：哪些内容维护多语言版本（只有 README 和 `skills/` 下的技能，其余只写英文）、各语言怎么同步、怎么加新语言、技能格式、命中测试怎么做和怎么记录，以及提交前的检查。命中测试的记录和样本放在单独的 [`validation` 分支](https://github.com/lian-yue/finecomb/tree/validation)，安装技能时不会下载；技能本身不需要样本，离线就能用。
 
 ## 许可证
 
