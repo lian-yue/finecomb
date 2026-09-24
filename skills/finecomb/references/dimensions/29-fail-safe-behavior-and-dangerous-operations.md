@@ -14,3 +14,4 @@
 | Blast radius | How much can one mistake destroy at most; is there batching, rate limiting, a circuit breaker |
 | Non-idempotent destructive retries | What happens when a non-idempotent destructive operation is retried |
 | Recovery path | Is there a way back after a mistake; has the way back been verified |
+| **Emergency controls** | A leaked credential cannot be rotated or revoked at once without an outage; a compromised component, feature or integration cannot be switched off quickly; the switch itself is not protected or not logged |

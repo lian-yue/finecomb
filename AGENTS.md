@@ -37,6 +37,7 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 ## Content
 
 - The root-cause facets (`references/facets.md`) are the core. Coverage grows as general, domain-independent facets and checkpoints derived from real vulnerabilities, not as entries for a single CVE, product or algorithm.
+- **Rely on the agent's own knowledge first.** A row names an area to check and the general question to ask there, briefly; the agent applies what it already knows about the specific platform, framework, protocol and its known issues. Add a new area in this brief form first. Write detailed checkpoints only for classes of root cause that agents are shown to miss, for example a class of public vulnerabilities that no general question reaches.
 - The "what counts as a problem" and "question to ask" columns state general criteria. Real incidents go into `references/history/` or the facets' "real cases" column.
 - Keep the rule "when one check is restricted, skip only that check; never quit or silently downgrade the whole review" at the top of `SKILL.md`.
 - Write short sentences with common words. Use the real names of things, and the same word for the same thing everywhere.

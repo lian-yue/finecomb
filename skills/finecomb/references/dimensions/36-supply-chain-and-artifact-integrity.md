@@ -21,4 +21,5 @@
 | Build and release permissions | Can untrusted commits, dependency scripts or workflow inputs read release credentials, write artifacts or deploy; are build jobs, runners and release identities isolated from each other |
 | Build cache and artifact substitution | Can untrusted jobs poison caches or intermediate outputs that trusted jobs use; is the identity and digest checked in the final signature verification bound to the artifact actually deployed; can tags or download URLs be swapped |
 | Component inventory | Can the runtime, base images, dependencies and plugins be traced from the actual artifact; does the existing software bill of materials (SBOM) match the artifact; do dynamic downloads bypass locking and integrity checks |
-| Licenses | Are dependency licenses compatible with the way this project is distributed; are the notice files complete |
+| Licenses | Are dependency licenses compatible with the way this project is distributed; are the notice files complete; where export-control rules apply to cryptography or other controlled technology, are they met |
+| Packages suggested by AI tools | Dependency names taken from AI assistants or generated code are installed without checking that the package exists and is the intended one; a name that does not exist yet can be registered by anyone |

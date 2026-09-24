@@ -52,3 +52,8 @@ The sections below add checkpoints for specific kinds of targets. Choose them ba
 - [4.48 Kernel drivers, device emulation and virtualization](4.48-kernel-drivers-device-emulation-and-virtualization.md)
 - [4.49 Mobile app components and inter-process communication](4.49-mobile-app-components-and-inter-process-communication.md)
 - [4.50 Account abstraction and smart contract wallets](4.50-account-abstraction-and-smart-contract-wallets.md)
+- [4.51 Trusted execution environments and enclaves](4.51-trusted-execution-environments-and-enclaves.md)
+- [4.52 Industrial control and cyber-physical safety](4.52-industrial-control-and-cyber-physical-safety.md)
+- [4.53 Search, indexing and retrieval](4.53-search-indexing-and-retrieval.md)
+- [4.54 Sync, collaboration and offline clients](4.54-sync-collaboration-and-offline-clients.md)
+- [4.55 Serverless and edge functions](4.55-serverless-and-edge-functions.md)

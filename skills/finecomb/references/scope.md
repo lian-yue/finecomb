@@ -122,7 +122,7 @@ Rules for authorization, version control operations, how to write, network acces
 
 | The caller says | How far to go |
 | --- | --- |
-| "review xxx", "audit xxx", "full check" | Read the hand-written implementation in scope. One by one, judge whether each of the 45 items in [Part III](dimensions/index.md), the relevant [specialties](specialties/index.md) and [Appendix A](languages.md) for each language the target uses applies. Check object by object per [Part II](questions.md). Explicitly list any part that cannot be fully covered |
+| "review xxx", "audit xxx", "full check" | Read the hand-written implementation in scope. One by one, judge whether each of the 46 items in [Part III](dimensions/index.md), the relevant [specialties](specialties/index.md) and [Appendix A](languages.md) for each language the target uses applies. Check object by object per [Part II](questions.md). Explicitly list any part that cannot be fully covered |
 | Same as above, with exclusions | Same as above; subtract the exclusions from the scope per [invocation and scope resolution](#invocation-and-scope-resolution). Excluded code is still used for tracing |
 | "see whether xxx has problems" | First establish the [factual baseline](baseline.md), then pick dimensions by the directions it exposes. State which parts were not checked |
 | "review this change" | Review only the entry points, state, invariants, side effects and background flows that the change touches, but go through the question lists for these five in full |

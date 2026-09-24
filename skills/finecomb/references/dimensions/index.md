@@ -45,3 +45,4 @@
 - [43 Documentation consistency](43-documentation-consistency.md)
 - [44 Project rule compliance](44-project-rule-compliance.md)
 - [45 Long-running and resident processes](45-long-running-and-resident-processes.md)
+- [46 Abuse and fraud resistance](46-abuse-and-fraud-resistance.md)
