@@ -2,7 +2,7 @@
 
 [中文说明](README.zh-CN.md)
 
-finecomb is an exhaustive code review and security audit checklist, packaged as an [Agent Skill](https://agentskills.io). It works for code in any language, and for repositories that mix several languages. You point your agent at a target; the skill tells it what to check, how to check it, what counts as a problem and how to report it.
+finecomb is an exhaustive code review and security audit checklist, packaged as an [Agent Skill](https://agentskills.io). It works for code in any language, and for repositories that mix several languages. You point your agent at one or more targets (directories, packages, repositories, files, changes); the skill tells it what to check, how to check it, what counts as a problem and how to report it.
 
 The name comes from "going over something with a fine-tooth comb": checking every strand so nothing is missed.
 
@@ -13,7 +13,7 @@ The name comes from "going over something with a fine-tooth comb": checking ever
 - **Language pitfall tables** for Go, Python, JavaScript/TypeScript, C/C++, Rust, Java/Kotlin, C#/.NET, PHP, Ruby, Shell, Swift/Objective-C and SQL, plus a method for building a table for any other language.
 - **Five per-object question lists** (public entry points, shared state, invariants, external side effects, background flows), a threat model, evidence levels, severities, a report format and tool options for each ecosystem.
 
-By default the review is read-only. The skill looks for the target project's own rules first (for example `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `SECURITY.md`) and follows them; when there are none, it uses conservative defaults: no writes to the source tree, no network, no installs.
+By default the review is read-only. The skill looks for the target project's own rules first (for example `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `SECURITY.md`) and follows them; when there are none, it uses conservative defaults: no writes to the source tree and no installs; the network is used only for read-only lookups that check dependency versions for known security issues (only dependency names and versions are sent, never source code or secrets).
 
 ## Skills in this repository
 
@@ -41,6 +41,7 @@ You can also copy `skills/finecomb` by hand into your agent's skills directory (
 Ask your agent in plain language, for example:
 
 - "Review `./server` with finecomb."
+- "Review `./server`, `./client` and this change with finecomb."
 - "Audit `src/` with finecomb, excluding `vendor/`, `third_party/` and generated code."
 - "Review this change with finecomb."
 - "Use finecomb to check concurrency in `pkg/cache`."

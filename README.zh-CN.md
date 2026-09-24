@@ -2,7 +2,7 @@
 
 [English](README.md)
 
-finecomb 是一份穷尽式的代码审查与安全审计清单，打包成 [Agent Skill](https://agentskills.io)。它适用于任意语言的代码，也适用于多种语言混合的仓库。你把目标交给智能体，技能告诉它：查什么、怎么查、什么算问题、怎么报告。
+finecomb 是一份穷尽式的代码审查与安全审计清单，打包成 [Agent Skill](https://agentskills.io)。它适用于任意语言的代码，也适用于多种语言混合的仓库。你把一个或多个目标（目录、包、仓库、文件、改动）交给智能体，技能告诉它：查什么、怎么查、什么算问题、怎么报告。
 
 名字来自英语 "go over with a fine-tooth comb"（用细齿梳梳一遍）：一根一根地过，不漏掉任何一处。
 
@@ -13,7 +13,7 @@ finecomb 是一份穷尽式的代码审查与安全审计清单，打包成 [Age
 - **语言陷阱表**：Go、Python、JavaScript/TypeScript、C/C++、Rust、Java/Kotlin、C#/.NET、PHP、Ruby、Shell、Swift/Objective-C、SQL，以及为其它语言自建陷阱表的方法。
 - **五张逐对象追问清单**（公开入口、共享状态、不变量、外部副作用、后台执行流），以及威胁模型、证据等级、严重性、报告格式和各生态的工具选项。
 
-审查默认只读。技能会先找目标项目自己的规范（例如 `AGENTS.md`、`CLAUDE.md`、`CONTRIBUTING.md`、`SECURITY.md`）并遵守；项目没有规定时，使用保守默认：不写源码树、不联网、不安装东西。
+审查默认只读。技能会先找目标项目自己的规范（例如 `AGENTS.md`、`CLAUDE.md`、`CONTRIBUTING.md`、`SECURITY.md`）并遵守；项目没有规定时，使用保守默认：不写源码树、不安装东西；联网只做只读查询，用来核对依赖版本有没有已知安全问题（只外发依赖名称和版本，不外发源码和秘密）。
 
 ## 仓库里的技能
 
@@ -41,6 +41,7 @@ npx skills add lian-yue/finecomb --skill finecomb-zh
 直接用自然语言交代，例如：
 
 - 「用 finecomb 审 `./server`。」
+- 「用 finecomb 审 `./server`、`./client` 和这次改动。」
 - 「用 finecomb 审计 `src/`，排除 `vendor/`、`third_party/` 和生成的代码。」
 - 「用 finecomb 审这次改动。」
 - 「用 finecomb 看看 `pkg/cache` 的并发。」

@@ -1,6 +1,6 @@
 ---
 name: finecomb
-description: Exhaustive code review and security audit checklist for any language, including repositories that mix several languages. Use when the user asks to review, audit, inspect, security-check or thoroughly examine code, or to find everything wrong with it. The target can be a directory, package, module, repository, set of files, change or pull request, with optional exclusions (for example "excluding vendor/ and generated code"). Covers 45 general dimensions, 38 specialties by target type, 13 language pitfall tables, five per-object question lists, threat modeling, evidence levels and a report format.
+description: Exhaustive code review and security audit checklist for any language, including repositories that mix several languages. Use when the user asks to review, audit, inspect, security-check or thoroughly examine code, or to find everything wrong with it. There can be one or more targets: directories, packages, modules, repositories, files, changes or pull requests, with optional exclusions (for example "excluding vendor/ and generated code"). Covers 45 general dimensions, 38 specialties by target type, 13 language pitfall tables, five per-object question lists, threat modeling, evidence levels and a report format.
 license: Apache-2.0
 metadata:
   author: lian-yue
@@ -9,7 +9,7 @@ metadata:
 
 # finecomb: exhaustive code review checklist
 
-This skill checks code for correctness, security and maintainability. Example invocations: "review `<target>` with finecomb", "audit `<dir>` with finecomb, excluding `<a>`, `<b>` and generated code". The target can be a package, a directory, a module, a repository, a set of files or a change; it can be in any language or in several languages at once. How an invocation turns into a scope is described in [Invocation and scope resolution](references/scope.md#invocation-and-scope-resolution).
+This skill checks code for correctness, security and maintainability. Example invocations: "review `<target>` with finecomb", "review `<dir1>`, `<dir2>` and this change with finecomb", "audit `<dir>` with finecomb, excluding `<a>`, `<b>` and generated code". There can be one target or several: packages, directories, modules, repositories, files, changes or pull requests, in any mix; the code can be in any language or in several languages at once. How an invocation turns into a scope is described in [Invocation and scope resolution](references/scope.md#invocation-and-scope-resolution).
 
 **It is not tied to any project or any language.** The scope comes from the invocation. The checklist tracks what was checked and the evidence; it cannot guarantee that every defect is found. Each check is a line of questioning. Whether something is a problem depends on the real contract, the reachable paths and the impact; not using a particular technique is not a defect by itself.
 

@@ -11,7 +11,7 @@ The wording of an invocation is not fixed. Examples: "review `<target>` with fin
 
 | Item | How to decide |
 | --- | --- |
-| Target | A directory, package, module, repository, file list, one change or one merge request. Any language, and languages can be mixed. If the target does not exist or matches several candidates, handle the ambiguity per the project rules |
+| Target | One or more directories, packages, modules, repositories, files, changes or merge requests, in any mix. Any language, and languages can be mixed. With several targets, resolve and list each one; calls, shared state and data flow between the targets are also in scope. In the report, mark which target each issue belongs to, and merge one root cause that spans targets into a single entry. If a target does not exist or matches several candidates, handle the ambiguity per the project rules |
 | Explicit exclusions | Paths, globs or modules the caller names. Normalize paths before matching. Do not widen or narrow the match because names look alike |
 | Category exclusions | When the caller names categories such as "generated", "third-party", "vendored", "build artifacts" or "test data", identify them with the table below and **list the files or directories that actually match** so the caller can check them |
 | Scale | Decide per [scaling to the request](#scaling-to-the-request) |
@@ -61,13 +61,15 @@ Before reviewing, find the target project's own rules and follow them throughout
 | Test matrix | `TESTING.md` or the test plan in the target directory |
 | Generation and third-party boundaries | Generation configs (such as `buf.gen.yaml` or an OpenAPI generator config), `.gitattributes`, notes in vendor directories, upstream records of forks |
 
-Rules for authorization, version control operations, how to write, out-of-scope issues, caches and temporary artifacts, as well as the number and scope of test runs, all follow the project rules. This checklist only provides what to check. It sets no hard boundaries of its own and does not require re-confirming actions that are already authorized.
+Rules for authorization, version control operations, how to write, network access, out-of-scope issues, caches and temporary artifacts, as well as the number and scope of test runs, all follow the project rules. This checklist only provides what to check. It sets no hard boundaries of its own and does not require re-confirming actions that are already authorized.
 
 **When the project has no relevant rules, use these conservative defaults:**
 
 - Read-only: do not modify, format, auto-fix or regenerate any file in the source tree.
 - Do not write to the repository, do not push, do not change remotes.
-- Do not use the network. Do not install or upgrade tools, dependencies or vulnerability databases; get authorization first when needed.
+- Use the network only for read-only lookups that check whether dependency versions have known security issues: public vulnerability databases and official security advisories (such as OSV, the GitHub Advisory Database, NVD and each ecosystem's advisories), version and maintenance data in package registries, and upstream release notes. Audit tools that are already installed may query online or refresh their vulnerability data (written only to the tool's default cache).
+- When online, send out only dependency names, versions and checksums, never source code, configuration or secrets. If the dependencies include internal private packages, do not send their names to public services; if a tool would upload private package names along with the rest, get authorization first.
+- Do not install, upgrade, download or run new tools or dependencies (including download-and-run commands such as `npx` and `pipx run`); get authorization first when needed.
 - Execution writes only to the system temporary directory and the tools' default caches. Do reproductions in an isolated copy.
 - Run only the smallest entry point needed to prove a candidate issue. Do not run the full suite or stress tests.
 - Do not touch production environments, real accounts or third-party systems.
@@ -78,7 +80,7 @@ Rules for authorization, version control operations, how to write, out-of-scope 
 - For reproduction, prefer local deterministic inputs, isolated copies and test accounts. When external systems are involved, first confirm the target, the identity, the allowed operations and the resource budget. Authorization for a code review does not cover attack verification against production environments or third parties.
 - Do not probe unauthorized targets with real business credentials, and do not read unrelated users' data to prove unauthorized access. When impact must be proven, use authorized test accounts and resources. For paths that might cause damage or cannot be isolated, keep the static evidence and state the unverified boundary.
 - Do not switch off guards in a shared workspace just to test a security control, and do not overwrite other people's changes. For before/after comparisons of a fix, use verified input snapshots or isolated copies. When no comparable baseline is available, do not guess when the issue was introduced.
-- Check authorization separately for installing tools, updating vulnerability databases, uploading reports externally and public disclosure. If a tool is missing or the environment is restricted, record the reason. Do not write a failed check as a pass, and do not widen the scope automatically because of it.
+- Check authorization separately for installing tools, uploading reports externally and public disclosure; read-only network lookups of dependency versions and vulnerability data follow the defaults above. If a tool is missing or the environment is restricted, record the reason. Do not write a failed check as a pass, and do not widen the scope automatically because of it.
 
 ## Scaling to the request
 
@@ -96,6 +98,7 @@ When the target is too large to read in one pass, or several people or subagents
 
 - **Build one shared baseline first, then shard.** First list the shared state, invariants, cross-module calls and cross-language boundaries of the whole target per [Part I](baseline.md). Then shard by subsystem or language. Every shard gets this global list.
 - **Cut by ownership.** Cut shards by which file or module owns the responsibility. Each object belongs to exactly one shard; for a shared object, assign one owning shard.
+- **Several targets.** When the invocation names several targets, you can shard by target. Calls, shared state and data flow between the targets go into the seam check; they must not go unchecked just because they sit between two targets.
 - **Do one seam check.** After all shards finish, look specifically at the call chains, shared state, invariants and cross-language boundaries that cross shards. Issues at seams are often "each side is fine alone, but wrong together". Do not skip this step because every shard came back clean.
 - **Merge the reports.** Deduplicate per [Part V](report.md#part-v-evidence-levels-and-report-format); merge the same root cause across shards into one entry.
 - **Re-review after fixes.** Treat the fix as "review this change" and go through the five question lists again. Confirm the original issue is closed and no new issue was introduced.
