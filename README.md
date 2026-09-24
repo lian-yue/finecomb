@@ -197,7 +197,17 @@ Ask your agent in plain language, for example:
 - "Audit the contract at `0x…` on Ethereum mainnet with finecomb."
 - "Audit `https://github.com/<owner>/<repo>` for me." (Any GitHub, GitLab or other Git repository URL works, including one that points at a branch, tag, subdirectory or merge request; the agent clones it read-only into a temporary directory, reviews it there, and states the commit it reviewed in the report.)
 
-The agent resolves the target and exclusions, builds a factual baseline (languages, entry points, shared state, threat model), runs the question lists, root-cause facets, dimensions, specialties and language tables that apply, and writes a report where every finding has a location, trigger conditions, evidence, impact, a recommendation and an evidence level. Excluded code is still read when a call chain passes through it; it is only exempt from findings.
+Options can be added in the same sentence, in any combination:
+
+- "Audit `src/` with finecomb, excluding the facet 'Cost asymmetry' and dimension 31."
+- "Review `./api` with finecomb using only your own knowledge." (The root-cause facets and question lists are kept; the detailed dimension, specialty and language tables are not read.)
+- "Quick security-only review of `./server` with finecomb."
+- "Audit `./contracts` with finecomb, only the root-cause facets and 4.38, and fix what you find."
+- "Review `./app` with finecomb offline, report in English, issues only."
+
+Whatever an option leaves out is listed at the top of the report as not checked. The full list of options is in [Review options](skills/finecomb/references/scope.md#review-options).
+
+The agent resolves the target, exclusions and options, builds a factual baseline (languages, entry points, shared state, threat model), then selects and reads only what applies: the language tables for the languages the target uses, the specialties for the kinds of target it contains and the dimensions that apply. It runs the question lists, root-cause facets and the selected parts, and writes a report where every finding has a location, trigger conditions, evidence, impact, a recommendation and an evidence level. Excluded code is still read when a call chain passes through it; it is only exempt from findings.
 
 ## Layout
 

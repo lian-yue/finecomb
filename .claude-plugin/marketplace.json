@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Exhaustive code review and security audit skill for any language",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "plugins": [
     {

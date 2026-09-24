@@ -38,7 +38,9 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 ## Skill format
 
 - Skills live at `skills/<name>/SKILL.md`, following the skills CLI discovery rules. The frontmatter has `name` (matching the directory name), `description`, `license` and `metadata`.
-- `description` stays within 1024 characters. `SKILL.md` stays under 500 lines; details go into `references/`.
+- `description` stays within 1024 characters. `SKILL.md` stays under 500 lines and its body under about 5,000 tokens, because agents load all of it on every activation; details go into `references/`.
+- `SKILL.md` keeps a short index, one line per part. The full lists live, in groups, in the index file of each directory (`dimensions/index.md`, `specialties/index.md`, `facets/index.md`, `languages.md` and so on). A new dimension or specialty is added to the right group in its index file, and a new specialty also gets a row in the baseline's "mapping known attack mechanisms" table; neither goes into `SKILL.md`.
+- The review options are defined in `references/scope.md` ("Review options"); the options table in every `SKILL*.md` is a summary of it and is kept in step with it.
 - The skill is installed on its own, so every relative link and anchor must resolve inside `skills/finecomb/`. The skill does not link to the READMEs or the validation records.
 - If the skill is renamed, update every manifest: `.claude-plugin/marketplace.json`, `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json`. When the coverage changes (new specialties, languages or domains), update the descriptions, `tags` and `keywords` in all of them so search stays accurate, and keep the keyword lists of the two `plugin.json` files the same.
 
@@ -83,4 +85,4 @@ Skill changes go to `main` and follow the rest of this file. A sample's record a
 - No Chinese characters are left in files that must be English.
 - The `description` is within 1024 characters; `SKILL.md` is under 500 lines.
 - Every manifest under `.claude-plugin/`, `.codex-plugin/` and `.agents/plugins/` is valid JSON; the Claude marketplace entry lists `skills/finecomb`; when the `claude` CLI is available, `claude plugin validate .` passes.
-- The READMEs in every language have the same sections and install commands; every `SKILL*.md` has the same steps, index entries, self-check items and link targets.
+- The READMEs in every language have the same sections and install commands; every `SKILL*.md` has the same steps, options, index entries, self-check items and link targets.

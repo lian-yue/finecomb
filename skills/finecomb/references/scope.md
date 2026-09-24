@@ -17,6 +17,7 @@ The wording of an invocation is not fixed. Examples: "review `<target>` with fin
 | Category exclusions | When the caller names categories such as "generated", "third-party", "vendored", "build artifacts" or "test data", identify them with the table below and **list the files or directories that actually match** so the caller can check them |
 | Scale | Decide per [scaling to the request](#scaling-to-the-request) |
 | Named dimensions | When the caller names only some dimensions or specialties, handle the other dimensions per the matching row of scaling to the request |
+| Review options | Exclusions of checklist parts, "only these parts", agent knowledge only, depth, focus, fixes, network and report form; resolve them per [review options](#review-options) |
 | Languages | Decide from the language and build inventory in [Part I](baseline.md), not by guessing from the caller's description |
 
 Category identification (evidence goes from strongest to weakest; anything judged only on weak evidence is marked "suspected" and listed separately):
@@ -37,6 +38,23 @@ What exclusion means:
 - When an explicit name conflicts with category identification (for example, the caller names a generated directory to review), the caller's explicit name wins.
 - "Suspected" items are neither excluded nor reviewed automatically. Handle the ambiguity per the project rules; if there are no rules, list them, state the assumption you adopt, and continue.
 - Write the excluded items, the basis for identifying them and the suspected items into the coverage record.
+
+## Review options
+
+The caller can add options in plain words, in any language and in any combination, for example "audit `<dir>` with finecomb, excluding the facet 'Cost asymmetry' and dimension 31, using only your own knowledge". Resolve them together with the target and write them into the "Conclusion and scope" section of the report. Options only narrow or shape the review: they never widen authorization, the execution boundaries or the target project's hard boundaries, and when they conflict, the boundaries win. Whatever an option leaves out is recorded as "Not checked (excluded by the caller)" in the coverage record and listed at the top of the report with the skipped checks.
+
+| Option | Examples of wording | What changes |
+| --- | --- | --- |
+| **Exclude parts of the checklist** | "excluding the facet 'Cost asymmetry'", "skip the memory facets", "without dimension 31", "skip specialty 4.39", "no language tables", "no historical patterns" | The named facets, facet groups, dimensions, specialties, language tables, history groups or target types are not checked. Real issues outside them that you meet along the call chains you do check are still reported |
+| **Only some parts** | "only the root-cause facets", "only dimension 18", "only 4.7 and 4.21", "only the Go table" | Build the baseline those parts need, then check only them. Everything else is left out, as with exclusions |
+| **Agent knowledge only** | "use only your own knowledge", "without the extended checklists" | Keep this file's rules, the [factual baseline](baseline.md), the [per-object questions](questions.md) and the [root-cause facets](facets/index.md). Do not read the dimension, specialty, language-table, history or target files; instead, for each area that applies, whose name you can take from the [dimension index](dimensions/index.md) and the [specialty index](specialties/index.md), apply your own knowledge. State this mode at the top of the report and in the coverage record |
+| **Depth** | "quick review", "standard review", "exhaustive" | Quick: after the baseline, check in the risk order of [scaling to the request](#scaling-to-the-request), ask the facets of the highest-risk objects only, and read only the dimensions and specialties those objects need. Standard: every object in scope, with the dimensions and specialties that apply. Exhaustive: the "review xxx" row of scaling to the request. Without a depth option, "review" and "audit" mean exhaustive, and "see whether xxx has problems" means standard |
+| **Focus** | "security only", "code quality only" | Security only: dimensions 27 to 30 and 46, the security-relevant rows of the other dimensions, the root-cause facets and the specialties that apply. Code quality only: the other dimension groups, without security specialties. The side left out is recorded as excluded |
+| **Fixes** | "and fix what you find", "fix only High issues" | Fixes are authorized within the scope and the named limit; follow [Part VI](report.md#part-vi-fix-discipline). Without this option the review stays read-only |
+| **Network** | "offline", "no network" | No dependency or vulnerability lookups: record them as "Not checked (offline)". A remote repository URL cannot be fetched, so ask for a local copy |
+| **Report form** | "report in English", "issues only", "short report" | The report language (by default the language the user writes in) and how much of the [Part V](report.md#part-v-evidence-levels-and-report-format) structure to include. The coverage record and the list of skipped checks are always kept |
+
+**Look first, then load.** Whatever the options, choose what to read from the baseline: read only the language tables of languages the target uses, only the specialties for kinds of target it contains, and only the dimension files that apply. For example, a Go service does not need the JavaScript table or the smart contract specialties. Record what was not read and why.
 
 ## Remote repository URLs
 

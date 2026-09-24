@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "finecomb",
   "displayName": "finecomb: exhaustive code review and security audit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Exhaustive code review and security audit checklist for any language. Root-cause facets distilled from real vulnerabilities, asked of every object; 46 general dimensions; 78 specialties by target type (web, cloud, mobile, kernels and drivers, enclaves, industrial control, AI agents, smart contracts, DeFi, zero-knowledge and more); pitfall tables for programming and contract languages; threat model, evidence levels and report format. Markdown only, read-only by default, for code and systems you own or are authorized to assess.",
   "author": {
     "name": "lian-yue",
