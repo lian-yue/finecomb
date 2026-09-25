@@ -1,6 +1,6 @@
 # Part III: General dimensions
 
-Decide from the [factual baseline](../baseline.md) which dimensions apply, then read only the files of those dimensions. Record each dimension that does not apply as "Not applicable" with the basis, and each one excluded by a [review option](../scope.md#review-options) as "Not checked (excluded by the caller)".
+Decide from the [factual baseline](../baseline.md) which dimensions apply, then read only the files of those dimensions, all at once or in a few batches rather than one at a time, and check the target against them together. Record each dimension that does not apply as "Not applicable" with the basis, and each one excluded by a [review option](../scope.md#review-options) as "Not checked (excluded by the caller)".
 
 ## Code shape
 

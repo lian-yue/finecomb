@@ -2,7 +2,7 @@
 
 The sections below add checkpoints for specific kinds of targets. Choose them based on the [factual baseline](../baseline.md). General criteria are reused through links, and the check status is recorded only once, in the [report](../report.md#part-v-evidence-levels-and-report-format).
 
-Choose by **what kind of thing** the target contains, using the baseline's [mapping known attack mechanisms](../baseline.md#mapping-known-attack-mechanisms) table, and read only the files you choose. A specialty whose subject the target does not have is not read, and inside a chosen specialty, rows whose subject is absent are skipped. Record each specialty excluded by a [review option](../scope.md#review-options) as "Not checked (excluded by the caller)".
+Choose by **what kind of thing** the target contains, using the baseline's [mapping known attack mechanisms](../baseline.md#mapping-known-attack-mechanisms) table, and read only the files you choose, all at once or in a few batches. A specialty whose subject the target does not have is not read, and inside a chosen specialty, rows whose subject is absent are skipped. Record each specialty excluded by a [review option](../scope.md#review-options) as "Not checked (excluded by the caller)".
 
 ## Communication
 

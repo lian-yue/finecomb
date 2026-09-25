@@ -4,7 +4,7 @@ description: Exhaustive code review and security audit checklist for any languag
 license: Apache-2.0
 metadata:
   author: lian-yue
-  version: "0.1.2"
+  version: "0.1.3"
 ---
 
 # finecomb: exhaustive code review checklist
@@ -41,6 +41,7 @@ General conventions:
 - Wherever this skill says "project rules", "overview document", "flow document" or "test matrix", read it as **the file in the target project that has that role**, whatever it is called. Common locations, and the defaults to use when the project has no rules, are in [The target project's hard boundaries](references/scope.md#the-target-projects-hard-boundaries).
 - Decide applicability from actual behavior: code with no persistence can skip on-disk recovery; an internal tool may still handle personal data. Report statuses are defined in [Part V](references/report.md#part-v-evidence-levels-and-report-format).
 - **Look first, then load.** Every part of this skill, whether a file, a section or a single row, applies only when the target actually has what that part is about: a language, runtime, framework, platform, protocol, kind of component, kind of data, deployment form or mechanism. Check the baseline before reading anything, read only the parts whose subject the target has, and inside what you read, skip the rows whose subject is absent. Material about something the target does not have is not read at all. Record what was left out and why.
+- **Load in bulk.** Read everything that applies at once, or in a few batches (several files in parallel when your tools allow), then check each object against all of it together. Do not read and check one file, section or row at a time. By default this is every root-cause facet and every part selected in step 3; only what the caller excludes is left out.
 
 ## Options
 
@@ -54,6 +55,7 @@ The caller can shape a review in plain words; the details and more examples are 
 | Depth | "quick review", "exhaustive" | Quick follows the risk order; "review" and "audit" default to exhaustive |
 | Focus | "security only", "code quality only" | The other side is left out |
 | Fixes | "and fix what you find" | Authorizes fixes; otherwise read-only |
+| Tools | "install missing tools", "do not install tools", "no tools" | Missing tools are recommended and installed only when the user says so, with the user's method and location; or only installed tools are used; or no machine checks at all |
 | Network | "offline" | No dependency or vulnerability lookups |
 | Report form | "report in English", "issues only" | Language and length of the report; the coverage record is always kept |
 
@@ -64,10 +66,10 @@ Work in this order. At each step read only the reference files that step needs.
 1. **Resolve the invocation, the options and the boundaries.** Read [references/scope.md](references/scope.md): turn the invocation into a target, exclusions, [review options](references/scope.md#review-options) and a scale; when the target is a code repository URL, first fetch it to a local copy, read-only, per "Remote repository URLs" there, and note the commit hash; find the target project's rules and hard boundaries, and use the conservative defaults there when the project has none; confirm the execution boundaries. For a very large target, follow the sharding rules there; when time is short, follow the risk order there. When the target is not source code, also read [references/targets/index.md](references/targets/index.md) to decide how to collect evidence and what cannot be seen.
 2. **Establish the factual baseline.** Read [references/baseline.md](references/baseline.md): language and build inventory (or the artifact inventory for a non-source target), object inventory, upstream and downstream, threat model.
 3. **Select what applies.** From the baseline and the options, go through every part of the skill and keep only the parts whose subject the target has. The parts are listed in the [language tables](references/languages.md), the [specialties](references/specialties/index.md) (with the "mapping known attack mechanisms" table in the baseline), the [dimensions](references/dimensions/index.md), the [historical vulnerability patterns](references/history/index.md), the [targets that are not source code](references/targets/index.md) and the [tools](references/tools.md). Write the selection and what was left out, with reasons, into the coverage record. In later steps read only what was selected.
-4. **Question each object and go through the root-cause facets.** Read [references/questions.md](references/questions.md) and run the matching question list for every public entry point, piece of shared state, invariant, external side effect and background flow; then read [references/facets/index.md](references/facets/index.md) and ask each root-cause facet of each object. The facets are cross-domain questions distilled from the root causes of real vulnerabilities; they do not depend on which specialty the target belongs to.
-5. **Check the selected dimensions.** Read and check the file of each dimension selected in step 3, at the chosen scale.
-6. **Check the selected specialties, language tables and historical patterns.** Read the files selected in step 3 and check the target against them.
-7. **Run verification only when needed.** When a finding needs reproduction or a machine check, choose tools from [references/tools.md](references/tools.md) within the execution boundaries.
+4. **Question each object and go through the root-cause facets.** Read [references/questions.md](references/questions.md) and run the matching question list for every public entry point, piece of shared state, invariant, external side effect and background flow; then read [references/facets/index.md](references/facets/index.md) and all the facet files it lists at once, and ask each object the whole set of root-cause facets together. The facets are cross-domain questions distilled from the root causes of real vulnerabilities; they do not depend on which specialty the target belongs to.
+5. **Check the selected dimensions.** Read the files of all dimensions selected in step 3 at once, or in a few batches, and check the target against them together, at the chosen scale.
+6. **Check the other selected parts.** Read the rest of what was selected in step 3 (specialties, language tables, historical patterns and so on) at once, or in a few batches, and check the target against them together.
+7. **Run verification only when needed.** When a finding needs reproduction or a machine check, choose tools from [references/tools.md](references/tools.md) within the execution boundaries. When a useful tool is missing, recommend it and install it only when the user says so, per [missing tools](references/tools.md#missing-tools).
 8. **Write the report.** Use the evidence levels, severities, issue fields and report structure in [references/report.md](references/report.md).
 9. **Fix, only when authorized.** Follow the fix discipline in [references/report.md](references/report.md#part-vi-fix-discipline).
 10. **Close.** Run the [Part VIII: Closing self-check](#part-viii-closing-self-check) at the end of this file.

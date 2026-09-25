@@ -5,8 +5,19 @@ This part is a table of tool options, not a list of things you must run. For whe
 Rows are grouped by "what to check", and each row gives common tools for each ecosystem. Before using them, do three things:
 
 - **Replace and check the placeholders.** `<target-dir>` and `<file>` are paths within this review's scope; `<pkg>`, `<module>` and `<crate>` are specific packages or modules; `<tmp>` is a temporary directory used only by this run. Test names, budgets, platforms and arguments must all come from the actual target. Run commands in the owning module or at the project root, and take module and workspace options from the nearest testing notes.
-- **Confirm the tool is already on the machine; do not install it automatically.** Commands such as `npx`, `pipx run` and `go run <module>@<version>` download over the network when the tool is missing, so handle them per authorization first.
+- **Confirm the tool is already on the machine; do not install anything on your own.** A command that fetches a package and runs it downloads over the network when the tool is missing, so it counts as installing. When a tool is missing, follow [missing tools](#missing-tools).
 - **Prefer tools the project has already chosen.** The ones listed are only examples; for ecosystems not listed, pick a tool with the same purpose.
+
+## Missing tools
+
+When a check would be clearly stronger with a tool that is not installed:
+
+1. **Recommend it; do not install it on your own.** Tell the user which tool, what it would check, where it comes from and how to install it. Recommend only widely used, maintained tools from trusted sources: the tool's official releases, the platform's own package manager or store, or the language's official registry and installer. Give the most common install method on the user's platform.
+2. **Install it when the user says so.** Network access to fetch the tool is then allowed. Use the method and location the user names; otherwise use the platform's usual method and location. If the usual location is not writable or is restricted, install into a directory with a fixed name under the system temporary directory, such as `finecomb-tools`, so later runs can reuse it. Check the source and the version, confirm the tool runs (for example with its version command), then use it. Do not use elevated privileges or change system settings unless the user asked for that.
+3. **Follow the user's choice.** "Do not install tools": review with what is installed, and record the checks that needed a missing tool as "Not checked (tool not installed)". "Do not use tools": run no machine checks, review by reading only, and say so at the top of the report.
+4. **Record it.** In the report, list each tool installed during the review: name, version, source, method and location, and whether it can be removed afterwards. A tool installed only for this review into a temporary directory can be deleted when the review ends.
+
+Installing a tool never installs the target project's own dependencies, and running a tool still follows [execution boundaries during review](scope.md#execution-boundaries-during-review).
 
 ## Read-only discovery
 

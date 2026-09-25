@@ -1,6 +1,6 @@
 {
   "name": "finecomb",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Exhaustive code review and security audit checklist for any language: root-cause facets from real vulnerabilities, 46 general dimensions, 78 specialties by target type, language pitfall tables, threat model and report format. Markdown only, read-only by default, for code and systems you own or are authorized to assess.",
   "author": {
     "name": "lian-yue",

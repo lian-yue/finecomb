@@ -10,20 +10,20 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 - `.claude-plugin/marketplace.json`: the Claude Code plugin marketplace manifest, also read by the skills CLI. Its plugin entry carries `category`, `tags` and `keywords` for search.
 - `.claude-plugin/plugin.json`: the plugin manifest (name, display name, version, description, author, links, license, search `keywords`). It declares no components, because the marketplace entry is `strict: false` and lists the skill itself.
 - `.codex-plugin/plugin.json`: the Codex and ChatGPT plugin manifest, with the listing fields in `interface` (category `Security`). `.agents/plugins/marketplace.json`: the Codex marketplace manifest, pointing at this repository.
+- `LICENSE`: Apache-2.0.
+- `SECURITY.md`: what finecomb is, the authorization scope and the disclaimer. It lists no contact address.
+- Hit-test records and samples do **not** live on `main`. They live on the separate `validation` branch (see [Validation](#validation)), so installing the skill never downloads them.
 
 ## Versions and releases
 
 - One version number, following semantic versioning, is kept the same in four places: `.claude-plugin/plugin.json`, `metadata.version` in `.claude-plugin/marketplace.json`, `.codex-plugin/plugin.json`, and `metadata.version` in the frontmatter of `SKILL.md`.
 - Installed plugins update only when the version changes. After changes to the skill are pushed to `main`, raise the version in all four places in one commit, tag that commit `v<version>` on `main` of the published repository, push the tag, and publish a GitHub release for the tag with notes that list what changed.
 - Tags and releases belong to the published repository only; the validation branch is not tagged.
-- `LICENSE`: Apache-2.0.
-- `SECURITY.md`: what finecomb is, the authorization scope and the disclaimer. It lists no contact address.
-- Hit-test records and samples do **not** live on `main`. They live on the separate `validation` branch (see [Validation](#validation)), so installing the skill never downloads them.
 
 ## Size and network
 
 - The skill is a generalized checklist, not a collection of samples. It grows by adding general facets and checkpoints, never by adding one entry per vulnerability, so it should stay at hundreds of Markdown files, around a thousand at most. Samples may grow without limit, but they never go into `skills/`.
-- The skill must work offline. During an audit it uses the network only for read-only lookups of dependency versions and known vulnerabilities, plus fetching the target itself when the caller explicitly gives a repository URL. It never fetches its own content, samples or validation data.
+- The skill must work offline. During an audit it uses the network only for read-only lookups of dependency versions and known vulnerabilities, plus fetching the target itself when the caller explicitly gives a repository URL, plus downloading a trusted tool the user has asked to install (see "Missing tools" in `references/tools.md`). It never fetches its own content, samples or validation data, and never installs the target project's dependencies.
 - Keep every reference file small enough for any agent to read in one go: when a file grows past about 50 KB, split it into a directory with an `index.md` and one file per section, and link straight to the section files. `references/dimensions/`, `references/specialties/`, `references/history/`, `references/targets/` and `references/facets/` are split this way.
 
 ## Languages
@@ -48,7 +48,7 @@ Rules for anyone, person or agent, who changes this repository. This file is the
 
 - The root-cause facets (`references/facets/`) are the core. Coverage grows as general, domain-independent facets and checkpoints derived from real vulnerabilities, not as entries for a single CVE, product or algorithm.
 - **Rely on the agent's own knowledge first.** A row names an area to check and the general question to ask there, briefly; the agent applies what it already knows about the specific platform, framework, protocol and its known issues. Add a new area in this brief form first. Write detailed checkpoints only for classes of root cause that agents are shown to miss, for example a class of public vulnerabilities that no general question reaches.
-- **Every part says what it applies to.** Agents read a file, section or row only when the target has its subject, so each part must make that subject clear: a file or section through its title or an "Applies to" line, a row through its checkpoint name. Do not write the rule for loading only what applies in terms of particular languages, target types or examples; it holds for every part of the skill.
+- **Every part says what it applies to.** Agents read a file, section or row only when the target has its subject, so each part must make that subject clear: a file or section through its title or an "Applies to" line, a row through its checkpoint name. Do not write the rules for loading only what applies, and for loading it in bulk, in terms of particular languages, target types, tools or examples; they hold for every part of the skill.
 - The "what counts as a problem" and "question to ask" columns state general criteria. Real incidents go into `references/history/` or the facets' "real cases" column.
 - Keep the rule "when one check is restricted, skip only that check; never quit or silently downgrade the whole review" at the top of `SKILL.md`.
 - Write short sentences with common words. Use the real names of things, and the same word for the same thing everywhere.

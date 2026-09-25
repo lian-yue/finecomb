@@ -34,6 +34,7 @@
 - 凡是提到「项目规范」「说明文档」「流程文档」「测试矩阵」的地方，一律读作**目标项目里承担该职责的那份文件**，不假定它叫什么名字。常见位置和项目没有规定时的默认做法见[目标项目的硬边界](references/scope.md#the-target-projects-hard-boundaries)。
 - 适用性按实际行为判断：没有持久化行为可以排除落盘恢复；内部工具仍可能处理个人信息。报告状态统一见[五](references/report.md#part-v-evidence-levels-and-report-format)。
 - **先看目标，再按需加载。** 这份技能的每一部分，不论是一个文件、一节还是一行，都只在目标确实有它所讲的东西时才适用：某种语言、运行时、框架、平台、协议、组件类型、数据类型、部署形态或机制。读任何内容之前先对照事实基线，只读目标有其对象的部分；读到的内容里，对象不存在的行也跳过。目标没有的东西，相关内容一律不读。没读的内容写明原因。
+- **批量加载。** 适用的内容一次性全部读入，或分几批读入（工具允许时多个文件并行读），然后拿全部内容对每个对象一起检查；不要一个文件、一节或一行地读一个查一个。默认就是全部根因面加上第 3 步选中的每一部分；只有调用方明确排除的才不读。
 
 ## 选项
 
@@ -47,6 +48,7 @@
 | 深度 | 「快速审查」「穷尽审查」 | 快速按风险顺序做；「审查」「审计」默认穷尽 |
 | 侧重 | 「只查安全」「只查代码质量」 | 另一侧不查 |
 | 修复 | 「查完顺便修」 | 授权修复；不说就只读 |
+| 工具 | 「缺的工具帮我装」「不要下载工具」「不用工具」 | 缺少的工具先推荐，用户说装才装，按用户指定的方式和位置；或只用已装的工具；或完全不做机器检查 |
 | 联网 | 「离线」 | 不做依赖版本和漏洞查询 |
 | 报告形式 | 「报告用英文」「只列问题」 | 报告的语言和篇幅；覆盖记录始终保留 |
 
@@ -57,10 +59,10 @@
 1. **解析调用、选项和边界。** 读 [references/scope.md](references/scope.md)：把调用解析成目标、排除项、[审查选项](references/scope.md#review-options)和规模；目标是代码仓库网址时，先按其中的「远程仓库地址」（Remote repository URLs）只读地取到本地并记下提交哈希；找到目标项目的规范和硬边界，项目没有规定时用其中的保守默认；确认执行边界。目标太大时按其中的分片规则做；时间有限时按其中的风险顺序做。目标不是源码时，再读 [references/targets/index.md](references/targets/index.md)，确定取证方式和看不到的部分。
 2. **建立事实基线。** 读 [references/baseline.md](references/baseline.md)：语言与构建清单（或非源码目标的制品清单）、对象清单、上下游、威胁模型。
 3. **选出适用的部分。** 按基线和选项，把技能的每一部分过一遍，只留下目标有其对象的部分。这些部分列在[语言表](references/languages.md)、[专项](references/specialties/index.md)（配合基线里的「历史机制对号」（Mapping known attack mechanisms）表）、[维度](references/dimensions/index.md)、[历史漏洞模式](references/history/index.md)、[非源码目标](references/targets/index.md)和[工具](references/tools.md)里。把选了什么、没选什么和原因写进覆盖记录。后面的步骤只读选中的部分。
-4. **逐对象追问，过一遍根因面。** 读 [references/questions.md](references/questions.md)，对每个公开入口、共享状态、不变量、外部副作用、后台执行流过对应的追问清单；再读 [references/facets/index.md](references/facets/index.md)，对每个对象逐个根因面追问。根因面是从真实漏洞的根因归纳出来的跨领域追问，不依赖目标属于哪个专项。
-5. **检查选中的维度。** 按选定的规模，读并检查第 3 步选中的每个维度的文件。
-6. **检查选中的专项、语言表和历史模式。** 读第 3 步选中的文件，逐项对照目标检查。
-7. **按需执行验证。** 需要复现或机器检查时，从 [references/tools.md](references/tools.md) 选工具，遵守执行边界。
+4. **逐对象追问，过一遍根因面。** 读 [references/questions.md](references/questions.md)，对每个公开入口、共享状态、不变量、外部副作用、后台执行流过对应的追问清单；再读 [references/facets/index.md](references/facets/index.md)，并一次性读入它列出的全部根因面文件，拿整套根因面对每个对象一起追问。根因面是从真实漏洞的根因归纳出来的跨领域追问，不依赖目标属于哪个专项。
+5. **检查选中的维度。** 一次性或分几批读入第 3 步选中的全部维度文件，按选定的规模拿它们一起对照目标检查。
+6. **检查其余选中的部分。** 把第 3 步选中的其余部分（专项、语言表、历史模式等）一次性或分几批读入，拿它们一起对照目标检查。
+7. **按需执行验证。** 需要复现或机器检查时，从 [references/tools.md](references/tools.md) 选工具，遵守执行边界。缺少有用的工具时先推荐，用户说装才装，按[缺少工具时](references/tools.md#missing-tools)（Missing tools）的规则。
 8. **写报告。** 按 [references/report.md](references/report.md) 的证据等级、严重性、问题字段和整体结构写。
 9. **修复（仅在已获授权时）。** 按 [references/report.md](references/report.md#part-vi-fix-discipline) 的修复纪律。
 10. **收尾自检。** 按本文件末尾的[八、收尾自检](#八收尾自检)。

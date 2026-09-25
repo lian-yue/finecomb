@@ -10,7 +10,7 @@ How to use:
 - Group the issues you find by facet. This also works as a reverse check: if a facet was never seriously asked during the whole review, that is a coverage gap.
 - This checklist has been tested for hits against real vulnerabilities (nginx, the Linux kernel, OpenSSL, OpenSSH, glibc, major frameworks and enterprise appliances, on-chain and zero-knowledge proof incidents), and every root cause it missed has been turned into a facet here. Check new vulnerabilities the same way: if no facet matches, a facet needs to be added.
 
-The facets are grouped into seven files:
+The facets are grouped into seven files. Read all of them at once, or in a few batches, before questioning objects, then ask each object the whole set together; do not read and apply them one at a time. Only facets the caller excludes are left out.
 
 - [Validation and trust](validation-and-trust.md)
 - [Representation and transformation](representation-and-transformation.md)
