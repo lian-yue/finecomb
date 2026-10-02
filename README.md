@@ -262,7 +262,3 @@ All maintenance rules are in [AGENTS.md](AGENTS.md) (`CLAUDE.md` is a symbolic l
 ## License
 
 [Apache-2.0](LICENSE)
-
-## Acknowledgements
-
-Thanks to Anthropic's [Claude for Open Source](https://claude.com/contact-sales/claude-for-oss) program, which gives open-source maintainers Claude Max for free. finecomb was written, hit-tested and translated with it.
