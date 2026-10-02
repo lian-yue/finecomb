@@ -10,3 +10,8 @@
 | Result order | Without `ORDER BY` the order is not guaranteed, so `LIMIT` pagination results are unstable |
 | Time types | Types with and without a time zone; how the session time zone affects reads and writes |
 | Auto-increment and sequences | Auto-increment values have gaps and are not reclaimed on rollback; once exposed externally they can be enumerated |
+| Expression evaluation | A textual predicate order or short-circuit guard is relied on for safe casts, division or side-effecting functions, although the optimizer can reorder or pre-evaluate expressions |
+| Transaction state | Autocommit, implicit DDL commits or non-transactional objects escape the intended rollback boundary; code keeps using an aborted transaction or retries only its last statement |
+| Stored code and name resolution | A function, view or trigger executes with unintended definer rights; search paths or temporary objects redirect an unqualified name to an object controlled by another user |
+
+Semantic references: [SQL expression evaluation](https://www.postgresql.org/docs/current/sql-expressions.html#SYNTAX-EXPRESS-EVAL), [stored function privileges and search paths](https://www.postgresql.org/docs/current/sql-createfunction.html), [implicit commits](https://dev.mysql.com/doc/refman/8.4/en/implicit-commit.html). Confirm the target dialect rather than transferring one database's behavior to another.

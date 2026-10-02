@@ -5,6 +5,7 @@
 - **A review is read-only by default.** It outputs issues, evidence and suggestions. When fixes are also requested or already authorized, work within the confirmed scope. Rules for authorization, writes, caches and temporary artifacts follow [the target project's hard boundaries](#the-target-projects-hard-boundaries).
 - **Decide the reading scope and the execution scope separately.** Reading the whole target does not authorize the full test suite, coverage runs, stress tests, external scans or installing tools. Before running anything, choose actions per [execution boundaries during review](#execution-boundaries-during-review).
 - **Skip only what cannot be done.** This section and the [execution boundaries during review](#execution-boundaries-during-review) restrict individual actions, not the whole review: when an action cannot be done, skip it, record and report it under the rule "when one check is restricted, skip only that check" at the top of the skill, and finish all the other checks.
+- **Semantic references are sources, not required downloads.** External links explain where a contract comes from; they do not require opening every source or expand network authorization. Use available documentation and target evidence for the selected checks. When a needed version-specific fact cannot be established within the boundaries, record that uncertainty and continue the other checks.
 
 ## Invocation and scope resolution
 
@@ -18,7 +19,8 @@ The wording of an invocation is not fixed. Examples: "review `<target>` with fin
 | Scale | Decide per [scaling to the request](#scaling-to-the-request) |
 | Named dimensions | When the caller names only some dimensions or specialties, handle the other dimensions per the matching row of scaling to the request |
 | Review options | Exclusions of checklist parts, "only these parts", agent knowledge only, depth, focus, fixes, network and report form; resolve them per [review options](#review-options) |
-| Languages | Decide from the language and build inventory in [Part I](baseline.md), not by guessing from the caller's description |
+| Languages | Decide from the language, build and environment inventory in [Part I](baseline.md), not by guessing from the caller's description |
+| Environments | Resolve the supported runtime, host and deployment combinations from [Part I](baseline.md); select their questions in [Appendix B](environments.md) without assuming that a language identifies its host |
 
 Category identification (evidence goes from strongest to weakest; anything judged only on weak evidence is marked "suspected" and listed separately):
 
@@ -45,9 +47,9 @@ The caller can add options in plain words, in any language and in any combinatio
 
 | Option | Examples of wording | What changes |
 | --- | --- | --- |
-| **Exclude parts of the checklist** | "excluding the facet 'Cost asymmetry'", "skip the memory facets", "without dimension 31", "skip specialty 4.39", "no language tables", "no historical patterns" | The named facets, facet groups, dimensions, specialties, language tables, history groups or target types are not checked. Real issues outside them that you meet along the call chains you do check are still reported |
+| **Exclude parts of the checklist** | "excluding the facet 'Cost asymmetry'", "skip the memory facets", "without dimension 31", "skip specialty 4.39", "no language tables", "no environment checks", "no historical patterns" | The named facets, facet groups, dimensions, specialties, language tables, environment checks, history groups or target types are not checked. Real issues outside them that you meet along the call chains you do check are still reported |
 | **Only some parts** | "only the root-cause facets", "only dimension 18", "only 4.7 and 4.21", "only the Go table" | Build the baseline those parts need, then check only them. Everything else is left out, as with exclusions |
-| **Agent knowledge only** | "use only your own knowledge", "without the extended checklists" | Keep this file's rules, the [factual baseline](baseline.md), the [per-object questions](questions.md) and the [root-cause facets](facets/index.md). Do not read the dimension, specialty, language-table, history or target files; instead, for each area that applies, whose name you can take from the [dimension index](dimensions/index.md) and the [specialty index](specialties/index.md), apply your own knowledge. State this mode at the top of the report and in the coverage record |
+| **Agent knowledge only** | "use only your own knowledge", "without the extended checklists" | Keep this file's rules, the [factual baseline](baseline.md), the [per-object questions](questions.md) and the [root-cause facets](facets/index.md). Do not read the dimension, specialty, language-table, environment, history or target files; instead, for each area that applies, whose name you can take from the [dimension index](dimensions/index.md) and the [specialty index](specialties/index.md), apply your own knowledge. State this mode at the top of the report and in the coverage record |
 | **Depth** | "quick review", "standard review", "exhaustive" | Quick: after the baseline, check in the risk order of [scaling to the request](#scaling-to-the-request), ask the facets of the highest-risk objects only, and read only the dimensions and specialties those objects need. Standard: every object in scope, with the dimensions and specialties that apply. Exhaustive: the "review xxx" row of scaling to the request. Without a depth option, "review" and "audit" mean exhaustive, and "see whether xxx has problems" means standard |
 | **Focus** | "security only", "code quality only" | Security only: dimensions 27 to 30 and 46, the security-relevant rows of the other dimensions, the root-cause facets and the specialties that apply. Code quality only: the other dimension groups, without security specialties. The side left out is recorded as excluded |
 | **Fixes** | "and fix what you find", "fix only High issues" | Fixes are authorized within the scope and the named limit; follow [Part VI](report.md#part-vi-fix-discipline). Without this option the review stays read-only |
@@ -56,6 +58,8 @@ The caller can add options in plain words, in any language and in any combinatio
 | **Report form** | "report in English", "issues only", "short report" | The report language (by default the language the user writes in) and how much of the [Part V](report.md#part-v-evidence-levels-and-report-format) structure to include. The coverage record and the list of skipped checks are always kept |
 
 **Look first, then load.** Whatever the options, every part of the skill, whether a file, a section or a single row, applies only when the target actually has what that part is about: a language, runtime, framework, platform, protocol, kind of component, kind of data, deployment form or mechanism. Check the [factual baseline](baseline.md) before reading anything, read only the parts whose subject the target has, and inside what you read, skip the rows whose subject is absent. Material about something the target does not have is not read at all. Record what was left out and why. Everything that applies is loaded in bulk, all at once or in a few batches, and each object is checked against all of it together, never one file, section or row at a time. This narrows what is read; it never narrows the target itself, and a subject found later in the review brings its parts back in.
+
+Use the indexes to select detail files or sections before loading those details. Unresolved applicability is not evidence of absence: inspect the relevant target declarations and call paths first; if the evidence remains unavailable, record the uncertainty as "Not checked" or "Partially checked" rather than "Not applicable". When later evidence changes the selection, apply the newly selected checks to the affected objects already visited as well.
 
 ## Remote repository URLs
 
@@ -141,7 +145,7 @@ Rules for authorization, version control operations, how to write, network acces
 
 | The caller says | How far to go |
 | --- | --- |
-| "review xxx", "audit xxx", "full check" | Read the hand-written implementation in scope. One by one, judge whether each of the 46 items in [Part III](dimensions/index.md), the relevant [specialties](specialties/index.md) and [Appendix A](languages.md) for each language the target uses applies. Check object by object per [Part II](questions.md). Explicitly list any part that cannot be fully covered |
+| "review xxx", "audit xxx", "full check" | Read the hand-written implementation in scope. One by one, judge whether each of the 46 items in [Part III](dimensions/index.md), the relevant [specialties](specialties/index.md), [Appendix A](languages.md) for the target's languages and [Appendix B](environments.md) for its environments applies. Check object by object per [Part II](questions.md). Explicitly list any part that cannot be fully covered |
 | Same as above, with exclusions | Same as above; subtract the exclusions from the scope per [invocation and scope resolution](#invocation-and-scope-resolution). Excluded code is still used for tracing |
 | "see whether xxx has problems" | First establish the [factual baseline](baseline.md), then pick dimensions by the directions it exposes. State which parts were not checked |
 | "review this change" | Review only the entry points, state, invariants, side effects and background flows that the change touches, but go through the question lists for these five in full |

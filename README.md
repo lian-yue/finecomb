@@ -20,7 +20,8 @@ The name comes from "going over something with a fine-tooth comb": checking ever
 - **Root-cause facets**: cross-domain questions distilled from the root causes of real vulnerabilities, asked of every object. Examples: is the validation complete; does a declared control actually take effect; what happens to a value after it is validated; do the sizing pass and the writing pass agree; are paired fields updated together; can the same object be finalized twice; can an old but validly signed version be accepted again. The facets were hit-tested against real vulnerabilities in nginx, the Linux kernel, OpenSSL, OpenSSH, glibc, mainstream frameworks and enterprise appliances, and on-chain and zero-knowledge incidents; every missed root cause was turned into a facet.
 - **46 general dimensions**: dead code, duplication, API contracts, error handling, concurrency, resources, crash recovery, security, privacy, abuse and fraud resistance, performance, configuration, supply chain, tests, documentation, long-running behavior and more.
 - **78 specialties by target type**: plugin and app platforms, workflow automation and low-code, multi-tenant platforms and user content hosting, remote access and device management, security tools, certificate authorities, DNS servers, telecom and SMS, end-to-end encrypted messaging, trading and exchanges, hardware designs, location and visibility of personal data, container runtimes, package registries, code hosting, online games, media streaming and DRM, backups, notebooks, biometrics and identity verification, health data, mail servers, sandboxes and broker processes, trusted execution environments and enclaves, industrial control and cyber-physical safety, search and retrieval, sync and offline clients, serverless and edge functions, networking, protocol parsing, cryptography, authentication, single sign-on and federated identity, databases, file systems, queues, schedulers, server middleware, SSRF, subprocesses, interpreters and VMs, proxies and tunnels, rule engines, system calls, local privileged components, kernel drivers and virtualization, mobile app components, code generators, cross-language boundaries, CI and infrastructure as code, publishable packages, client apps, firmware, data pipelines, LLMs and agents, payments and accounting, notifications and outbound messages, smart contracts, DeFi and oracles, cross-chain bridges, wallets and signing, account abstraction, zero-knowledge proofs, blockchain nodes and consensus, and more.
-- **Language pitfall tables** for Go, Python, JavaScript/TypeScript, C/C++, Rust, Java/Kotlin, C#/.NET, PHP, Ruby, Shell, Swift/Objective-C and SQL, the contract languages Solidity/Vyper, Solana, Move, CosmWasm, Cairo, TON and zero-knowledge circuits, plus a method for building a table for any other language.
+- **33 language and format pitfall tables** for Go, Python, JavaScript/TypeScript, C/C++, Rust, Java/JVM, Kotlin, C#/F#/.NET, PHP, Ruby, Shell, Swift/Objective-C, SQL, PowerShell, Lua/LuaJIT, Dart/Flutter, Erlang/Elixir, Scala/Clojure, Haskell/OCaml, R/Julia, Perl, Zig and Fortran/COBOL, plus configuration formats, regular expressions, GPU kernels and shaders, Solidity/Vyper, Solana, Move, CosmWasm, Cairo, TON and zero-knowledge circuits. Unlisted and embedded languages have a method for building their own mapping.
+- **Execution environment matrix**: host, runtime and deployment checks for Unix, Windows, macOS, mobile devices, browsers and workers, managed runtimes, containers, serverless, VMs, WebAssembly, kernels, enclaves, embedded systems, GPUs, CI, batch jobs and chain runtimes. The index selects detail sections on demand and separates declared support, build evidence and actual execution evidence.
 - **Historical vulnerability patterns**: generalized mechanisms distilled from the CWE Top 25, CISA's most exploited vulnerabilities and major incidents (Log4Shell, Heartbleed, the xz backdoor, MOVEit, Citrix Bleed, bridge and DeFi exploits and more), each with what to look for in a review.
 - **Targets that are not source code**: when the target is a binary, an installer, a browser extension, firmware, a container image, a published package, a live URL, domain and mail configuration, a host, a Kubernetes cluster, a cloud account, a SaaS tenant, a database, logs and packet captures, an on-chain contract address, a design document, an agent configuration or a dependency manifest, what evidence is available, what to check first, what cannot be seen and what needs authorization.
 - **Five per-object question lists** (public entry points, shared state, invariants, external side effects, background flows), a threat model, evidence levels, severities, a report format and tool options for each ecosystem.
@@ -37,11 +38,13 @@ finecomb is for security audits and code review of targets you own, maintain or 
 
 ## How coverage is validated
 
-The root-cause facets and checkpoints were built by hit-testing against real vulnerabilities, not written from memory:
+The recorded root-cause coverage is measured by hit-testing against real vulnerabilities:
 
 1. Find the real root cause of a vulnerability from its patch or official advisory.
 2. Using only the skill's "question to ask" and "what counts as a problem" columns, never the example columns, decide whether a reviewer following the questions would reach that root cause.
 3. When it would not, generalize the miss into a question that does not depend on the domain or language, add it, and retest on new samples that were not used to write the skill.
+
+Language and environment tables also use semantic checks grounded in runtime documentation. The hit-test records below do not establish a measured hit rate for every language or environment checkpoint.
 
 Three held-out rounds (208 vulnerabilities not used to write the skill; each sample records only the root cause at the patch or advisory level). "Hit" includes weak hits:
 
@@ -243,6 +246,8 @@ finecomb/
             ├── report.md        evidence levels, report format, fix discipline
             ├── tools.md         tools per ecosystem
             ├── languages.md     how to use the language tables
+            ├── environments.md  environment selection and evidence matrix
+            ├── environments/    detail sections loaded only when selected
             └── lang-*.md        one table per language
 ```
 

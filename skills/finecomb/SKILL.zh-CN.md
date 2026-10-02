@@ -28,12 +28,15 @@
 通用约定：
 
 - **各行只写要查什么，具体细节用你自己的知识补。** 对每一行，结合你对具体平台、框架、协议、版本及其已知问题的了解去查。技能只对已证明智能体会漏掉的根因类别写出细节。
-- [通用维度](references/dimensions/index.md)、[专项](references/specialties/index.md)、[报告与修复](references/report.md)里的检查项与语言无关。语言相关的部分集中在两处：[16 语言与运行时陷阱](references/dimensions/16-language-and-runtime-pitfalls.md)列跨语言的陷阱类别，[附录 A](references/languages.md)把这些类别落到具体语言。目标用到几种语言，就按附录 A 选几张表；附录没有的语言按 16 的类别自行找对应机制。
+- [通用维度](references/dimensions/index.md)、[专项](references/specialties/index.md)、[报告与修复](references/report.md)里的检查项与语言无关。语言相关的部分集中在两处：[16 语言与运行时陷阱](references/dimensions/16-language-and-runtime-pitfalls.md)列跨语言的陷阱类别，[附录 A](references/languages.md)把这些类别落到具体语言。按目标的语言及共享运行时选用附录 A 的对应表；附录没有的语言按 16 的类别自行找对应机制。
 - [七、机器可验证检查命令](references/tools.md)按「要检查什么」列出各生态的常见工具。项目已选定的工具优先；没有列出的生态选同目的的工具，**要检查的东西不变**。
 - [四、按目标类型追加的专项](references/specialties/index.md)按目标**是什么类型的东西**来选，不看它叫什么名字、用什么语言、放在哪个目录。
+- [附录 B：执行环境](references/environments.md)（Execution environments）独立于语言选择宿主与部署检查。声明支持、构建证据和实际运行证据分别记录。
 - 凡是提到「项目规范」「说明文档」「流程文档」「测试矩阵」的地方，一律读作**目标项目里承担该职责的那份文件**，不假定它叫什么名字。常见位置和项目没有规定时的默认做法见[目标项目的硬边界](references/scope.md#the-target-projects-hard-boundaries)。
 - 适用性按实际行为判断：没有持久化行为可以排除落盘恢复；内部工具仍可能处理个人信息。报告状态统一见[五](references/report.md#part-v-evidence-levels-and-report-format)。
 - **先看目标，再按需加载。** 这份技能的每一部分，不论是一个文件、一节还是一行，都只在目标确实有它所讲的东西时才适用：某种语言、运行时、框架、平台、协议、组件类型、数据类型、部署形态或机制。读任何内容之前先对照事实基线，只读目标有其对象的部分；读到的内容里，对象不存在的行也跳过。目标没有的东西，相关内容一律不读。没读的内容写明原因。
+- 先用索引选择细则章节。适用性尚未确认不等于不存在；记录缺失的证据，选择发生变化时回查已访问的相关对象，详见[审查选项](references/scope.md#review-options)（Review options）。
+- 外部语义链接提供依据，不要求全部加载或自动联网；遵循[通用审查纪律](references/scope.md#general-review-discipline)（General review discipline）。
 - **批量加载。** 适用的内容一次性全部读入，或分几批读入（工具允许时多个文件并行读），然后拿全部内容对每个对象一起检查；不要一个文件、一节或一行地读一个查一个。默认就是全部根因面加上第 3 步选中的每一部分；只有调用方明确排除的才不读。
 
 ## 选项
@@ -42,9 +45,9 @@
 
 | 选项 | 例如 | 作用 |
 | --- | --- | --- |
-| 排除部分 | 「排除根因面『成本不对称』（Cost asymmetry）」「不查维度 31」「跳过 4.39」 | 这些根因面、维度、专项、语言表或历史模式分组不检查 |
+| 排除部分 | 「排除根因面『成本不对称』（Cost asymmetry）」「不查维度 31」「跳过 4.39」 | 这些根因面、维度、专项、语言表、环境检查或历史模式分组不检查 |
 | 只查部分 | 「只过根因面」「只查 4.7」 | 只检查点名的部分，先建立它们需要的基线 |
-| 只用智能体自带知识 | 「只用你自己的知识」 | 根因面和逐对象追问照常；不读维度、专项、语言表、历史模式和非源码目标文件，这些领域用你自己的知识去查 |
+| 只用智能体自带知识 | 「只用你自己的知识」 | 根因面和逐对象追问照常；不读维度、专项、语言表、环境、历史模式和非源码目标文件，这些领域用你自己的知识去查 |
 | 深度 | 「快速审查」「穷尽审查」 | 快速按风险顺序做；「审查」「审计」默认穷尽 |
 | 侧重 | 「只查安全」「只查代码质量」 | 另一侧不查 |
 | 修复 | 「查完顺便修」 | 授权修复；不说就只读 |
@@ -57,8 +60,8 @@
 按顺序做。每一步只读当步需要的参考文件，用不到的不读。
 
 1. **解析调用、选项和边界。** 读 [references/scope.md](references/scope.md)：把调用解析成目标、排除项、[审查选项](references/scope.md#review-options)和规模；目标是代码仓库网址时，先按其中的「远程仓库地址」（Remote repository URLs）只读地取到本地并记下提交哈希；找到目标项目的规范和硬边界，项目没有规定时用其中的保守默认；确认执行边界。目标太大时按其中的分片规则做；时间有限时按其中的风险顺序做。目标不是源码时，再读 [references/targets/index.md](references/targets/index.md)，确定取证方式和看不到的部分。
-2. **建立事实基线。** 读 [references/baseline.md](references/baseline.md)：语言与构建清单（或非源码目标的制品清单）、对象清单、上下游、威胁模型。
-3. **选出适用的部分。** 按基线和选项，把技能的每一部分过一遍，只留下目标有其对象的部分。这些部分列在[语言表](references/languages.md)、[专项](references/specialties/index.md)（配合基线里的「历史机制对号」（Mapping known attack mechanisms）表）、[维度](references/dimensions/index.md)、[历史漏洞模式](references/history/index.md)、[非源码目标](references/targets/index.md)和[工具](references/tools.md)里。把选了什么、没选什么和原因写进覆盖记录。后面的步骤只读选中的部分。
+2. **建立事实基线。** 读 [references/baseline.md](references/baseline.md)：语言、构建与环境清单（或非源码目标的制品清单）、对象清单、上下游、威胁模型。
+3. **选出适用的部分。** 按基线和选项，把技能的每一部分过一遍，只留下目标有其对象的部分。这些部分列在[语言表](references/languages.md)、[执行环境](references/environments.md)（Execution environments）、[专项](references/specialties/index.md)（配合基线里的「历史机制对号」（Mapping known attack mechanisms）表）、[维度](references/dimensions/index.md)、[历史漏洞模式](references/history/index.md)、[非源码目标](references/targets/index.md)和[工具](references/tools.md)里。把选了什么、没选什么和原因写进覆盖记录。后面的步骤只读选中的部分。
 4. **逐对象追问，过一遍根因面。** 读 [references/questions.md](references/questions.md)，对每个公开入口、共享状态、不变量、外部副作用、后台执行流过对应的追问清单；再读 [references/facets/index.md](references/facets/index.md)，并一次性读入它列出的全部根因面文件，拿整套根因面对每个对象一起追问。根因面是从真实漏洞的根因归纳出来的跨领域追问，不依赖目标属于哪个专项。
 5. **检查选中的维度。** 一次性或分几批读入第 3 步选中的全部维度文件，按选定的规模拿它们一起对照目标检查。
 6. **检查其余选中的部分。** 把第 3 步选中的其余部分（专项、语言表、历史模式等）一次性或分几批读入，拿它们一起对照目标检查。
@@ -81,7 +84,8 @@
 - [六、修复纪律](references/report.md#part-vi-fix-discipline)
 - [七、机器可验证检查命令](references/tools.md)
 - [八、收尾自检](#八收尾自检)
-- [附录 A：各语言运行时陷阱](references/languages.md)：19 张语言表，只读目标用到的语言，另有[其它语言的做法](references/languages.md#a20-other-languages)
+- [附录 A：各语言运行时陷阱](references/languages.md)：33 张语言与格式表，只读目标用到的对象，另有[其它语言的做法](references/languages.md#a34-other-languages)
+- [附录 B：执行环境](references/environments.md)（Execution environments）：按支持的组合检查宿主、运行时与部署条件
 
 ## 八、收尾自检
 
@@ -91,6 +95,7 @@
 - [ ] 目标、排除项、类别识别结果和疑似项已按[调用与范围解析](references/scope.md#invocation-and-scope-resolution)列出；被排除代码只用于追踪，没有漏掉经过它的调用链。
 - [ ] [审查选项](references/scope.md#review-options)已按解析结果执行；被选项排除的内容记为「未检查（调用方排除）」并在报告开头列出；第 3 步没选中的每一部分都写明了原因。
 - [ ] 目标用到的每种语言都已选用[附录 A](references/languages.md) 的对应表（或写明按 16 自行映射的依据）；跨语言边界已按[4.32](references/specialties/4.32-cross-language-boundaries-and-native-extensions.md)检查。
+- [ ] 已按[附录 B](references/environments.md)（Execution environments）记录支持的环境组合和证据；没有把运行时不可用、交叉构建或模拟器结果写成原生环境的运行证明。
 - [ ] 远程仓库目标已记下地址、分支或标签和提交哈希，临时克隆已按约定处理；非源码目标已按[非源码目标](references/targets/index.md)固定身份（摘要、地址与时间、链标识与块高、账号或租户与读取身份），看不到的部分记为「部分检查」（Partially checked）或「未检查」（Not checked），没有写成「未发现」。
 - [ ] 审查中创建的账号、资源和令牌已清理，取得的数据已按[审查执行边界](references/scope.md#execution-boundaries-during-review)处置；清理不了的已写进报告。
 - [ ] 每个对象都按[根因面](references/facets/index.md)逐个追问过；不适用的面写明了依据，被调用方排除的面记为「未检查（调用方排除）」，其它没问过的面记为「未检查」。

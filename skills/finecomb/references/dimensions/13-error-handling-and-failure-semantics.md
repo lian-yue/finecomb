@@ -11,6 +11,9 @@
 | Distinguishability | Callers cannot tell errors apart by type or sentinel value, only by string comparison |
 | Retryability | Do errors separate "a retry might succeed" from "a retry is useless" |
 | Partial success | The semantics of a batch operation that half fails are not defined; the meaning of the returned count is vague (does deleting one damaged fragment count as "deleted one record") |
+| State after ordinary failure | An error is returned after only part of an in-memory update, acquisition or ownership transfer; callers reuse an object whose invariants no longer hold, or cannot tell whether reset, disposal or retry is required |
+| Unknown completion | A timeout, lost reply or failed commit acknowledgment is treated as proof that the operation had no effect; retry or compensation duplicates or reverses work whose actual outcome was never established |
+| Cleanup failures | Flush, close, rollback or release can fail, but the reported status hides that failure or loses the original cause; the contract does not establish who owns any resource or partial state that remains |
 | Multiple errors | When several things fail, is only the first reported or all of them; is this stated |
 | Crashes | Deliberate crashes inside a library (panic, abort, throwing exceptions the caller should not have to handle); implicit crashes that public input can trigger reliably (out of bounds, null reference, failed type assertion or conversion, division by zero, comparing non-comparable or unhashable types) |
 | Crash recovery | Catching hides an issue that should be fixed; **is the object still usable after the catch**; crashes or unhandled rejections in concurrent execution flows or async tasks that nobody handles take down the whole process or are silently dropped |

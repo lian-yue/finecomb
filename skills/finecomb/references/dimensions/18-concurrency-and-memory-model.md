@@ -17,15 +17,15 @@ First confirm the public concurrency contract and the concurrency paths that are
 | Lock granularity and behavior while holding a lock | Is there I/O, a system call, a callback or external code while the lock is held | Holding the lock for long; **calling a callback/interface method while holding the lock**, which may reenter and take the same lock |
 | Lock order | List every place that "holds A and takes B" | A reverse order exists → deadlock |
 | Reentrancy | Can the same execution flow take a non-reentrant lock twice; can callback, notification or cleanup paths come back into the same operation while it is still running | Self-deadlock; on reentry the state is only half changed, causing a repeated close or unbounded recursion |
-| Safe publication | Is an object still changed after it is published | Torn reads |
+| Safe publication | What publishes initialization to readers, and what protects later mutations | Readers observe incomplete initialization or later changes outside the required synchronization protocol |
 | Channels and queues | Closing one that is already closed, sending to a closed one, nil channels, blocking on unbuffered ones, dropping messages in non-blocking branches | Crash or silently dropped events |
-| Wakeups | Is waking one waiter enough, lost wakeups, does close wake all waiters | Blocked forever |
+| Wakeups | Predicate checks, waiter registration, spurious wakeups and shutdown notifications | A wakeup is treated as proof that the predicate holds; a notification is lost between checking and waiting; close leaves required waiters blocked |
 | Wait groups / task groups | The count incremented inside the child flow, missed done calls, reuse | Wrong counts, early return |
 | Background flows | Who starts it, who stops it, does close wait for it, can an error path miss stopping it | Leak |
 | Cancellation propagation | After cancellation, do the derived execution flows really exit | Leak |
 | Close races | Close running concurrently with every entry point | Writes during close, leftovers after close, counts pushed below zero |
 | ABA | A value used in a lock-free compare-and-swap is changed back to its original | Wrongly judged as "never changed" |
-| **Lock-free progress** | Compare-and-swap retry loops, spin waits | Retries with no upper bound and no backoff; busy waiting that never yields the processor; execution flows keep making each other fail, forming a livelock |
+| **Lock-free progress** | Compare-and-swap retry loops, spin waits and promised progress guarantees | A retry protocol permits livelock, prevents required shutdown or violates promised per-operation progress; distinguish system-wide lock-free progress from wait-free or bounded completion instead of treating every unbounded retry loop as a defect |
 | **Reused slots** | Reuse in object pools, ring slots, generation pools and free lists | Old references are still treated as valid after a slot is reused; generation numbers are too narrow and collide with old values after wraparound; references that extend an object's lifetime are not cleared before it is returned |
 | Starvation and thundering herd | Many waiters woken at the same time; can some kind of operation never get its turn | Tail latency out of control |
 | Single-flight | Are repeated expensive operations on the same key merged | Duplicated work, thundering herd |
@@ -33,3 +33,7 @@ First confirm the public concurrency contract and the concurrency paths that are
 | Clock coarseness | Places that use timestamps to decide order — see [17](17-time-and-clocks.md) | Two writes in the same tick cannot be told apart |
 | Test synchronization hooks | Wait/idle flags in production code that exist only for tests | Record and explain them; move them into test files if possible |
 | Deterministic reproduction | Can a deterministic interleaving be built to reproduce it, instead of running it again and again and hoping to hit it | Only luck → even after a fix, nothing proves it |
+| Atomic ordering and scope | Actual load, store, fence and compare-exchange orderings, including failure paths | Atomic access is mistaken for publication of other data; the acquire does not observe the required release; a fence or device memory scope does not cover the participating readers and writers |
+| Concurrent reclamation | Removal, pointer acquisition, retention, retirement and final release in lock-free structures | An atomically loaded pointer is freed before use or before a reference can be acquired safely; a reclamation scheme misses a reader, reuses storage too early or prevents retired objects from ever being reclaimed |
+
+Semantic references: [atomic memory ordering](https://doc.rust-lang.org/std/sync/atomic/enum.Ordering.html), [concurrent reclamation and hazard pointers](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2530r3.pdf). Apply the memory model of the target language and device.

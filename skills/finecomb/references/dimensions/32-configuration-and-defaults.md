@@ -1,5 +1,7 @@
 # 32 Configuration and defaults
 
+For the syntax, scalar resolution and parser dialect of configuration inputs, select [A.31](../lang-configuration.md).
+
 | Checkpoint | What counts as a problem |
 | --- | --- |
 | Default values | Unreasonable, undocumented, or inconsistent with the docs; is the default configuration safe |

@@ -10,3 +10,9 @@
 | Integers | Overflow turns the value into a float automatically and loses precision |
 | Uploads | Uploaded files land in an executable directory; the file is judged only by its extension or the type the client declares |
 | Random numbers | `rand`, `mt_rand` and `uniqid` are not cryptographic random sources; use `random_bytes` or `random_int` |
+| Array keys and operators | Key coercion merges distinct identifiers; array union and merge operations use different precedence or renumber numeric keys, changing a validated configuration |
+| Retained references | A by-reference `foreach` variable still aliases the final element after the loop; later assignment corrupts the original array |
+| Missing and false-like values | `isset`, `empty`, null coalescing and explicit key lookup conflate absent, null, false, zero and `"0"` where the contract distinguishes them |
+| Persistent workers and fibers | Code assumes request-end cleanup resets globals, locale or credentials; suspension lets another operation change shared state before resumption |
+
+Semantic references: [PHP arrays](https://www.php.net/manual/en/language.types.array.php), [foreach references](https://www.php.net/manual/en/control-structures.foreach.php). Select the deployed worker model in [Appendix B](environments.md).
