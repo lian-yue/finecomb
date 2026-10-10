@@ -4,7 +4,7 @@ description: "Exhaustive code review and security audit checklist for any langua
 license: Apache-2.0
 metadata:
   author: lian-yue
-  version: "0.1.3"
+  version: "0.1.4"
 ---
 
 # finecomb: exhaustive code review checklist
